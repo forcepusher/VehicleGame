@@ -22,5 +22,8 @@ namespace Igrushka.Save
 
         void WriteDouble(double value);
         float ReadDouble();
+
+        void WriteString(string value);
+        string ReadString();
     }
 }
