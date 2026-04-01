@@ -1,6 +1,6 @@
-namespace Igrushka.Save
+﻿namespace Igrushka.Save
 {
-    public interface ISaveObject
+    public interface ISaveable
     {
         void Save(ISaveFile saveFile);
         void Load(ISaveFile saveFile);
