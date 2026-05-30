@@ -26,8 +26,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _GradientPower: 1.2
+    - _SunSize: 256
     m_Colors:
     - _HorizonColor: {r: 0.3679245, g: 0.1995817, b: 0.1995817, a: 1}
     - _ZenithColor: {r: 1, g: 0.7799297, b: 0.48627448, a: 1}
+    - _SunColor: {r: 4, g: 3.2, b: 2.4, a: 1}
+    m_Vector4s:
+    - _SunDirection: {x: 0.32, y: 0.77, z: -0.56, w: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
