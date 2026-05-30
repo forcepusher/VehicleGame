@@ -5,14 +5,19 @@ using UnityEngine.Rendering;
 [DisallowMultipleComponent]
 public class BlobShadow : MonoBehaviour
 {
+    private static readonly int ColorId = Shader.PropertyToID("_Color");
+
     [SerializeField] private Material material;
     [SerializeField] private float radius = 2f;
     [SerializeField] private float heightOffset = 0.08f;
     [SerializeField] private float maxRayDistance = 500f;
+    [SerializeField] private float heightFadeStart = 0f;
+    [SerializeField] private float heightFadeEnd = 12f;
     [SerializeField] private LayerMask groundMask = ~0;
 
     private Transform blobTransform;
     private MeshRenderer blobRenderer;
+    private MaterialPropertyBlock propertyBlock;
 
     private void OnEnable()
     {
@@ -37,6 +42,7 @@ public class BlobShadow : MonoBehaviour
     {
         radius = Mathf.Max(0.1f, radius);
         maxRayDistance = Mathf.Max(1f, maxRayDistance);
+        heightFadeEnd = Mathf.Max(heightFadeStart + 0.01f, heightFadeEnd);
         EnsureBlobExists();
         UpdateBlobPlacement();
     }
@@ -115,14 +121,37 @@ public class BlobShadow : MonoBehaviour
             }
 
             RaycastHit hit = hits[i];
+            float heightAboveGround = Vector3.Dot(transform.position - hit.point, hit.normal);
+            float heightFade = 1f - Mathf.InverseLerp(heightFadeStart, heightFadeEnd, heightAboveGround);
+
+            if (heightFade <= 0f)
+            {
+                blobTransform.gameObject.SetActive(false);
+                return;
+            }
+
             blobTransform.position = hit.point + hit.normal * heightOffset;
             blobTransform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * Quaternion.Euler(90f, 0f, 0f);
             blobTransform.localScale = new Vector3(radius * 2f, radius * 2f, 1f);
+            ApplyShadowColor(heightFade);
             blobTransform.gameObject.SetActive(true);
             return;
         }
 
         blobTransform.gameObject.SetActive(false);
+    }
+
+    private void ApplyShadowColor(float heightFade)
+    {
+        if (propertyBlock == null)
+        {
+            propertyBlock = new MaterialPropertyBlock();
+        }
+
+        Color baseColor = material.GetColor(ColorId);
+        baseColor.a *= heightFade;
+        propertyBlock.SetColor(ColorId, baseColor);
+        blobRenderer.SetPropertyBlock(propertyBlock);
     }
 
     private bool IsOwnHierarchy(Collider collider)
