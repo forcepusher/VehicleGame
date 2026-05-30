@@ -52,6 +52,7 @@ Shader "Custom/SkyboxGradient"
             float _CloudSpeed;
             float _CloudThreshold;
             float _CloudSoftness;
+            float _CloudTime;
 
             struct appdata
             {
@@ -140,7 +141,7 @@ Shader "Custom/SkyboxGradient"
                 float t = pow(height, _GradientPower);
                 float3 sky = lerp(_HorizonColor.rgb, _ZenithColor.rgb, t);
 
-                float cloudMask = SampleClouds(viewDir, _Time.y)
+                float cloudMask = SampleClouds(viewDir, _CloudTime)
                     * CloudHeightMask(height)
                     * _CloudStrength
                     * _CloudColor.a;
