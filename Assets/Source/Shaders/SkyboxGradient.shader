@@ -6,7 +6,7 @@ Shader "Custom/SkyboxGradient"
         _ZenithColor ("Zenith Color", Color) = (0.55, 0.35, 0.3, 1)
         _GradientPower ("Gradient Power", Range(0.5, 8)) = 1.2
         [HDR] _SunColor ("Sun Color", Color) = (4, 3.2, 2.4, 1)
-        _SunSize ("Sun Size", Range(64, 4096)) = 256
+        _SunSize ("Sun Size (degrees)", Range(0.1, 15)) = 2.5
         _SunLatitude ("Sun Latitude", Range(-90, 90)) = 50
         _SunLongitude ("Sun Longitude", Range(0, 360)) = 150
     }
@@ -78,7 +78,9 @@ Shader "Custom/SkyboxGradient"
 
                 float3 sunDir = SunDirectionFromLatLong(_SunLatitude, _SunLongitude);
                 float sunDot = saturate(dot(viewDir, sunDir));
-                float sunMask = pow(sunDot, _SunSize) * _SunColor.a;
+                float sunHalfAngle = _SunSize * PI / 360.0;
+                float cosHalfAngle = cos(sunHalfAngle);
+                float sunMask = smoothstep(cosHalfAngle, 1.0, sunDot) * _SunColor.a;
                 sky = lerp(sky, _SunColor.rgb, sunMask);
 
                 return fixed4(sky, 1);
