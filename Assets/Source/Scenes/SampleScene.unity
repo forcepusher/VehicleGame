@@ -259,6 +259,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 550831315}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 550831318}
     - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 550831317}
@@ -268,6 +271,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
   m_PrefabInstance: {fileID: 550831313}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &550831318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550831314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8f2a91b6d4038a7e5c1d9f0b2e3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FogSkyboxFollow
+  _offset: {x: 0, y: -729, z: 10}
+  _positionConstraint: {fileID: 550831315}
 --- !u!1818360608 &550831315
 PositionConstraint:
   m_ObjectHideFlags: 0

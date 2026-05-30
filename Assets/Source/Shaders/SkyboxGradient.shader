@@ -19,7 +19,7 @@ Shader "Custom/SkyboxGradient"
         {
             ZWrite Off
             ZTest LEqual
-            Cull Front
+            Cull Off
             Fog { Mode Off }
 
             CGPROGRAM
@@ -39,21 +39,23 @@ Shader "Custom/SkyboxGradient"
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                float height : TEXCOORD0;
+                float3 worldPos : TEXCOORD0;
             };
 
             v2f vert(appdata v)
             {
                 v2f o;
+                float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.pos = UnityObjectToClipPos(v.vertex);
-                float3 dir = normalize(v.vertex.xyz);
-                o.height = dir.y * 0.5 + 0.5;
+                o.worldPos = worldPos.xyz;
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
-                float t = pow(saturate(i.height), _GradientPower);
+                float3 viewDir = normalize(i.worldPos - _WorldSpaceCameraPos.xyz);
+                float height = viewDir.y * 0.5 + 0.5;
+                float t = pow(saturate(height), _GradientPower);
                 return lerp(_HorizonColor, _ZenithColor, t);
             }
             ENDCG

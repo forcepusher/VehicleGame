@@ -21,23 +21,41 @@ public class MatchFogColor : MonoBehaviour
     private Renderer _renderer;
     private MaterialPropertyBlock _propBlock;
 
+    private void OnEnable()
+    {
+        CacheRenderer();
+        ApplyColors();
+    }
+
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
-        _propBlock = new MaterialPropertyBlock();
+        CacheRenderer();
     }
 
     private void Update()
     {
+        ApplyColors();
+    }
+
+    private void CacheRenderer()
+    {
         if (_renderer == null)
         {
             _renderer = GetComponent<Renderer>();
-            if (_renderer == null) return;
         }
 
         if (_propBlock == null)
         {
             _propBlock = new MaterialPropertyBlock();
+        }
+    }
+
+    private void ApplyColors()
+    {
+        CacheRenderer();
+        if (_renderer == null)
+        {
+            return;
         }
 
         Color horizon = RenderSettings.fogColor;
