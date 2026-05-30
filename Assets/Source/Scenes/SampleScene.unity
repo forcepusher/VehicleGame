@@ -305,7 +305,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abafbf3e16c172d49b236dfb399e8312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchFogColor
-  _colorPropertyName: _Color
+  _zenithColor: {r: 0.55, g: 0.35, b: 0.3, a: 1}
+  _deriveZenithFromFog: 1
+  _zenithBrightness: 1.2
+  _zenithSaturation: 0.85
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
