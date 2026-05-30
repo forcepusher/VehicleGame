@@ -26,7 +26,7 @@ Material:
     m_TexEnvs:
     - _DisplacementMap:
         m_Texture: {fileID: 2800000, guid: 861b424a841035241ab6e01e808519a8, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 2800000, guid: 861b424a841035241ab6e01e808519a8, type: 3}
@@ -34,15 +34,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 8ba917161cc058742b0df05ef1043cf3, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: b7bb2d3920ae98d4c9e179b14d1ca16f, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 2800000, guid: 83fed3477b60769468360bdcc723109a, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
@@ -52,7 +52,7 @@ Material:
     - _DistanceFalloffScale: 0
     - _GlossinessMultiplier: 1
     - _HeightScale: 0.2
-    - _MaxDisplacementMeters: 0.1
+    - _MaxDisplacementMeters: 0.14
     - _MaxLayers: 16
     - _MetersPerUVUnit: 100
     - _MetersPerUntiledUV: 10
