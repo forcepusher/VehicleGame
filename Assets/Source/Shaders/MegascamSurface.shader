@@ -137,22 +137,6 @@ Shader "RealEngine/MegascamSurface"
             #endif
             
             #ifdef _QUALITY_LEVEL3
-            // Calculate appropriate LOD level for tex2Dlod sampling
-            float CalculateLOD(float3 worldPos, float3 worldNormal, float3 viewDir)
-            {
-                // Distance-based LOD
-                float distance = length(_WorldSpaceCameraPos - worldPos);
-                float distanceLOD = log2(distance * 0.3); // Adjust multiplier as needed
-                
-                // Angle-based LOD - more detail when viewing straight on
-                float viewAngle = abs(dot(worldNormal, viewDir));
-                float angleLOD = log2(2.0 / max(viewAngle, 0.1));
-                
-                // Combine and clamp
-                float finalLOD = max(0, min(distanceLOD + angleLOD * 0.5, 8.0));
-                return finalLOD;
-            }
-            
             // Self-shadowing functions (Level 3 only)
             float SampleHeight(float2 uv)
             {
@@ -450,19 +434,16 @@ Shader "RealEngine/MegascamSurface"
 
                     float selfShadow = CalculateSelfShadow(parallaxUV, input.worldNormal, input.worldTangent, input.worldBitangent, input.lightDir);
                     
-                    // Calculate LOD for texture sampling
-                    float textureLOD = CalculateLOD(input.worldPos, input.worldNormal, viewDirWorld);
-                    
-                    // Sample all textures using parallax-displaced UVs with explicit LOD
-                    fixed4 baseColor = tex2Dlod(_MainTex, float4(parallaxUV, 0, textureLOD));
+                    // Use hardware mip selection (same as Level 2) — manual LOD was over-blurring at distance
+                    fixed4 baseColor = tex2D(_MainTex, parallaxUV);
                     float ambientOcclusion = baseColor.a;
                     float3 albedo = baseColor.rgb;
 
-                    fixed4 specGloss = tex2Dlod(_SpecGlossMap, float4(parallaxUV, 0, textureLOD));
+                    fixed4 specGloss = tex2D(_SpecGlossMap, parallaxUV);
                     float3 specularColor = specGloss.rgb;
                     float glossiness = specGloss.a * _GlossinessMultiplier;
 
-                    float3 normalMap = UnpackNormal(tex2Dlod(_NormalMap, float4(parallaxUV, 0, textureLOD)));
+                    float3 normalMap = UnpackNormal(tex2D(_NormalMap, parallaxUV));
                     float3 worldNormal = normalize(input.worldTangent * normalMap.x + 
                                                  input.worldBitangent * normalMap.y + 
                                                  input.worldNormal * normalMap.z);
@@ -525,7 +506,6 @@ Shader "RealEngine/MegascamSurface"
 
                 #ifdef _QUALITY_LEVEL3
                     FragmentOutput output;
-                    //color = textureLOD / 4;
                     output.color = fixed4(color, 1.0);
                     
                     // Calculate depth offset for parallax mapping
