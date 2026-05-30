@@ -83,7 +83,7 @@ Shader "Custom/SkyboxGradient"
                 return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
             }
 
-            float CloudFbm(float2 p)
+            float CloudFractionalBrownianMotion(float2 p)
             {
                 float value = 0.0;
                 float amplitude = 0.5;
@@ -102,7 +102,7 @@ Shader "Custom/SkyboxGradient"
                 float2 scroll = float2(time * _CloudSpeed, time * _CloudSpeed * 0.65);
                 float2 uvA = viewDir.xz * _CloudScale + scroll;
                 float2 uvB = (viewDir.xy + viewDir.zx * 0.35) * _CloudScale * 0.85 - scroll * 0.7;
-                float noise = CloudFbm(uvA) * 0.6 + CloudFbm(uvB) * 0.4;
+                float noise = CloudFractionalBrownianMotion(uvA) * 0.6 + CloudFractionalBrownianMotion(uvB) * 0.4;
                 return smoothstep(
                     _CloudThreshold - _CloudSoftness,
                     _CloudThreshold + _CloudSoftness,
