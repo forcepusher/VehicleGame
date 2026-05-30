@@ -40,9 +40,6 @@ public class BlobShadow : MonoBehaviour
 
     private void OnValidate()
     {
-        radius = Mathf.Max(0.1f, radius);
-        maxRayDistance = Mathf.Max(1f, maxRayDistance);
-        heightFadeEnd = Mathf.Max(heightFadeStart + 0.01f, heightFadeEnd);
         EnsureBlobExists();
         UpdateBlobPlacement();
     }
