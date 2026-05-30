@@ -1,4 +1,4 @@
-Shader "Custom/SkyboxGradient"
+Shader "Custom/ProceduralSkybox"
 {
     Properties
     {
