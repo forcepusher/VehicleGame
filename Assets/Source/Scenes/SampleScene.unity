@@ -16,8 +16,8 @@ RenderSettings:
   serializedVersion: 10
   m_Fog: 1
   m_FogColor: {r: 0.3679245, g: 0.1995817, b: 0.1995817, a: 1}
-  m_FogMode: 2
-  m_FogDensity: 0.00075
+  m_FogMode: 3
+  m_FogDensity: 0.0005
   m_LinearFogStart: 800
   m_LinearFogEnd: 2000
   m_AmbientSkyColor: {r: 0.21568629, g: 0.21568629, b: 0.21568629, a: 1}
@@ -202,15 +202,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -167
+      value: 1797
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 576
+      value: 628
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -36.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -285,11 +285,6 @@ PositionConstraint:
   m_Sources:
   - sourceTransform: {fileID: 963194228}
     weight: 1
---- !u!1 &550831316 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8164078558771037576, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
-  m_PrefabInstance: {fileID: 550831313}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,13 +467,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.075639844, y: -0.4906826, z: 0.029236007, w: 0.86755663}
-  m_LocalPosition: {x: -167, y: 576, z: 0}
+  m_LocalRotation: {x: -0.007921076, y: -0.11433729, z: 0.0012290498, w: 0.99340963}
+  m_LocalPosition: {x: 1797, y: 628, z: -36.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 9.203, y: -779.094, z: -1.364}
+  m_LocalEulerAnglesHint: {x: -0.886, y: -733.133, z: 0.244}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
