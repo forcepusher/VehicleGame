@@ -54,8 +54,8 @@ Shader "Custom/SkyboxGradient"
             fixed4 frag(v2f i) : SV_Target
             {
                 float3 viewDir = normalize(i.worldPos - _WorldSpaceCameraPos.xyz);
-                float height = viewDir.y * 0.5 + 0.5;
-                float t = pow(saturate(height), _GradientPower);
+                float height = saturate(viewDir.y);
+                float t = pow(height, _GradientPower);
                 return lerp(_HorizonColor, _ZenithColor, t);
             }
             ENDCG

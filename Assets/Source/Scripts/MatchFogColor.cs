@@ -4,10 +4,7 @@ using UnityEngine;
 public class MatchFogColor : MonoBehaviour
 {
     [SerializeField]
-    private Color _zenithColor = new Color(0.55f, 0.35f, 0.3f, 1f);
-
-    [SerializeField]
-    private bool _deriveZenithFromFog = true;
+    private bool _deriveZenithFromFog;
 
     [SerializeField, Range(0.5f, 2f)]
     private float _zenithBrightness = 1.2f;
@@ -19,17 +16,18 @@ public class MatchFogColor : MonoBehaviour
     private static readonly int ZenithColorId = Shader.PropertyToID("_ZenithColor");
 
     private Renderer _renderer;
-    private MaterialPropertyBlock _propBlock;
+    private Material _material;
 
     private void OnEnable()
     {
         CacheRenderer();
+        ClearPropertyBlock();
         ApplyColors();
     }
 
-    private void Awake()
+    private void OnDisable()
     {
-        CacheRenderer();
+        ClearPropertyBlock();
     }
 
     private void Update()
@@ -44,27 +42,35 @@ public class MatchFogColor : MonoBehaviour
             _renderer = GetComponent<Renderer>();
         }
 
-        if (_propBlock == null)
+        if (_renderer != null && (_material == null || _material != _renderer.sharedMaterial))
         {
-            _propBlock = new MaterialPropertyBlock();
+            _material = _renderer.sharedMaterial;
+        }
+    }
+
+    private void ClearPropertyBlock()
+    {
+        if (_renderer != null)
+        {
+            _renderer.SetPropertyBlock(null);
         }
     }
 
     private void ApplyColors()
     {
         CacheRenderer();
-        if (_renderer == null)
+        if (_renderer == null || _material == null)
         {
             return;
         }
 
         Color horizon = RenderSettings.fogColor;
-        Color zenith = _deriveZenithFromFog ? DeriveZenithFromFog(horizon) : _zenithColor;
+        _material.SetColor(HorizonColorId, horizon);
 
-        _renderer.GetPropertyBlock(_propBlock);
-        _propBlock.SetColor(HorizonColorId, horizon);
-        _propBlock.SetColor(ZenithColorId, zenith);
-        _renderer.SetPropertyBlock(_propBlock);
+        if (_deriveZenithFromFog)
+        {
+            _material.SetColor(ZenithColorId, DeriveZenithFromFog(horizon));
+        }
     }
 
     private Color DeriveZenithFromFog(Color fog)

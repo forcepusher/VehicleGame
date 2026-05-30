@@ -202,15 +202,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2648.9
+      value: -167
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 23.5
+      value: 576
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1076.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -259,9 +259,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 550831315}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 550831318}
     - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 550831317}
@@ -271,20 +268,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
   m_PrefabInstance: {fileID: 550831313}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &550831318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550831314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4e8f2a91b6d4038a7e5c1d9f0b2e3a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FogSkyboxFollow
-  _offset: {x: 0, y: -729, z: 10}
-  _positionConstraint: {fileID: 550831315}
 --- !u!1818360608 &550831315
 PositionConstraint:
   m_ObjectHideFlags: 0
@@ -296,7 +279,7 @@ PositionConstraint:
   serializedVersion: 2
   m_Weight: 1
   m_TranslationAtRest: {x: 0, y: 0, z: 0}
-  m_TranslationOffset: {x: 0, y: -729, z: 10}
+  m_TranslationOffset: {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
   m_AffectTranslationY: 1
   m_AffectTranslationZ: 1
@@ -322,8 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abafbf3e16c172d49b236dfb399e8312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MatchFogColor
-  _zenithColor: {r: 0.55, g: 0.35, b: 0.3, a: 1}
-  _deriveZenithFromFog: 1
+  _deriveZenithFromFog: 0
   _zenithBrightness: 1.2
   _zenithSaturation: 0.85
 --- !u!1 &705507993
@@ -458,7 +440,7 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 3
   m_BackGroundColor: {r: 0.5754717, g: 0.3013083, b: 0.3013083, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -508,13 +490,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09396188, y: -0.47446117, z: 0.057253405, w: 0.8733726}
-  m_LocalPosition: {x: 2648.9, y: 752.5, z: -1086.2}
+  m_LocalRotation: {x: 0.075639844, y: -0.4906826, z: 0.029236007, w: 0.86755663}
+  m_LocalPosition: {x: -167, y: 576, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 12.618, y: -776.956, z: 0.637}
+  m_LocalEulerAnglesHint: {x: 9.203, y: -779.094, z: -1.364}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
