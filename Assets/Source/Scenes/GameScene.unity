@@ -311,7 +311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 181.96
+      value: 189.95
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 17ee3e3e066c78d498fbc40bb45ec0e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -578,7 +578,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: -0.007798388, y: -0.035048235, z: 0.001854504, w: 0.9993535}
-  m_LocalPosition: {x: 60.83, y: 181.96, z: 0}
+  m_LocalPosition: {x: 60.83, y: 189.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -644,6 +644,14 @@ PrefabInstance:
     - target: {fileID: 1352783432197783972, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 4799634047340234012, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: m_Name
@@ -881,34 +889,6 @@ PrefabInstance:
     - target: {fileID: 2394010716773962168, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
       propertyPath: m_Name
       value: JetPlane
-      objectReference: {fileID: 0}
-    - target: {fileID: 3626528735239533541, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-      propertyPath: _radius
-      value: 19.46
-      objectReference: {fileID: 0}
-    - target: {fileID: 3626528735239533541, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-      propertyPath: _heightFadeEnd
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 3626528735239533541, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-      propertyPath: _heightFadeStart
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3626528735239533541, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-      propertyPath: _heightOffsetFromGround
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7945919472990021986, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8887870209571182573, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 38.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 8887870209571182573, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 38.92
       objectReference: {fileID: 0}
     - target: {fileID: 8887870209571182573, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
       propertyPath: m_LocalPosition.x
