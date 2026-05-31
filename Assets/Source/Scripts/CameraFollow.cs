@@ -16,6 +16,9 @@ namespace Igrushka.VehicleGame
 
         private void OnValidate()
         {
+            if (_target == null)
+                return;
+
             if (_target is not IFollowTarget)
             {
                 Debug.LogError($"Target {_target} must implement IFollowTarget interface");
