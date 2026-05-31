@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Igrushka.VehicleGame
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class JetPlane : MonoBehaviour
+    public class JetPlane : MonoBehaviour, IFollowTarget
     {
         [Header("Engine Settings")]
         [SerializeField]
@@ -37,6 +37,10 @@ namespace Igrushka.VehicleGame
         private float _rollInput;
         private float _yawInput;
         private float _throttleInput;
+
+        public Vector3 PositionOffset => new Vector3(0, 2, -5);
+
+        public Quaternion RotationOffset => Quaternion.identity;
 
         private void Awake()
         {
