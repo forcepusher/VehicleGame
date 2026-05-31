@@ -6,14 +6,15 @@ using UnityEngine.Rendering;
 public class BlobShadow : MonoBehaviour
 {
     private static readonly int ColorId = Shader.PropertyToID("_Color");
+    private const float MaxRayDistance = 50f;
+    private const float RayStartHeightOffset = 1f;
 
-    [SerializeField] private Material material;
-    [SerializeField] private float radius = 2f;
-    [SerializeField] private float heightOffset = 0.08f;
-    [SerializeField] private float maxRayDistance = 500f;
-    [SerializeField] private float heightFadeStart = 0f;
-    [SerializeField] private float heightFadeEnd = 12f;
-    [SerializeField] private LayerMask groundMask = ~0;
+    [SerializeField] private Material _material;
+    [SerializeField] private float _radius = 2f;
+    [SerializeField] private float _heightOffsetFromGround = 0.1f;
+    [SerializeField] private float _heightFadeStart = 0f;
+    [SerializeField] private float _heightFadeEnd = 12f;
+    [SerializeField] private LayerMask _groundMask = ~0;
 
     private Transform blobTransform;
     private MeshRenderer blobRenderer;
@@ -46,7 +47,7 @@ public class BlobShadow : MonoBehaviour
 
     private void EnsureBlobExists()
     {
-        if (material == null)
+        if (_material == null)
         {
             return;
         }
@@ -85,9 +86,9 @@ public class BlobShadow : MonoBehaviour
             blobRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
         }
 
-        if (blobRenderer.sharedMaterial != material)
+        if (blobRenderer.sharedMaterial != _material)
         {
-            blobRenderer.sharedMaterial = material;
+            blobRenderer.sharedMaterial = _material;
         }
 
         blobTransform.gameObject.SetActive(true);
@@ -95,7 +96,7 @@ public class BlobShadow : MonoBehaviour
 
     private void UpdateBlobPlacement()
     {
-        if (blobTransform == null || material == null)
+        if (blobTransform == null || _material == null)
         {
             return;
         }
@@ -104,8 +105,8 @@ public class BlobShadow : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(
             origin,
             Vector3.down,
-            maxRayDistance + 10f,
-            groundMask,
+            MaxRayDistance + 10f,
+            _groundMask,
             QueryTriggerInteraction.Ignore);
 
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
@@ -119,7 +120,7 @@ public class BlobShadow : MonoBehaviour
 
             RaycastHit hit = hits[i];
             float heightAboveGround = Vector3.Dot(transform.position - hit.point, hit.normal);
-            float heightFade = 1f - Mathf.InverseLerp(heightFadeStart, heightFadeEnd, heightAboveGround);
+            float heightFade = 1f - Mathf.InverseLerp(_heightFadeStart, _heightFadeEnd, heightAboveGround);
 
             if (heightFade <= 0f)
             {
@@ -127,9 +128,9 @@ public class BlobShadow : MonoBehaviour
                 return;
             }
 
-            blobTransform.position = hit.point + hit.normal * heightOffset;
+            blobTransform.position = hit.point + hit.normal * _heightOffsetFromGround;
             blobTransform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * Quaternion.Euler(90f, 0f, 0f);
-            blobTransform.localScale = new Vector3(radius * 2f, radius * 2f, 1f);
+            blobTransform.localScale = new Vector3(_radius * 2f, _radius * 2f, 1f);
             ApplyShadowColor(heightFade);
             blobTransform.gameObject.SetActive(true);
             return;
@@ -145,7 +146,7 @@ public class BlobShadow : MonoBehaviour
             propertyBlock = new MaterialPropertyBlock();
         }
 
-        Color baseColor = material.GetColor(ColorId);
+        Color baseColor = _material.GetColor(ColorId);
         baseColor.a *= heightFade;
         propertyBlock.SetColor(ColorId, baseColor);
         blobRenderer.SetPropertyBlock(propertyBlock);
