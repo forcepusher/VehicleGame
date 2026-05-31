@@ -549,8 +549,8 @@ Transform:
   m_GameObject: {fileID: 1452102623}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7200451, y: 0.0050291438, z: 0.0050291438, w: 0.69389087}
-  m_LocalPosition: {x: -0.0071105957, y: -0.68499756, z: 0.01848793}
-  m_LocalScale: {x: 8, y: 8, z: 1}
+  m_LocalPosition: {x: -0.0014228821, y: -2.3446808, z: 0.0036964417}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1556758559}
@@ -741,7 +741,7 @@ Transform:
   m_GameObject: {fileID: 1556758555}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 60.29, y: 176.1, z: 16.55}
+  m_LocalPosition: {x: 60.29, y: 177.36, z: 16.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -760,13 +760,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a6c1e3f4b5d4789c1d2e3f4a5b6c789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlobShadow
-  material: {fileID: 2100000, guid: 8f5b0d2e3a4c4967b0f9e8d7c6b5a402, type: 2}
-  radius: 4
-  heightOffset: 0.5
-  maxRayDistance: 10
-  heightFadeStart: 2
-  heightFadeEnd: 10
-  groundMask:
+  _material: {fileID: 2100000, guid: 8f5b0d2e3a4c4967b0f9e8d7c6b5a402, type: 2}
+  _radius: 2
+  _heightOffsetFromGround: 0.1
+  _heightFadeStart: 0
+  _heightFadeEnd: 12
+  _groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
 --- !u!1660057539 &9223372036854775807

@@ -101,11 +101,11 @@ public class BlobShadow : MonoBehaviour
             return;
         }
 
-        Vector3 origin = transform.position + Vector3.up * 10f;
+        Vector3 origin = transform.position + Vector3.up * RayStartHeightOffset;
         RaycastHit[] hits = Physics.RaycastAll(
             origin,
             Vector3.down,
-            MaxRayDistance + 10f,
+            MaxRayDistance + RayStartHeightOffset,
             _groundMask,
             QueryTriggerInteraction.Ignore);
 
