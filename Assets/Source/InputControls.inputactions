@@ -1,0 +1,91 @@
+{
+    "version": 1,
+    "name": "InputControls",
+    "maps": [
+        {
+            "name": "LeftStickX",
+            "id": "106e6bf5-918a-4627-8b4a-0e7c38db64dc",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Value",
+                    "id": "c14f96c1-e7ff-4bb2-805f-fa027fb65264",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "86c17784-865b-4c69-a581-fdf184c51a3d",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "LeftStickY",
+            "id": "3ac23905-790e-4529-97b5-137da2fc67ba",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Value",
+                    "id": "e45af58a-81bb-4ef1-a7a7-a7eb2cb85ad0",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a69995eb-fc30-430d-9820-d44bbec44ce8",
+                    "path": "<Gamepad>/leftStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "RightStickX",
+            "id": "c96b2db8-f20f-40c8-a0da-6e8ce02b7428",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Value",
+                    "id": "0f8f0d8f-fe61-4c3e-a5a8-cb2d8c545b65",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f357d566-e067-45ab-81cc-f94d2985fd87",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
