@@ -12,6 +12,7 @@ namespace Igrushka.VehicleGame
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
         private Vector3 _drag = new Vector3(0.1f, 0.3f, 0.01f);
+        private Vector3 _angularDrag = new Vector3(0.5f, 50f, 0.5f);
 
         private float _rollForce = 0.5f;
         private float _thrustForce = 10f;
@@ -33,6 +34,13 @@ namespace Igrushka.VehicleGame
                 localVelocity.x * Mathf.Abs(localVelocity.x) * _drag.x,
                 localVelocity.y * Mathf.Abs(localVelocity.y) * _drag.y,
                 localVelocity.z * Mathf.Abs(localVelocity.z) * _drag.z
+            ), ForceMode.Acceleration);
+
+            Vector3 localAngularVelocity = transform.InverseTransformDirection(_rigidbody.angularVelocity);
+            _rigidbody.AddRelativeTorque(-new Vector3(
+                localAngularVelocity.x * Mathf.Abs(localAngularVelocity.x) * _angularDrag.x,
+                localAngularVelocity.y * Mathf.Abs(localAngularVelocity.y) * _angularDrag.y,
+                localAngularVelocity.z * Mathf.Abs(localAngularVelocity.z) * _angularDrag.z
             ), ForceMode.Acceleration);
 
             _rigidbody.AddRelativeForce(Vector3.forward * _controls.Throttle * _thrustForce, ForceMode.Acceleration);
