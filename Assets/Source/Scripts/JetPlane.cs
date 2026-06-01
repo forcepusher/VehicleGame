@@ -11,13 +11,13 @@ namespace Igrushka.VehicleGame
 
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
+        // X - Left/Right, Y - Down/Up, Z - Back/Forward
         private Vector3 _drag = new Vector3(0.1f, 0.3f, 0.01f);
-        private Vector3 _angularDrag = new Vector3(0.5f, 50f, 0.5f);
-
-        private float _rollForce = 0.5f;
         private float _thrustForce = 10f;
-        private float _yawForce = 0.5f;
-        private float _pitchForce = 1.0f;
+
+        // X - Pitch, Y - Yaw, Z - Roll
+        private Vector3 _angularDrag = new Vector3(0.5f, 50f, 0.5f);
+        private Vector3 _angularForce = new Vector3(0.5f, 0.5f, 0.5f);
 
         public Vector3 PositionOffset => new Vector3(0, 2, -5);
         public Quaternion RotationOffset => Quaternion.identity;
@@ -44,9 +44,9 @@ namespace Igrushka.VehicleGame
             ), ForceMode.Acceleration);
 
             _rigidbody.AddRelativeForce(Vector3.forward * _controls.Throttle * _thrustForce, ForceMode.Acceleration);
-            _rigidbody.AddRelativeTorque(-Vector3.right * _controls.Pitch * _pitchForce, ForceMode.Acceleration);
-            _rigidbody.AddRelativeTorque(Vector3.up * _controls.Yaw * _yawForce, ForceMode.Acceleration);
-            _rigidbody.AddRelativeTorque(-Vector3.forward * _controls.Turn * _rollForce, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(-Vector3.right * _controls.Pitch * _angularForce.x, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(Vector3.up * _controls.Yaw * _angularForce.y, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(-Vector3.forward * _controls.Turn * _angularForce.z, ForceMode.Acceleration);
         }
     }
 }
