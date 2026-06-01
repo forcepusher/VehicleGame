@@ -6,5 +6,7 @@ namespace Igrushka.VehicleGame
         public float Turn { get; }
         public float Pitch { get; }
         public float Yaw { get; }
+
+        public void Update();
     }
 }

@@ -1,13 +1,20 @@
+using UnityEngine.InputSystem;
+
 namespace Igrushka.VehicleGame
 {
     public class GamepadControls : IControls
     {
-        public float Throttle => throw new System.NotImplementedException();
+        public float Turn => Gamepad.current?.leftStick.ReadValue().x ?? 0f;
 
-        public float Turn => throw new System.NotImplementedException();
+        public float Throttle => Gamepad.current?.leftStick.ReadValue().y ?? 0f;
 
-        public float Pitch => throw new System.NotImplementedException();
+        public float Yaw => Gamepad.current?.rightStick.ReadValue().x ?? 0f;
 
-        public float Yaw => throw new System.NotImplementedException();
+        public float Pitch => Gamepad.current?.rightStick.ReadValue().y ?? 0f;
+
+        public void Update()
+        {
+
+        }
     }
 }

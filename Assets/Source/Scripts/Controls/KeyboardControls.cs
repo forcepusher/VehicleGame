@@ -1,13 +1,24 @@
+using UnityEngine.InputSystem;
+
 namespace Igrushka.VehicleGame
 {
     public class KeyboardControls : IControls
     {
-        public float Throttle => throw new System.NotImplementedException();
+        public float Throttle =>
+            (Keyboard.current?.wKey.isPressed == true ? 1f : 0f) +
+            (Keyboard.current?.sKey.isPressed == true ? -1f : 0f);
 
-        public float Turn => throw new System.NotImplementedException();
+        public float Turn =>
+            (Keyboard.current?.aKey.isPressed == true ? -1f : 0f) +
+            (Keyboard.current?.dKey.isPressed == true ? 1f : 0f);
 
-        public float Pitch => throw new System.NotImplementedException();
+        public float Yaw => Mouse.current?.delta.ReadValue().x ?? 0f;
 
-        public float Yaw => throw new System.NotImplementedException();
+        public float Pitch => Mouse.current?.delta.ReadValue().y ?? 0f;
+
+        public void Update()
+        {
+
+        }
     }
 }

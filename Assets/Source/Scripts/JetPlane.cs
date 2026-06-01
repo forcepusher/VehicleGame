@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Igrushka.VehicleGame
@@ -32,11 +33,7 @@ namespace Igrushka.VehicleGame
         [SerializeField]
         private Rigidbody _rigidbody;
 
-        private float _currentThrust = 0f;
-        private float _pitchInput;
-        private float _rollInput;
-        private float _yawInput;
-        private float _throttleInput;
+        List<IControls> _controls = new List<IControls>{new KeyboardControls(), new GamepadControls()};
 
         public Vector3 PositionOffset => new Vector3(0, 2, -5);
 
@@ -55,16 +52,8 @@ namespace Igrushka.VehicleGame
 
         private void Update()
         {
-            // Input handling
-            _pitchInput = Input.GetAxis("Vertical"); // W/S or Arrow Up/Down
-            _rollInput = Input.GetAxis("Horizontal"); // A/D or Arrow Left/Right
-            _yawInput = Input.GetAxis("Yaw"); // Custom axis or Q/E
-            _throttleInput = Input.GetAxis("Throttle"); // Custom axis or Shift/Ctrl
-
-            // Manual throttle control if custom axes are not defined
-            if (Input.GetKey(KeyCode.LeftShift)) _throttleInput = 1f;
-            else if (Input.GetKey(KeyCode.LeftControl)) _throttleInput = -1f;
-            else _throttleInput = 0f;
+            foreach (IControls control in _controls)
+                control.Update();
         }
 
         private void FixedUpdate()
@@ -77,11 +66,11 @@ namespace Igrushka.VehicleGame
 
         private void ApplyThrust()
         {
-            // Smoothly interpolate thrust
-            float targetThrust = _throttleInput * _maxThrust;
-            _currentThrust = Mathf.MoveTowards(_currentThrust, targetThrust, _acceleration * Time.fixedDeltaTime);
+            //// Smoothly interpolate thrust
+            //float targetThrust = _throttleInput * _maxThrust;
+            //_currentThrust = Mathf.MoveTowards(_currentThrust, targetThrust, _acceleration * Time.fixedDeltaTime);
 
-            _rigidbody.AddForce(transform.forward * _currentThrust, ForceMode.Force);
+            //_rigidbody.AddForce(transform.forward * _currentThrust, ForceMode.Force);
         }
 
         private void ApplyLift()
@@ -96,14 +85,14 @@ namespace Igrushka.VehicleGame
 
         private void ApplyControls()
         {
-            // Pitch: Rotation around local X axis
-            _rigidbody.AddRelativeTorque(Vector3.right * _pitchInput * _pitchSensitivity, ForceMode.Acceleration);
+            //// Pitch: Rotation around local X axis
+            //_rigidbody.AddRelativeTorque(Vector3.right * _pitchInput * _pitchSensitivity, ForceMode.Acceleration);
 
-            // Roll: Rotation around local Z axis
-            _rigidbody.AddRelativeTorque(Vector3.forward * -_rollInput * _rollSensitivity, ForceMode.Acceleration);
+            //// Roll: Rotation around local Z axis
+            //_rigidbody.AddRelativeTorque(Vector3.forward * -_rollInput * _rollSensitivity, ForceMode.Acceleration);
 
-            // Yaw: Rotation around local Y axis
-            _rigidbody.AddRelativeTorque(Vector3.up * _yawInput * _yawSensitivity, ForceMode.Acceleration);
+            //// Yaw: Rotation around local Y axis
+            //_rigidbody.AddRelativeTorque(Vector3.up * _yawInput * _yawSensitivity, ForceMode.Acceleration);
         }
 
         private void ApplyDrag()
