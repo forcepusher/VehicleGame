@@ -33,12 +33,12 @@ namespace Igrushka.VehicleGame
                 localVelocity.x * Mathf.Abs(localVelocity.x) * _drag.x,
                 localVelocity.y * Mathf.Abs(localVelocity.y) * _drag.y,
                 localVelocity.z * Mathf.Abs(localVelocity.z) * _drag.z
-            ));
+            ), ForceMode.Acceleration);
 
-            _rigidbody.AddRelativeForce(Vector3.forward * _controls.Throttle * _thrustForce);
-            _rigidbody.AddRelativeTorque(Vector3.right * _controls.Pitch * _pitchForce);
-            _rigidbody.AddRelativeTorque(Vector3.up * _controls.Yaw * _yawForce);
-            _rigidbody.AddRelativeTorque(Vector3.forward * _controls.Turn * _rollForce);
+            _rigidbody.AddRelativeForce(Vector3.forward * _controls.Throttle * _thrustForce, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(Vector3.right * _controls.Pitch * _pitchForce, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(Vector3.up * _controls.Yaw * _yawForce, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(Vector3.forward * _controls.Turn * _rollForce, ForceMode.Acceleration);
         }
     }
 }
