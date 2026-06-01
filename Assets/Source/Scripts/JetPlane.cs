@@ -11,9 +11,11 @@ namespace Igrushka.VehicleGame
 
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
+        // Back/Forward
+        private float _thrustForce = 10f;
+
         // X - Left/Right, Y - Down/Up, Z - Back/Forward
         private Vector3 _drag = new Vector3(0.1f, 0.3f, 0.01f);
-        private float _thrustForce = 10f;
 
         // X - Pitch, Y - Yaw, Z - Roll
         private Vector3 _angularDrag = new Vector3(0.5f, 50f, 0.5f);
