@@ -11,7 +11,7 @@ namespace Igrushka.VehicleGame
 
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
-        //private float ZDrag = ;
+        private Vector3 _drag = new Vector3(0.1f, 0.3f, 0.01f);
 
         public Vector3 PositionOffset => new Vector3(0, 2, -5);
         public Quaternion RotationOffset => Quaternion.identity;
