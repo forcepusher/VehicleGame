@@ -10,8 +10,8 @@ namespace Igrushka.VehicleGame
 
         private void LateUpdate()
         {
-            transform.position = _target.position + _followTarget.PositionOffset;
             transform.rotation = _target.rotation * _followTarget.RotationOffset;
+            transform.position = _target.position + transform.rotation * _followTarget.PositionOffset;
         }
 
         private void OnValidate()
@@ -19,7 +19,9 @@ namespace Igrushka.VehicleGame
             if (_target == null)
                 return;
 
-            if (_target is not IFollowTarget)
+            _followTarget = _target.GetComponent<IFollowTarget>();
+
+            if (_followTarget == null)
             {
                 Debug.LogError($"Target {_target} must implement IFollowTarget interface");
                 _target = null;
