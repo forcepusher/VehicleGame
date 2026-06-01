@@ -28,7 +28,10 @@ namespace Igrushka.VehicleGame
 
         private void FixedUpdate()
         {
-
+            _rigidbody.AddRelativeForce(Vector3.forward * _controls.Throttle * _thrustForce);
+            _rigidbody.AddRelativeTorque(Vector3.right * _controls.Pitch * _pitchForce);
+            _rigidbody.AddRelativeTorque(Vector3.up * _controls.Yaw * _yawForce);
+            _rigidbody.AddRelativeTorque(Vector3.forward * _controls.Turn * _rollForce);
         }
     }
 }
