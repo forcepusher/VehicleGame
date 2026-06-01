@@ -29,7 +29,11 @@ namespace Igrushka.VehicleGame
         private void FixedUpdate()
         {
             Vector3 localVelocity = transform.InverseTransformDirection(_rigidbody.linearVelocity);
-            _rigidbody.AddRelativeForce(-new Vector3(localVelocity.x * _drag.x, localVelocity.y * _drag.y, localVelocity.z * _drag.z));
+            _rigidbody.AddRelativeForce(-new Vector3(
+                localVelocity.x * Mathf.Abs(localVelocity.x) * _drag.x,
+                localVelocity.y * Mathf.Abs(localVelocity.y) * _drag.y,
+                localVelocity.z * Mathf.Abs(localVelocity.z) * _drag.z
+            ));
 
             _rigidbody.AddRelativeForce(Vector3.forward * _controls.Throttle * _thrustForce);
             _rigidbody.AddRelativeTorque(Vector3.right * _controls.Pitch * _pitchForce);
