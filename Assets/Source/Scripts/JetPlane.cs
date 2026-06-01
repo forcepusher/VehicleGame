@@ -13,7 +13,7 @@ namespace Igrushka.VehicleGame
 
         private Vector3 _drag = new Vector3(0.1f, 0.3f, 0.01f);
 
-        private float _rollForce = 1.0f;
+        private float _rollForce = 0.5f;
         private float _thrustForce = 10f;
         private float _yawForce = 0.5f;
         private float _pitchForce = 1.0f;
