@@ -36,9 +36,9 @@ namespace Igrushka.VehicleGame
             ), ForceMode.Acceleration);
 
             _rigidbody.AddRelativeForce(Vector3.forward * _controls.Throttle * _thrustForce, ForceMode.Acceleration);
-            _rigidbody.AddRelativeTorque(Vector3.right * _controls.Pitch * _pitchForce, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(-Vector3.right * _controls.Pitch * _pitchForce, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(Vector3.up * _controls.Yaw * _yawForce, ForceMode.Acceleration);
-            _rigidbody.AddRelativeTorque(Vector3.forward * _controls.Turn * _rollForce, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(-Vector3.forward * _controls.Turn * _rollForce, ForceMode.Acceleration);
         }
     }
 }
