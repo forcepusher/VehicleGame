@@ -9,8 +9,8 @@ namespace Igrushka.VehicleGame
             (Keyboard.current?.sKey.isPressed == true ? -1f : 0f);
 
         public float Turn =>
-            (Keyboard.current?.aKey.isPressed == true ? -1f : 0f) +
-            (Keyboard.current?.dKey.isPressed == true ? 1f : 0f);
+            (Keyboard.current?.dKey.isPressed == true ? 1f : 0f) +
+            (Keyboard.current?.aKey.isPressed == true ? -1f : 0f);
 
         public float Yaw => Mouse.current?.delta.ReadValue().x ?? 0f;
 
