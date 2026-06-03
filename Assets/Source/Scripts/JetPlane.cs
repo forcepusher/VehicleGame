@@ -12,16 +12,35 @@ namespace Igrushka.VehicleGame
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
         // X - Left/Right, Y - Down/Up, Z - Back/Forward
-        private Vector3 _linearForceLowVelocity = new Vector3(0f, 0f, 10f);
+        private Vector4 _linearForceLowVelocity = new Vector4(0f, 0f, 10f, 20f);
         // X - Pitch, Y - Yaw, Z - Roll
-        private Vector3 _angularForceLowVelocity = new Vector3(0.5f, 0.5f, 0.5f);
+        private Vector4 _angularForceLowVelocity = new Vector4(0.5f, 0.5f, 10f, 20f);
 
         // X - Left/Right, Y - Down/Up, Z - Back/Forward
-        private Vector3 _linearDragLowVelocity = new Vector3(0.1f, 0.3f, 0.01f);
+        private Vector4 _linearForceMediumVelocity = new Vector4(0f, 0f, 10f, 100f);
         // X - Pitch, Y - Yaw, Z - Roll
-        private Vector3 _angularDragLowVelocity = new Vector3(0.5f, 50f, 0.5f);
+        private Vector4 _angularForceMediumVelocity = new Vector4(0.5f, 0.5f, 0.5f, 100f);
+
+        // X - Left/Right, Y - Down/Up, Z - Back/Forward
+        private Vector4 _linearForceHighVelocity = new Vector4(0f, 0f, 10f, 600f);
+        // X - Pitch, Y - Yaw, Z - Roll
+        private Vector4 _angularForceHighVelocity = new Vector4(0.5f, 0.5f, 0.5f, 600f);
 
 
+        // X - Left/Right, Y - Down/Up, Z - Back/Forward
+        private Vector4 _linearDragLowVelocity = new Vector4(0.1f, 0.3f, 0.01f, 20f);
+        // X - Pitch, Y - Yaw, Z - Roll
+        private Vector4 _angularDragLowVelocity = new Vector4(0.5f, 50f, 0.5f, 20f);
+
+        // X - Left/Right, Y - Down/Up, Z - Back/Forward
+        private Vector4 _linearDragMediumVelocity = new Vector4(0.1f, 0.3f, 0.01f, 100f);
+        // X - Pitch, Y - Yaw, Z - Roll
+        private Vector4 _angularDragMediumVelocity = new Vector4(0.5f, 50f, 0.5f, 100f);
+
+        // X - Left/Right, Y - Down/Up, Z - Back/Forward
+        private Vector4 _linearDragHighVelocity = new Vector4(0.1f, 0.3f, 0.01f, 600f);
+        // X - Pitch, Y - Yaw, Z - Roll
+        private Vector4 _angularDragHighVelocity = new Vector4(0.5f, 50f, 0.5f, 600f);
 
 
         public Vector3 PositionOffset => new Vector3(0, 2, -5);
