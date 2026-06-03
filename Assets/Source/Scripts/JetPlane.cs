@@ -8,6 +8,8 @@ namespace Igrushka.VehicleGame
     {
         [SerializeField]
         private Rigidbody _rigidbody;
+        [SerializeField]
+        private Transform _centerOfMass;
 
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
@@ -53,6 +55,11 @@ namespace Igrushka.VehicleGame
 
         public Vector3 PositionOffset => new Vector3(0, 2, -5);
         public Quaternion RotationOffset => Quaternion.identity;
+
+        private void Awake()
+        {
+            _rigidbody.centerOfMass = _centerOfMass.localPosition;
+        }
 
         private void Update()
         {
