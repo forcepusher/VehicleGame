@@ -48,7 +48,7 @@ namespace Igrushka.VehicleGame
                 localAngularVelocity.z * Mathf.Abs(localAngularVelocity.z) * _angularDragLowVelocity.z
             ), ForceMode.Acceleration);
 
-            _rigidbody.AddRelativeForce(_controls.Throttle * _linearForceLowVelocity * Vector3.forward, ForceMode.Acceleration);
+            _rigidbody.AddRelativeForce(_controls.Throttle * _linearForceLowVelocity.z * Vector3.forward, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(_angularForceLowVelocity.x * _controls.Pitch * -Vector3.right, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(_angularForceLowVelocity.y * _controls.Yaw * Vector3.up, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(_angularForceLowVelocity.z * _controls.Turn * -Vector3.forward, ForceMode.Acceleration);
