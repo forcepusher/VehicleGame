@@ -58,7 +58,7 @@ namespace Igrushka.VehicleGame
 
         private Vector3 GetLinearForce(float velocity) => InterpolateKeyframes(velocity, _accelerationTaxi, _accelerationTakeoff, _accelerationFight);
         private Vector3 GetAngularForce(float velocity) => InterpolateKeyframes(velocity, _angularAccelerationTaxi, _angularAccelerationTakeoff, _angularAccelerationFlight);
-        private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes(velocity, _linearDragLowVelocity, _dragTakeoff, _dragFlight);
+        private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes(velocity, _dragTaxi, _dragTakeoff, _dragFlight);
         private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframes(velocity, _angularDragTaxi, _angularDragTakeoff, _angularDragFlight);
 
         public Vector3 PositionOffset => new Vector3(0, 2, -5);
