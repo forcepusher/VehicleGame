@@ -13,25 +13,26 @@ namespace Igrushka.VehicleGame
 
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
-        // x - Left/Right, y - Down/Up, z - Back/Forward, t - Velocitykeyframe
-        private Vector4 _linearForceLowVelocity = new Vector4(0f, 0f, 50f, 20f);
-        private Vector4 _angularForceLowVelocity = new Vector4(2f, 1f, 10f, 20f);
+        // Linear: x,y unused; z=thrust acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
+        private Vector4 _linearForceLowVelocity = new Vector4(0f, 0f, 7f, 20f); // ~0.7G initial acceleration
+        private Vector4 _angularForceLowVelocity = new Vector4(3f, 1.5f, 8f, 20f); // pitch: yaw: roll (minimal at low speed)
 
-        private Vector4 _linearForceMediumVelocity = new Vector4(0f, 0f, 100f, 100f);
-        private Vector4 _angularForceMediumVelocity = new Vector4(8f, 4f, 30f, 100f);
+        private Vector4 _linearForceMediumVelocity = new Vector4(0f, 0f, 5f, 100f); // ~0.5G with drag
+        private Vector4 _angularForceMediumVelocity = new Vector4(36f, 14f, 90f, 100f); // pitch: yaw: roll (2.5:1:6 ratio)
 
-        private Vector4 _linearForceHighVelocity = new Vector4(0f, 0f, 150f, 600f);
-        private Vector4 _angularForceHighVelocity = new Vector4(5f, 2f, 20f, 600f);
+        private Vector4 _linearForceHighVelocity = new Vector4(0f, 0f, 3f, 600f); // ~0.3G at high speed (drag dominated)
+        private Vector4 _angularForceHighVelocity = new Vector4(30f, 12f, 75f, 600f); // pitch: yaw: roll (2.5:1:6 ratio)
 
+        // Linear drag per axis; z=forward direction should be lowest (streamlined).
+        // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
+        private Vector4 _linearDragLowVelocity = new Vector4(0.3f, 0.3f, 0.08f, 20f);
+        private Vector4 _angularDragLowVelocity = new Vector4(2.5f, 4f, 1.5f, 20f); // pitch: yaw: roll
 
-        private Vector4 _linearDragLowVelocity = new Vector4(0.2f, 0.2f, 0.05f, 20f);
-        private Vector4 _angularDragLowVelocity = new Vector4(1f, 2f, 1f, 20f);
+        private Vector4 _linearDragMediumVelocity = new Vector4(0.45f, 0.45f, 0.12f, 100f);
+        private Vector4 _angularDragMediumVelocity = new Vector4(5f, 8f, 3f, 100f); // pitch: yaw: roll
 
-        private Vector4 _linearDragMediumVelocity = new Vector4(0.3f, 0.3f, 0.1f, 100f);
-        private Vector4 _angularDragMediumVelocity = new Vector4(2f, 4f, 2f, 100f);
-
-        private Vector4 _linearDragHighVelocity = new Vector4(0.5f, 0.5f, 0.2f, 600f);
-        private Vector4 _angularDragHighVelocity = new Vector4(3f, 6f, 3f, 600f);
+        private Vector4 _linearDragHighVelocity = new Vector4(0.7f, 0.7f, 0.2f, 600f);
+        private Vector4 _angularDragHighVelocity = new Vector4(8f, 12f, 5f, 600f); // pitch: yaw: roll
 
         private Vector3 InterpolateKeyframes(float t, Vector4 low, Vector4 medium, Vector4 high)
         {
