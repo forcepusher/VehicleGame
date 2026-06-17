@@ -1,16 +1,17 @@
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Igrushka.VehicleGame
 {
     public class GamepadControls : IControls
     {
-        public float Turn => Gamepad.current?.leftStick.ReadValue().x ?? 0f;
+        public float Turn => Mathf.Clamp(Gamepad.current?.leftStick.ReadValue().x ?? 0f, -1f, 1f);
 
-        public float Throttle => Gamepad.current?.leftStick.ReadValue().y ?? 0f;
+        public float Throttle => Mathf.Clamp(Gamepad.current?.leftStick.ReadValue().y ?? 0f, -1f, 1f);
 
-        public float Yaw => Gamepad.current?.rightStick.ReadValue().x ?? 0f;
+        public float Yaw => Mathf.Clamp(Gamepad.current?.rightStick.ReadValue().x ?? 0f, -1f, 1f);
 
-        public float Pitch => Gamepad.current?.rightStick.ReadValue().y ?? 0f;
+        public float Pitch => Mathf.Clamp(Gamepad.current?.rightStick.ReadValue().y ?? 0f, -1f, 1f);
 
         public void Update()
         {

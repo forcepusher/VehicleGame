@@ -36,7 +36,7 @@ namespace Igrushka.VehicleGame
         private Vector4 _angularAccelerationTakeoff = new Vector4(20f, 8f, 50f, _takeoffVelocity); // pitch: yaw: roll (sluggish controls)
 
         private Vector4 _accelerationFight = new Vector4(0f, 0f, 20f, _flightVelocity); // ~1G at cruise speed (good airspeed buildup)
-        private Vector4 _angularAccelerationFlight = new Vector4(35f, 12f, 80f, _flightVelocity); // pitch: yaw: roll (responsive in flight)
+        private Vector4 _angularAccelerationFlight = new Vector4(25f, 8f, 50f, _flightVelocity); // pitch: yaw: roll (smoother in flight)
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
