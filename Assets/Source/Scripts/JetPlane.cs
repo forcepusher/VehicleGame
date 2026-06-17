@@ -33,10 +33,10 @@ namespace Igrushka.VehicleGame
         private Vector4 _angularAccelerationTaxi = new Vector4(0f, 5f, 0f, _taxiVelocity); // pitch: yaw: roll (near zero at low speed)
 
         private Vector4 _accelerationTakeoff = new Vector4(0f, 0f, 8f, _takeoffVelocity); // ~0.8G for takeoff acceleration
-        private Vector4 _angularAccelerationTakeoff = new Vector4(5f, 15f, 50f, _takeoffVelocity); // pitch: yaw: roll (sluggish controls)
+        private Vector4 _angularAccelerationTakeoff = new Vector4(5f, 10f, 10f, _takeoffVelocity); // pitch: yaw: roll (sluggish controls)
 
         private Vector4 _accelerationFight = new Vector4(0f, 0f, 20f, _flightVelocity); // ~1G at cruise speed (good airspeed buildup)
-        private Vector4 _angularAccelerationFlight = new Vector4(15f, 15f, 50f, _flightVelocity); // pitch: yaw: roll (smoother in flight)
+        private Vector4 _angularAccelerationFlight = new Vector4(15f, 15f, 15f, _flightVelocity); // pitch: yaw: roll (smoother in flight)
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
@@ -115,7 +115,7 @@ namespace Igrushka.VehicleGame
             _rigidbody.AddRelativeForce(_controls.Throttle * linearForce.z * Vector3.forward, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(angularForce.x * _controls.Pitch * -Vector3.right, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(angularForce.y * _controls.Yaw * Vector3.up, ForceMode.Acceleration);
-            _rigidbody.AddRelativeTorque(angularForce.z * _controls.Turn * -Vector3.forward, ForceMode.Acceleration);
+            _rigidbody.AddRelativeTorque(angularForce.z * _controls.Roll * -Vector3.forward, ForceMode.Acceleration);
         }
 
         private void OnGUI()
@@ -126,7 +126,7 @@ namespace Igrushka.VehicleGame
             GUILayout.Label($"Throttle: {_controls.Throttle:F3}");
             GUILayout.Label($"Pitch Input: {_controls.Pitch:F3}");
             GUILayout.Label($"Yaw Input: {_controls.Yaw:F3}");
-            GUILayout.Label($"Turn (Roll) Input: {_controls.Turn:F3}");
+            GUILayout.Label($"Turn (Roll) Input: {_controls.Roll:F3}");
 
             GUILayout.Space(10f);
             GUILayout.Label("--- LINEAR FORCE (m/s²) ---");

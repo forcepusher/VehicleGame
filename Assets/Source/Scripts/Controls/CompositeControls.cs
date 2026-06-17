@@ -13,7 +13,7 @@ public class CompositeControls : IControls
     }
 
     public float Throttle => Mathf.Clamp(_controls.Sum(c => c.Throttle), -1f, 1f);
-    public float Turn => Mathf.Clamp(_controls.Sum(c => c.Turn), -1f, 1f);
+    public float Roll => Mathf.Clamp(_controls.Sum(c => c.Roll), -1f, 1f);
     public float Pitch => Mathf.Clamp(_controls.Sum(c => c.Pitch), -1f, 1f);
     public float Yaw => Mathf.Clamp(_controls.Sum(c => c.Yaw), -1f, 1f);
 

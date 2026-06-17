@@ -11,7 +11,7 @@ namespace Igrushka.VehicleGame
             (Keyboard.current?.wKey.isPressed == true ? 1f : 0f) +
             (Keyboard.current?.sKey.isPressed == true ? -1f : 0f), -1f, 1f);
 
-        public float Turn => Mathf.Clamp(
+        public float Roll => Mathf.Clamp(
             (Keyboard.current?.dKey.isPressed == true ? 1f : 0f) +
             (Keyboard.current?.aKey.isPressed == true ? -1f : 0f), -1f, 1f);
 

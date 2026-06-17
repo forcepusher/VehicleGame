@@ -5,7 +5,7 @@ namespace Igrushka.VehicleGame
 {
     public class GamepadControls : IControls
     {
-        public float Turn => Mathf.Clamp(Gamepad.current?.leftStick.ReadValue().x ?? 0f, -1f, 1f);
+        public float Roll => Mathf.Clamp(Gamepad.current?.leftStick.ReadValue().x ?? 0f, -1f, 1f);
 
         public float Throttle => Mathf.Clamp(Gamepad.current?.leftStick.ReadValue().y ?? 0f, -1f, 1f);
 
