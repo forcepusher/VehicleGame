@@ -21,8 +21,8 @@ namespace Igrushka.VehicleGame
         private Vector3 _debugAngularDrag;
 
         // Linear: x,y unused; z=thrust acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
-        private Vector4 _accelerationParked = new Vector4(0f, 0f, 5f, 0f); // ~0.5G slow ground roll (clunky)
-        private Vector4 _angularAccelerationParked = new Vector4(3f, 1.5f, 0.5f, 0f); // pitch: yaw: roll (near zero at low speed)
+        private Vector4 _accelerationParked = new Vector4(0f, 0f, 5f, 0f); // ~0.5G slow ground roll
+        private Vector4 _angularAccelerationParked = new Vector4(3f, 1.5f, 0.5f, 0f); // pitch: yaw: roll
 
         private Vector4 _accelerationTaxi = new Vector4(0f, 0f, 5f, 5f); // ~0.5G slow ground roll (clunky)
         private Vector4 _angularAccelerationTaxi = new Vector4(3f, 1.5f, 0.5f, 5f); // pitch: yaw: roll (near zero at low speed)
@@ -47,25 +47,24 @@ namespace Igrushka.VehicleGame
         private Vector4 _dragFlight = new Vector4(0.6f, 0.6f, 0.03f, 100f);
         private Vector4 _angularDragFlight = new Vector4(7f, 12f, 4f, 100f); // pitch: yaw: roll
 
-        private Vector3 InterpolateKeyframes(float t, Vector4 low, Vector4 medium, Vector4 high)
+        private Vector3 InterpolateKeyframes4(float t, Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3)
         {
-            if (t <= low.w) return new Vector3(low.x, low.y, low.z);
-            if (t >= high.w) return new Vector3(high.x, high.y, high.z);
+            if (t <= v0.w) return new Vector3(v0.x, v0.y, v0.z);
+            if (t >= v3.w) return new Vector3(v3.x, v3.y, v3.z);
 
-            if (t < medium.w)
-            {
-                float lerpT = (t - low.w) / (medium.w - low.w);
-                return Vector3.Lerp(new Vector3(low.x, low.y, low.z), new Vector3(medium.x, medium.y, medium.z), lerpT);
-            }
+            if (t < v1.w)
+                return Vector3.Lerp(new Vector3(v0.x, v0.y, v0.z), new Vector3(v1.x, v1.y, v1.z), (t - v0.w) / (v1.w - v0.w));
 
-            float lerpT2 = (t - medium.w) / (high.w - medium.w);
-            return Vector3.Lerp(new Vector3(medium.x, medium.y, medium.z), new Vector3(high.x, high.y, high.z), lerpT2);
+            if (t < v2.w)
+                return Vector3.Lerp(new Vector3(v1.x, v1.y, v1.z), new Vector3(v2.x, v2.y, v2.z), (t - v1.w) / (v2.w - v1.w));
+
+            return Vector3.Lerp(new Vector3(v2.x, v2.y, v2.z), new Vector3(v3.x, v3.y, v3.z), (t - v2.w) / (v3.w - v2.w));
         }
 
-        private Vector3 GetLinearForce(float velocity) => InterpolateKeyframes(velocity, _accelerationTaxi, _accelerationTakeoff, _accelerationFight);
-        private Vector3 GetAngularForce(float velocity) => InterpolateKeyframes(velocity, _angularAccelerationTaxi, _angularAccelerationTakeoff, _angularAccelerationFlight);
-        private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes(velocity, _dragTaxi, _dragTakeoff, _dragFlight);
-        private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframes(velocity, _angularDragTaxi, _angularDragTakeoff, _angularDragFlight);
+        private Vector3 GetLinearForce(float velocity) => InterpolateKeyframes4(velocity, _accelerationParked, _accelerationTaxi, _accelerationTakeoff, _accelerationFight);
+        private Vector3 GetAngularForce(float velocity) => InterpolateKeyframes4(velocity, _angularAccelerationParked, _angularAccelerationTaxi, _angularAccelerationTakeoff, _angularAccelerationFlight);
+        private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes4(velocity, _dragParked, _dragTaxi, _dragTakeoff, _dragFlight);
+        private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframes4(velocity, _angularDragParked, _angularDragTaxi, _angularDragTakeoff, _angularDragFlight);
 
         public Vector3 PositionOffset => new Vector3(0, 2, -5);
         public Quaternion RotationOffset => Quaternion.identity;
