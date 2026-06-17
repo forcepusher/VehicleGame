@@ -20,8 +20,8 @@ namespace Igrushka.VehicleGame
         private Vector3 _debugLinearDrag;
         private Vector3 _debugAngularDrag;
 
-        private const float _parkedVelocity = 1f;
-        private const float _taxiVelocity = 5f;
+        private const float _parkedVelocity = 0f;
+        private const float _taxiVelocity = 10f;
         private const float _takeoffVelocity = 15f;
         private const float _flightVelocity = 30f;
 
@@ -30,13 +30,13 @@ namespace Igrushka.VehicleGame
         private Vector4 _angularAccelerationParked = new Vector4(0f, 0f, 0f, _parkedVelocity); // pitch: yaw: roll
 
         private Vector4 _accelerationTaxi = new Vector4(0f, 0f, 5f, _taxiVelocity); // ~0.8G ground roll (clunky)
-        private Vector4 _angularAccelerationTaxi = new Vector4(0f, 1f, 0f, _taxiVelocity); // pitch: yaw: roll (near zero at low speed)
+        private Vector4 _angularAccelerationTaxi = new Vector4(0f, 5f, 0f, _taxiVelocity); // pitch: yaw: roll (near zero at low speed)
 
         private Vector4 _accelerationTakeoff = new Vector4(0f, 0f, 8f, _takeoffVelocity); // ~0.8G for takeoff acceleration
-        private Vector4 _angularAccelerationTakeoff = new Vector4(20f, 8f, 50f, _takeoffVelocity); // pitch: yaw: roll (sluggish controls)
+        private Vector4 _angularAccelerationTakeoff = new Vector4(5f, 15f, 50f, _takeoffVelocity); // pitch: yaw: roll (sluggish controls)
 
         private Vector4 _accelerationFight = new Vector4(0f, 0f, 20f, _flightVelocity); // ~1G at cruise speed (good airspeed buildup)
-        private Vector4 _angularAccelerationFlight = new Vector4(25f, 8f, 50f, _flightVelocity); // pitch: yaw: roll (smoother in flight)
+        private Vector4 _angularAccelerationFlight = new Vector4(15f, 15f, 50f, _flightVelocity); // pitch: yaw: roll (smoother in flight)
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
