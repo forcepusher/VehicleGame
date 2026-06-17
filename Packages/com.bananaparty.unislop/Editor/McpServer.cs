@@ -46,6 +46,8 @@ namespace UniSlop.MCP
 
         static McpServer()
         {
+            if (!McpEditorProcess.IsMainEditor) return;
+
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
             EditorApplication.quitting += OnEditorQuitting;
