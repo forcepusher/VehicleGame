@@ -46,10 +46,10 @@ namespace Igrushka.VehicleGame
         private Vector4 _dragTaxi = new Vector4(0.3f, 0.3f, 0.005f, _taxiVelocity);
         private Vector4 _angularDragTaxi = new Vector4(3f, 5f, 2f, _taxiVelocity); // pitch: yaw: roll
 
-        private Vector4 _dragTakeoff = new Vector4(0.4f, 2f, 0.0075f, _takeoffVelocity); // increased vertical drag (y-axis) for heavy lift-off feel
+        private Vector4 _dragTakeoff = new Vector4(0.4f, 0.6f, 0.015f, _takeoffVelocity); // moderate vertical drag for lift-off
         private Vector4 _angularDragTakeoff = new Vector4(4f, 7f, 3f, _takeoffVelocity); // pitch: yaw: roll
 
-        private Vector4 _dragFlight = new Vector4(0.6f, 2f, 0.0075f, _flightVelocity);
+        private Vector4 _dragFlight = new Vector4(0.6f, 0.8f, 0.0075f, _flightVelocity);
         private Vector4 _angularDragFlight = new Vector4(7f, 12f, 4f, _flightVelocity); // pitch: yaw: roll
 
         private Vector3 InterpolateKeyframes4(float t, Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3)
