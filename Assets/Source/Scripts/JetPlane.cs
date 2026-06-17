@@ -20,32 +20,37 @@ namespace Igrushka.VehicleGame
         private Vector3 _debugLinearDrag;
         private Vector3 _debugAngularDrag;
 
+        private const float _parkedVelocity = 1f;
+        private const float _taxiVelocity = 5f;
+        private const float _takeoffVelocity = 15f;
+        private const float _flightVelocity = 30f;
+
         // Linear: x,y unused; z=thrust acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
-        private Vector4 _accelerationParked = new Vector4(0f, 0f, 12f, 0f); // ~1.2G strong initial push from standstill
-        private Vector4 _angularAccelerationParked = new Vector4(3f, 1.5f, 0.5f, 0f); // pitch: yaw: roll
+        private Vector4 _accelerationParked = new Vector4(0f, 0f, 5f, _parkedVelocity); // ~1.2G strong initial push from standstill
+        private Vector4 _angularAccelerationParked = new Vector4(0f, 0f, 0f, _parkedVelocity); // pitch: yaw: roll
 
-        private Vector4 _accelerationTaxi = new Vector4(0f, 0f, 8f, 5f); // ~0.8G ground roll (clunky)
-        private Vector4 _angularAccelerationTaxi = new Vector4(3f, 1.5f, 2f, 5f); // pitch: yaw: roll (near zero at low speed)
+        private Vector4 _accelerationTaxi = new Vector4(0f, 0f, 5f, _taxiVelocity); // ~0.8G ground roll (clunky)
+        private Vector4 _angularAccelerationTaxi = new Vector4(0f, 1f, 0f, _taxiVelocity); // pitch: yaw: roll (near zero at low speed)
 
-        private Vector4 _accelerationTakeoff = new Vector4(0f, 0f, 8f, 15f); // ~0.8G for takeoff acceleration
-        private Vector4 _angularAccelerationTakeoff = new Vector4(20f, 8f, 50f, 15f); // pitch: yaw: roll (sluggish controls)
+        private Vector4 _accelerationTakeoff = new Vector4(0f, 0f, 8f, _takeoffVelocity); // ~0.8G for takeoff acceleration
+        private Vector4 _angularAccelerationTakeoff = new Vector4(20f, 8f, 50f, _takeoffVelocity); // pitch: yaw: roll (sluggish controls)
 
-        private Vector4 _accelerationFight = new Vector4(0f, 0f, 20f, 30f); // ~1G at cruise speed (good airspeed buildup)
-        private Vector4 _angularAccelerationFlight = new Vector4(35f, 12f, 80f, 30f); // pitch: yaw: roll (responsive in flight)
+        private Vector4 _accelerationFight = new Vector4(0f, 0f, 20f, _flightVelocity); // ~1G at cruise speed (good airspeed buildup)
+        private Vector4 _angularAccelerationFlight = new Vector4(35f, 12f, 80f, _flightVelocity); // pitch: yaw: roll (responsive in flight)
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
-        private Vector4 _dragParked = new Vector4(0.3f, 0.3f, 0.005f, 0f);
-        private Vector4 _angularDragParked = new Vector4(3f, 5f, 2f, 0f); // pitch: yaw: roll
+        private Vector4 _dragParked = new Vector4(0.3f, 0.3f, 0.005f, _parkedVelocity);
+        private Vector4 _angularDragParked = new Vector4(3f, 5f, 2f, _parkedVelocity); // pitch: yaw: roll
 
-        private Vector4 _dragTaxi = new Vector4(0.3f, 0.3f, 0.005f, 5f);
-        private Vector4 _angularDragTaxi = new Vector4(3f, 5f, 2f, 5f); // pitch: yaw: roll
+        private Vector4 _dragTaxi = new Vector4(0.3f, 0.3f, 0.005f, _taxiVelocity);
+        private Vector4 _angularDragTaxi = new Vector4(3f, 5f, 2f, _taxiVelocity); // pitch: yaw: roll
 
-        private Vector4 _dragTakeoff = new Vector4(0.4f, 2f, 0.0075f, 15f); // increased vertical drag (y-axis) for heavy lift-off feel
-        private Vector4 _angularDragTakeoff = new Vector4(4f, 7f, 3f, 15f); // pitch: yaw: roll
+        private Vector4 _dragTakeoff = new Vector4(0.4f, 2f, 0.0075f, _takeoffVelocity); // increased vertical drag (y-axis) for heavy lift-off feel
+        private Vector4 _angularDragTakeoff = new Vector4(4f, 7f, 3f, _takeoffVelocity); // pitch: yaw: roll
 
-        private Vector4 _dragFlight = new Vector4(0.6f, 2f, 0.0075f, 30f);
-        private Vector4 _angularDragFlight = new Vector4(7f, 12f, 4f, 30f); // pitch: yaw: roll
+        private Vector4 _dragFlight = new Vector4(0.6f, 2f, 0.0075f, _flightVelocity);
+        private Vector4 _angularDragFlight = new Vector4(7f, 12f, 4f, _flightVelocity); // pitch: yaw: roll
 
         private Vector3 InterpolateKeyframes4(float t, Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3)
         {
