@@ -40,13 +40,13 @@ namespace Igrushka.VehicleGame
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
-        private Vector4 _dragParked = new Vector4(0.3f, 0.3f, 0.005f, _parkedVelocity);
+        private Vector4 _dragParked = new Vector4(0.3f, 0f, 0.005f, _parkedVelocity);
         private Vector4 _angularDragParked = new Vector4(3f, 5f, 2f, _parkedVelocity); // pitch: yaw: roll
 
-        private Vector4 _dragTaxi = new Vector4(0.3f, 0.3f, 0.005f, _taxiVelocity);
+        private Vector4 _dragTaxi = new Vector4(0.3f, 0f, 0.005f, _taxiVelocity);
         private Vector4 _angularDragTaxi = new Vector4(3f, 5f, 2f, _taxiVelocity); // pitch: yaw: roll
 
-        private Vector4 _dragTakeoff = new Vector4(0.4f, 0.6f, 0.015f, _takeoffVelocity); // moderate vertical drag for lift-off
+        private Vector4 _dragTakeoff = new Vector4(0.4f, 0.01f, 0.015f, _takeoffVelocity); // moderate vertical drag for lift-off
         private Vector4 _angularDragTakeoff = new Vector4(4f, 7f, 3f, _takeoffVelocity); // pitch: yaw: roll
 
         private Vector4 _dragFlight = new Vector4(0.6f, 0.8f, 0.0075f, _flightVelocity);
