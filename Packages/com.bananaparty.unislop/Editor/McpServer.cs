@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Net;
@@ -131,7 +132,6 @@ namespace UniSlop.MCP
             if (firstLaunchThisSession)
             {
                 SessionState.SetBool(SessionStartedKey, true);
-                KillDangling();
                 StartProcess();
                 return;
             }
@@ -194,6 +194,8 @@ namespace UniSlop.MCP
                 try { if (!_server.HasExited) return; } catch { }
             }
 
+            EnsureMcpPortFree();
+
             string mono = MonoExecutablePath;
             if (!File.Exists(mono))
             {
@@ -245,75 +247,167 @@ namespace UniSlop.MCP
                 && File.GetLastWriteTimeUtc(exe) >= File.GetLastWriteTimeUtc(ServerSourcePath);
         }
 
-        // Kill a server process left over from a previous editor session (e.g. after a crash).
-        static void KillDangling()
+        // Free :5107 before every launch. Orphans from crashes, other projects, or stop/start can
+        // otherwise win the bind race and the new server exits immediately.
+        static void EnsureMcpPortFree()
         {
-            int pid = EditorPrefs.GetInt(LastPidPrefKey, -1);
-            EditorPrefs.DeleteKey(LastPidPrefKey);
-            if (pid > 0)
-                KillIfMono(pid);
+            var targets = new HashSet<int>();
 
-            KillMarkedOrphans();
+            int lastPid = EditorPrefs.GetInt(LastPidPrefKey, -1);
+            if (lastPid > 0)
+                targets.Add(lastPid);
+
+            int sessionPid = SessionState.GetInt(PidKey, -1);
+            if (sessionPid > 0)
+                targets.Add(sessionPid);
+
+            foreach (int pid in ListMarkedProcessIds())
+                targets.Add(pid);
+
+            foreach (int pid in ListListenerPidsOnPort(McpServerPort))
+            {
+                if (IsLikelyOurServerProcess(pid))
+                    targets.Add(pid);
+            }
+
+            foreach (int pid in targets)
+                KillIfOurServer(pid);
+
+            WaitForPortFree(McpServerPort, 2000);
         }
 
-        static void KillIfMono(int pid)
+        static void KillIfOurServer(int pid)
         {
             if (pid <= 0 || pid == Process.GetCurrentProcess().Id) return;
+            if (!IsLikelyOurServerProcess(pid)) return;
             try
             {
                 var proc = Process.GetProcessById(pid);
-                if (!proc.HasExited && proc.ProcessName.StartsWith("mono", StringComparison.OrdinalIgnoreCase))
-                {
-                    proc.Kill();
-                    UnityEngine.Debug.Log($"[UniSlop] Killed dangling MCP server (mono pid {pid}) from a previous session.");
-                }
+                if (proc.HasExited) return;
+                if (!proc.ProcessName.StartsWith("mono", StringComparison.OrdinalIgnoreCase))
+                    return;
+
+                proc.Kill();
+                UnityEngine.Debug.Log($"[UniSlop] Killed dangling MCP server (mono pid {pid}).");
             }
             catch { }
         }
 
-        static void KillMarkedOrphans()
+        static bool IsLikelyOurServerProcess(int pid)
         {
-            string output = ListMarkedProcessIds();
-            if (string.IsNullOrEmpty(output)) return;
+            if (pid <= 0 || pid == Process.GetCurrentProcess().Id) return false;
 
-            foreach (string line in output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            if (pid == EditorPrefs.GetInt(LastPidPrefKey, -1)) return true;
+            if (pid == SessionState.GetInt(PidKey, -1)) return true;
+
+            string cmd = GetProcessCommandLine(pid);
+            if (string.IsNullOrEmpty(cmd)) return false;
+
+            if (cmd.Contains(ProcessMarker)) return true;
+
+            string exeName = Path.GetFileName(ServerExePath);
+            if (cmd.IndexOf(exeName, StringComparison.OrdinalIgnoreCase) >= 0
+                && cmd.IndexOf(McpServerPort.ToString(), StringComparison.Ordinal) >= 0)
+                return true;
+
+            return false;
+        }
+
+        static void WaitForPortFree(int port, int timeoutMs)
+        {
+            var sw = Stopwatch.StartNew();
+            while (sw.ElapsedMilliseconds < timeoutMs)
             {
-                if (!TryParsePidLine(line, out int pid)) continue;
-                KillIfMono(pid);
+                if (ListListenerPidsOnPort(port).Count == 0)
+                    return;
+                Thread.Sleep(50);
             }
         }
 
-        static bool TryParsePidLine(string line, out int pid)
+        static List<int> ListListenerPidsOnPort(int port)
         {
-            string trimmed = line.Trim();
-            int equals = trimmed.LastIndexOf('=');
-            if (equals >= 0)
-                trimmed = trimmed.Substring(equals + 1).Trim();
-            return int.TryParse(trimmed, out pid);
-        }
+            var pids = new List<int>();
+            string portToken = ":" + port;
 
-        static string ListMarkedProcessIds()
-        {
             try
             {
                 if (Application.platform == RuntimePlatform.WindowsEditor)
                 {
-                    return RunProcess("wmic",
-                        "process where \"CommandLine like '%" + ProcessMarker + "%'\" get ProcessId /value");
+                    string output = RunProcess("netstat", "-ano -p tcp");
+                    foreach (string line in output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (line.IndexOf("LISTENING", StringComparison.OrdinalIgnoreCase) < 0) continue;
+                        if (line.IndexOf(portToken, StringComparison.Ordinal) < 0) continue;
+
+                        string trimmed = line.Trim();
+                        int lastSpace = trimmed.LastIndexOf(' ');
+                        if (lastSpace < 0 || !int.TryParse(trimmed.Substring(lastSpace + 1).Trim(), out int pid))
+                            continue;
+                        if (pid > 0)
+                            pids.Add(pid);
+                    }
+                    return pids;
+                }
+
+                string lsof = RunProcess("/usr/sbin/lsof", $"-nP -iTCP:{port} -sTCP:LISTEN -t");
+                if (string.IsNullOrWhiteSpace(lsof))
+                    lsof = RunProcess("lsof", $"-nP -iTCP:{port} -sTCP:LISTEN -t");
+
+                foreach (string line in lsof.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (int.TryParse(line.Trim(), out int pid) && pid > 0)
+                        pids.Add(pid);
+                }
+            }
+            catch { }
+
+            return pids;
+        }
+
+        static List<int> ListMarkedProcessIds()
+        {
+            var ids = new List<int>();
+            try
+            {
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    string output = RunProcess("powershell",
+                        "-NoProfile -NonInteractive -Command \"Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*" + ProcessMarker + "*' } | Select-Object -ExpandProperty ProcessId\"");
+                    foreach (string line in output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (int.TryParse(line.Trim(), out int pid) && pid > 0)
+                            ids.Add(pid);
+                    }
+                    return ids;
                 }
 
                 string ps = RunProcess("/bin/ps", "-eo pid,args");
-                var ids = new StringBuilder();
                 foreach (string line in ps.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     if (!line.Contains(ProcessMarker)) continue;
                     string trimmed = line.TrimStart();
                     int end = 0;
                     while (end < trimmed.Length && char.IsDigit(trimmed[end])) end++;
-                    if (end > 0)
-                        ids.AppendLine(trimmed.Substring(0, end));
+                    if (end > 0 && int.TryParse(trimmed.Substring(0, end), out int pid))
+                        ids.Add(pid);
                 }
-                return ids.ToString();
+            }
+            catch { }
+
+            return ids;
+        }
+
+        static string GetProcessCommandLine(int pid)
+        {
+            try
+            {
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    return RunProcess("powershell",
+                        "-NoProfile -NonInteractive -Command \"(Get-CimInstance Win32_Process -Filter \\\"ProcessId=" + pid + "\\\").CommandLine\"");
+                }
+
+                return RunProcess("/bin/ps", "-p " + pid + " -o args=");
             }
             catch
             {
@@ -372,7 +466,8 @@ namespace UniSlop.MCP
                     {
                         if (_isShuttingDown) return;
                         if (SessionState.GetInt(PidKey, -1) != watchedPid) return;
-                        LastError = "MCP server process exited unexpectedly.";
+                        LastError = ReadServerLogTail()
+                            ?? "MCP server process exited unexpectedly.";
                         SessionState.EraseInt(PidKey);
                         SetStatus(ServerStatus.Error);
                     });
@@ -381,11 +476,32 @@ namespace UniSlop.MCP
             catch { }
         }
 
+        static string ReadServerLogTail()
+        {
+            try
+            {
+                string logPath = Path.Combine(Path.GetTempPath(), "unislop-server.log");
+                if (!File.Exists(logPath)) return null;
+
+                string[] lines = File.ReadAllLines(logPath);
+                for (int i = lines.Length - 1; i >= 0; i--)
+                {
+                    string line = lines[i].Trim();
+                    if (line.Length == 0) continue;
+                    if (line.IndexOf("failed to bind", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return "MCP server could not bind to port " + McpServerPort + " (another process is using it). " + line;
+                    break;
+                }
+            }
+            catch { }
+
+            return null;
+        }
+
         static void KillProcess()
         {
             int pid = SessionState.GetInt(PidKey, -1);
             SessionState.EraseInt(PidKey);
-            EditorPrefs.DeleteKey(LastPidPrefKey);
 
             if (_server != null)
             {
@@ -395,7 +511,7 @@ namespace UniSlop.MCP
             }
             else if (pid > 0)
             {
-                KillIfMono(pid);
+                KillIfOurServer(pid);
             }
         }
 
