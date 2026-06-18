@@ -6,7 +6,13 @@ namespace BananaParty.VehicleGame
     {
         [SerializeField]
         private Transform _target;
+
         private IFollowTarget _followTarget;
+
+        private void Awake()
+        {
+            _followTarget = _target.GetComponent<IFollowTarget>();
+        }
 
         private void LateUpdate()
         {
@@ -19,9 +25,9 @@ namespace BananaParty.VehicleGame
             if (_target == null)
                 return;
 
-            _followTarget = _target.GetComponent<IFollowTarget>();
+            IFollowTarget followTarget = _target.GetComponent<IFollowTarget>();
 
-            if (_followTarget == null)
+            if (followTarget == null)
             {
                 Debug.LogError($"Target {_target} must implement IFollowTarget interface");
                 _target = null;

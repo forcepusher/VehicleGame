@@ -10,6 +10,9 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private Transform _centerOfMass;
 
+        [SerializeField]
+        private JetPlaneSounds _sounds;
+
         IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
         // Debug output variables
@@ -76,6 +79,11 @@ namespace BananaParty.VehicleGame
         private void Awake()
         {
             _rigidbody.centerOfMass = _centerOfMass.localPosition;
+        }
+
+        private void Start()
+        {
+            _sounds.StartEngine();
         }
 
         private void Update()
