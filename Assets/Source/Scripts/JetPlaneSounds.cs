@@ -8,6 +8,9 @@ namespace BananaParty.VehicleGame
         private AudioSource _engineAudioSource;
 
         [SerializeField]
+        private AudioSource _engineLoopAudioSource;
+
+        [SerializeField]
         private AudioClip _engineStartAudioClip;
         [SerializeField]
         private AudioClip _engineLoopAudioClip;
@@ -15,17 +18,33 @@ namespace BananaParty.VehicleGame
         private AudioClip _engineStopAudioClip;
 
         private bool _isRunning;
+        private System.Collections.IEnumerator _startCoroutine;
 
         public void StartEngine()
         {
             if (_isRunning) return;
             _isRunning = true;
 
-            _engineAudioSource.PlayOneShot(_engineStartAudioClip);
+            _engineAudioSource.clip = _engineStartAudioClip;
+            _engineAudioSource.Play();
 
-            _engineAudioSource.clip = _engineLoopAudioClip;
-            _engineAudioSource.loop = true;
-            _engineAudioSource.PlayScheduled(AudioSettings.dspTime + _engineStartAudioClip.length);
+            _engineLoopAudioSource.clip = _engineLoopAudioClip;
+            _engineLoopAudioSource.loop = true;
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            _startCoroutine = StartCoroutine(PlayLoopOnWebGL());
+#else
+            _engineLoopAudioSource.PlayScheduled(AudioSettings.dspTime + _engineStartAudioClip.length);
+#endif
+        }
+
+        private System.Collections.IEnumerator PlayLoopOnWebGL()
+        {
+            yield return new WaitForSeconds(_engineStartAudioClip.length);
+            if (_isRunning)
+            {
+                _engineLoopAudioSource.Play();
+            }
         }
 
         public void StopEngine()
@@ -33,7 +52,14 @@ namespace BananaParty.VehicleGame
             if (!_isRunning) return;
             _isRunning = false;
 
+            if (_startCoroutine != null)
+            {
+                StopCoroutine(_startCoroutine);
+            }
+
             _engineAudioSource.Stop();
+            _engineLoopAudioSource.Stop();
+
             _engineAudioSource.PlayOneShot(_engineStopAudioClip);
         }
     }
