@@ -6,6 +6,9 @@ namespace BananaParty.VehicleGame
     public class JetPlane : MonoBehaviour, IFollowTarget
     {
         [SerializeField]
+        private Transform _followTransform;
+
+        [SerializeField]
         private Rigidbody _rigidbody;
         [SerializeField]
         private Transform _centerOfMass;
@@ -73,8 +76,8 @@ namespace BananaParty.VehicleGame
         private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes4(velocity, _dragParked, _dragTaxi, _dragTakeoff, _dragFlight);
         private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframes4(velocity, _angularDragParked, _angularDragTaxi, _angularDragTakeoff, _angularDragFlight);
 
-        public Vector3 PositionOffset => new Vector3(0, 2, -5);
-        public Quaternion RotationOffset => Quaternion.identity;
+        public Vector3 FollowPosition => _followTransform.position;
+        public Quaternion FollowRotation => _followTransform.rotation;
 
         private void Awake()
         {

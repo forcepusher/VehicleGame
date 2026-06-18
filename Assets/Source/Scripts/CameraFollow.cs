@@ -16,8 +16,8 @@ namespace BananaParty.VehicleGame
 
         private void LateUpdate()
         {
-            transform.rotation = _target.rotation * _followTarget.RotationOffset;
-            transform.position = _target.position + transform.rotation * _followTarget.PositionOffset;
+            transform.position = _followTarget.FollowPosition;
+            transform.rotation = _followTarget.FollowRotation;
         }
 
         private void OnValidate()
