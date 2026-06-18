@@ -86,12 +86,15 @@ namespace BananaParty.VehicleGame
 
         private void Start()
         {
-            _sounds.StartEngine();
+            
         }
 
         private void Update()
         {
             _controls.Update();
+
+            if (_controls.Throttle > 0.1f)
+                _sounds.StartEngine();
         }
 
         private void FixedUpdate()

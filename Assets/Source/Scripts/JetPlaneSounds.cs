@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace BananaParty.VehicleGame
@@ -8,9 +9,6 @@ namespace BananaParty.VehicleGame
         private AudioSource _engineAudioSource;
 
         [SerializeField]
-        private AudioSource _engineLoopAudioSource;
-
-        [SerializeField]
         private AudioClip _engineStartAudioClip;
         [SerializeField]
         private AudioClip _engineLoopAudioClip;
@@ -18,33 +16,27 @@ namespace BananaParty.VehicleGame
         private AudioClip _engineStopAudioClip;
 
         private bool _isRunning;
-        private System.Collections.IEnumerator _startCoroutine;
+        private Coroutine _startCoroutine;
 
         public void StartEngine()
         {
             if (_isRunning) return;
             _isRunning = true;
 
-            _engineAudioSource.clip = _engineStartAudioClip;
-            _engineAudioSource.Play();
+            _engineAudioSource.clip = _engineLoopAudioClip;
+            _engineAudioSource.loop = true;
 
-            _engineLoopAudioSource.clip = _engineLoopAudioClip;
-            _engineLoopAudioSource.loop = true;
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _startCoroutine = StartCoroutine(PlayLoopOnWebGL());
-#else
-            _engineLoopAudioSource.PlayScheduled(AudioSettings.dspTime + _engineStartAudioClip.length);
-#endif
+            _startCoroutine = StartCoroutine(PlayLoopAfterStart());
+            _engineAudioSource.PlayOneShot(_engineStartAudioClip);
         }
 
-        private System.Collections.IEnumerator PlayLoopOnWebGL()
+        private IEnumerator PlayLoopAfterStart()
         {
-            yield return new WaitForSeconds(_engineStartAudioClip.length);
-            if (_isRunning)
-            {
-                _engineLoopAudioSource.Play();
-            }
+            float waitTime = _engineStartAudioClip.length;
+
+            yield return new WaitForSeconds(waitTime);
+
+            _engineAudioSource.Play();
         }
 
         public void StopEngine()
@@ -53,13 +45,9 @@ namespace BananaParty.VehicleGame
             _isRunning = false;
 
             if (_startCoroutine != null)
-            {
                 StopCoroutine(_startCoroutine);
-            }
 
             _engineAudioSource.Stop();
-            _engineLoopAudioSource.Stop();
-
             _engineAudioSource.PlayOneShot(_engineStopAudioClip);
         }
     }
