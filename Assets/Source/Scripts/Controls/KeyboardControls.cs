@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Igrushka.VehicleGame
+namespace BananaParty.VehicleGame
 {
     public class KeyboardControls : IControls
     {

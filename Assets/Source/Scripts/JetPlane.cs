@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Igrushka.VehicleGame
+namespace BananaParty.VehicleGame
 {
     [RequireComponent(typeof(Rigidbody))]
     public class JetPlane : MonoBehaviour, IFollowTarget

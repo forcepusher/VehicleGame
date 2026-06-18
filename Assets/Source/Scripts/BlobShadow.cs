@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Igrushka.VehicleGame
+namespace BananaParty.VehicleGame
 {
     [ExecuteAlways]
     [DisallowMultipleComponent]

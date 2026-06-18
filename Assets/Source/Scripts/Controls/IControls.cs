@@ -1,4 +1,4 @@
-namespace Igrushka.VehicleGame
+namespace BananaParty.VehicleGame
 {
     public interface IControls
     {
