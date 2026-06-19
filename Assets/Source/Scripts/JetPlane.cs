@@ -96,9 +96,7 @@ namespace BananaParty.VehicleGame
             if (_controls.Throttle > 0.1f && !_sounds.IsEngineRunning)
                 _sounds.StartEngine();
 
-
-            if (_controls.Throttle < -0.1f && _sounds.IsEngineRunning)
-                _sounds.StopEngine();
+            _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude);
         }
 
         private void FixedUpdate()

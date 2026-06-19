@@ -1,10 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace BananaParty.VehicleGame
 {
     public class JetPlaneSounds : MonoBehaviour
     {
+        [SerializeField]
+        private AudioMixerSnapshot _lowVelocitySnapshot;
+        [SerializeField]
+        private AudioMixerSnapshot _highVelocitySnapshot;
+
         [SerializeField]
         private AudioSource _engineAudioSource;
 
@@ -13,11 +19,22 @@ namespace BananaParty.VehicleGame
 
         public bool IsEngineRunning { get; private set; }
 
+        public void UpdateVelocity(float velocity)
+        {
+            if (velocity > 10f)
+            {
+                _highVelocitySnapshot.TransitionTo(2f);
+            }
+            else
+            {
+                _lowVelocitySnapshot.TransitionTo(0.1f);
+            }
+        }
+
         public void StartEngine()
         {
             IsEngineRunning = true;
 
-            _engineAudioSource.clip = _engineStartLoopStopAudioClip;
             _engineAudioSource.loop = true;
             _engineAudioSource.Play();
         }
