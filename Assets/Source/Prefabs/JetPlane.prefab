@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2189672493985454088}
   serializedVersion: 2
   m_LocalRotation: {x: 0.72030187, y: 0.014690823, z: 0.014690823, w: 0.69334954}
-  m_LocalPosition: {x: -0.020767212, y: 0.49920654, z: 0.01904869}
+  m_LocalPosition: {x: -0.020767212, y: -3.8453064, z: 0.01904869}
   m_LocalScale: {x: 26, y: 26, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -164,11 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c9c8e4f1c914247bf8e3576b63efc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JetPlaneSounds
-  _engineAudioSource: {fileID: 7575372748935293426}
-  _engineStartAudioClip: {fileID: 8300000, guid: 55d1a744ba9fed240b26f4dd67478abe, type: 3}
-  _engineStartAudioLength: 3
-  _engineLoopAudioClip: {fileID: 8300000, guid: 5fa928fb867e59f4db4ba2f8f46d73f4, type: 3}
-  _engineStopAudioClip: {fileID: 8300000, guid: 12b5b3ff0d1b9984cb51c4322480d6ad, type: 3}
+  _engineAudioSource: {fileID: 5788607183686001074}
+  _engineStartLoopStopAudioClip: {fileID: 8300000, guid: 0f2ad0c541f3d1f4bb42498ee30356c2, type: 3}
 --- !u!82 &5788607183686001074
 AudioSource:
   m_ObjectHideFlags: 0
@@ -277,11 +274,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 09124e452452a1048b3d5774fce92362, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
