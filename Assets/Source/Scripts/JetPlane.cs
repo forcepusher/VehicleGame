@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BananaParty.VehicleGame
@@ -12,6 +13,9 @@ namespace BananaParty.VehicleGame
         private Rigidbody _rigidbody;
         [SerializeField]
         private Transform _centerOfMass;
+
+        [SerializeField]
+        private List<WheelCollider> _wheelColliders;
 
         [SerializeField]
         private JetPlaneSounds _sounds;
@@ -97,6 +101,11 @@ namespace BananaParty.VehicleGame
                 _sounds.StartEngine();
 
             _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude);
+
+            foreach (WheelCollider wheel in _wheelColliders)
+            {
+                wheel.motorTorque = Mathf.Abs(_controls.Throttle) > Mathf.Epsilon ? 0.000001f : 0;
+            }
         }
 
         private void FixedUpdate()
