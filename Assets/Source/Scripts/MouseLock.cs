@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace BananaParty.VehicleGame
 {
@@ -6,7 +7,7 @@ namespace BananaParty.VehicleGame
     {
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Mouse.current?.leftButton.wasPressedThisFrame == true)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
