@@ -168,10 +168,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c9c8e4f1c914247bf8e3576b63efc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JetPlaneSounds
-  _lowVelocitySnapshot: {fileID: 24500006, guid: 4918cdeb68827a44797c8ae3a2ae0701, type: 2}
-  _highVelocitySnapshot: {fileID: 8911561510003581235, guid: 4918cdeb68827a44797c8ae3a2ae0701, type: 2}
   _engineAudioSource: {fileID: 5788607183686001074}
-  _engineStartLoopStopAudioClip: {fileID: 8300000, guid: 0f2ad0c541f3d1f4bb42498ee30356c2, type: 3}
+  _airAudioSource: {fileID: 7575372748935293426}
+  _engineVolumeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.06
+      outSlope: -0.06
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 15
+      value: 0.1
+      inSlope: -0.06
+      outSlope: -0.06
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _airVolumeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 5
+      value: 0
+      inSlope: 0.2
+      outSlope: 0.2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 10
+      value: 1
+      inSlope: 0.2
+      outSlope: 0.2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _airPitchCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.3
+      inSlope: 0.030000001
+      outSlope: 0.030000001
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 40
+      value: 1.5
+      inSlope: 0.030000001
+      outSlope: 0.030000001
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &5788607183686001074
 AudioSource:
   m_ObjectHideFlags: 0
@@ -181,7 +251,7 @@ AudioSource:
   m_GameObject: {fileID: 2394010716773962168}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -3876296618621168339, guid: 4918cdeb68827a44797c8ae3a2ae0701, type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 0f2ad0c541f3d1f4bb42498ee30356c2, type: 3}
   m_PlayOnAwake: 0
@@ -278,7 +348,7 @@ AudioSource:
   m_GameObject: {fileID: 2394010716773962168}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -5772368688706207139, guid: 4918cdeb68827a44797c8ae3a2ae0701, type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 09124e452452a1048b3d5774fce92362, type: 3}
   m_PlayOnAwake: 1

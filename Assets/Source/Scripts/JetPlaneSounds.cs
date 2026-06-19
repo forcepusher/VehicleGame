@@ -6,10 +6,10 @@ namespace BananaParty.VehicleGame
 {
     public class JetPlaneSounds : MonoBehaviour
     {
-        private AudioMixer _jetAudioMixer;
-
         [SerializeField]
         private AudioSource _engineAudioSource;
+        [SerializeField]
+        private AudioSource _airAudioSource;
 
         [SerializeField]
         private AnimationCurve _engineVolumeCurve;
@@ -22,7 +22,9 @@ namespace BananaParty.VehicleGame
 
         public void UpdateVelocity(float velocity)
         {
-
+            _engineAudioSource.volume = _engineVolumeCurve.Evaluate(velocity);
+            _airAudioSource.volume = _airVolumeCurve.Evaluate(velocity);
+            _airAudioSource.pitch = _airPitchCurve.Evaluate(velocity);
         }
 
         public void StartEngine()
