@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Igrushka.VehicleGame
+namespace BananaParty.VehicleGame
 {
     [ExecuteAlways]
     [DisallowMultipleComponent]
@@ -47,6 +47,8 @@ namespace Igrushka.VehicleGame
             UpdateBlobPlacement();
         }
 
+        private static Mesh _quadMesh;
+
         private void EnsureBlobExists()
         {
             if (_material == null)
@@ -66,22 +68,13 @@ namespace Igrushka.VehicleGame
 
             if (blobTransform == null)
             {
-                GameObject blobObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                blobObject.name = "BlobShadow";
+                GameObject blobObject = new GameObject("BlobShadow");
                 blobObject.transform.SetParent(transform, false);
 
-                Collider primitiveCollider = blobObject.GetComponent<Collider>();
-                if (Application.isPlaying)
-                {
-                    Destroy(primitiveCollider);
-                }
-                else
-                {
-                    DestroyImmediate(primitiveCollider);
-                }
+                blobObject.AddComponent<MeshFilter>().sharedMesh = GetQuadMesh();
+                blobRenderer = blobObject.AddComponent<MeshRenderer>();
 
                 blobTransform = blobObject.transform;
-                blobRenderer = blobObject.GetComponent<MeshRenderer>();
                 blobRenderer.shadowCastingMode = ShadowCastingMode.Off;
                 blobRenderer.receiveShadows = false;
                 blobRenderer.lightProbeUsage = LightProbeUsage.Off;
@@ -94,6 +87,34 @@ namespace Igrushka.VehicleGame
             }
 
             blobTransform.gameObject.SetActive(true);
+        }
+
+        private Mesh GetQuadMesh()
+        {
+            if (_quadMesh != null)
+            {
+                return _quadMesh;
+            }
+
+            _quadMesh = new Mesh();
+            _quadMesh.name = "BlobShadowQuad";
+            _quadMesh.vertices = new Vector3[]
+            {
+                new Vector3(-0.5f, -0.5f, 0),
+                new Vector3(0.5f, -0.5f, 0),
+                new Vector3(0.5f, 0.5f, 0),
+                new Vector3(-0.5f, 0.5f, 0)
+            };
+            _quadMesh.triangles = new int[] { 0, 2, 1, 0, 3, 2 };
+            _quadMesh.uv = new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(1, 0),
+                new Vector2(1, 1),
+                new Vector2(0, 1)
+            };
+            _quadMesh.RecalculateNormals();
+            return _quadMesh;
         }
 
         private void UpdateBlobPlacement()
