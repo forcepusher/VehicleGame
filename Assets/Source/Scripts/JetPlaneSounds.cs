@@ -14,6 +14,8 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private AnimationCurve _engineVolumeCurve;
         [SerializeField]
+        private AnimationCurve _enginePitchCurve;
+        [SerializeField]
         private AnimationCurve _airVolumeCurve;
         [SerializeField]
         private AnimationCurve _airPitchCurve;
@@ -23,6 +25,7 @@ namespace BananaParty.VehicleGame
         public void UpdateVelocity(float velocity)
         {
             _engineAudioSource.volume = _engineVolumeCurve.Evaluate(velocity);
+            _engineAudioSource.pitch = _enginePitchCurve.Evaluate(velocity);
             _airAudioSource.volume = _airVolumeCurve.Evaluate(velocity);
             _airAudioSource.pitch = _airPitchCurve.Evaluate(velocity);
         }
