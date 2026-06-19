@@ -6,7 +6,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: JetAirFlight
+  m_Name: JetAir
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: e476d5e0ac807b44bbf3a328fb342969
   m_Children: []
@@ -49,12 +49,13 @@ AudioMixerController:
   m_MasterGroup: {fileID: 24300002}
   m_Snapshots:
   - {fileID: 24500006}
-  - {fileID: 8911561510003581235}
   m_StartSnapshot: {fileID: 24500006}
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: e0a480e78a73fb340bb1a702468e7aa8
+    name: MyExposedParam
   m_AudioMixerGroupViews:
   - guids:
     - a45c29d39a023484f8336c5518eb1f46
@@ -104,12 +105,13 @@ AudioMixerSnapshotController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LowVelocity
+  m_Name: Default
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: f612f1265960c744f88fa46360d89b90
   m_FloatValues:
-    57611c9696e85a6498fc838b12afec4e: -80
-    e0a480e78a73fb340bb1a702468e7aa8: -10.345207
+    57611c9696e85a6498fc838b12afec4e: 0
+    e0a480e78a73fb340bb1a702468e7aa8: 0
+    cae5762c2c06f8948a25ed0996242d8f: 1
   m_TransitionOverrides: {}
 --- !u!244 &443954286328455790
 AudioMixerEffectController:
@@ -167,15 +169,3 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
---- !u!245 &8911561510003581235
-AudioMixerSnapshotController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: HighVelocity
-  m_AudioMixer: {fileID: 24100000}
-  m_SnapshotID: 727fe06809ce7a3499d3385e4ce81220
-  m_FloatValues:
-    e0a480e78a73fb340bb1a702468e7aa8: -39.703533
-  m_TransitionOverrides: {}
