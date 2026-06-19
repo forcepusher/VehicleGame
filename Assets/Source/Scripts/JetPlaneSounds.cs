@@ -11,6 +11,8 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private AudioClip _engineStartAudioClip;
         [SerializeField]
+        private float _engineStartAudioLength = 3f;
+        [SerializeField]
         private AudioClip _engineLoopAudioClip;
         [SerializeField]
         private AudioClip _engineStopAudioClip;
@@ -22,19 +24,19 @@ namespace BananaParty.VehicleGame
         {
             IsEngineRunning = true;
 
-            _engineAudioSource.clip = _engineLoopAudioClip;
-            _engineAudioSource.loop = true;
-
-            _startEngineCoroutine = StartCoroutine(PlayEngineLoopAfterStart());
-            _engineAudioSource.PlayOneShot(_engineStartAudioClip);
+            _startEngineCoroutine = StartCoroutine(PlayEngineStartAndLoop());
         }
 
-        private IEnumerator PlayEngineLoopAfterStart()
+        private IEnumerator PlayEngineStartAndLoop()
         {
-            float waitTime = _engineStartAudioClip.length;
+            _engineAudioSource.loop = false;
+            _engineAudioSource.clip = _engineStartAudioClip;
+            _engineAudioSource.Play();
 
-            yield return new WaitForSeconds(waitTime - Time.deltaTime);
+            yield return new WaitForSeconds(_engineStartAudioLength);
 
+            _engineAudioSource.clip = _engineLoopAudioClip;
+            _engineAudioSource.loop = true;
             _engineAudioSource.Play();
 
             _startEngineCoroutine = null;
