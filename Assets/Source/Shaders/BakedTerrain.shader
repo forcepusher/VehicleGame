@@ -50,8 +50,9 @@ Shader "Custom/BakedTerrain"
                 float4 pos : SV_POSITION;
                 float2 uvMain : TEXCOORD0;
                 float2 uvDetail : TEXCOORD1;
-                UNITY_FOG_COORDS(2)
-                SHADOW_COORDS(3)
+                float3 worldPos : TEXCOORD2;
+                UNITY_FOG_COORDS(3)
+                UNITY_SHADOW_COORDS(4)
             };
 
             half3 BlendDetailAlbedo(half3 albedo, half3 detail)
@@ -67,7 +68,8 @@ Shader "Custom/BakedTerrain"
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uvMain = TRANSFORM_TEX(v.uv, _MainTex);
                 o.uvDetail = TRANSFORM_TEX(v.uv, _DetailAlbedoMap);
-                TRANSFER_SHADOW(o);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                UNITY_TRANSFER_SHADOW(o, o.uvMain);
                 UNITY_TRANSFER_FOG(o, o.pos);
                 return o;
             }
@@ -78,7 +80,7 @@ Shader "Custom/BakedTerrain"
                 half3 detail = tex2D(_DetailAlbedoMap, i.uvDetail).rgb;
                 baked.rgb = BlendDetailAlbedo(baked.rgb, detail);
 
-                half shadow = SHADOW_ATTENUATION(i);
+                half shadow = UNITY_SHADOW_ATTENUATION(i, i.worldPos);
                 baked.rgb *= shadow;
 
                 UNITY_APPLY_FOG(i.fogCoord, baked);
