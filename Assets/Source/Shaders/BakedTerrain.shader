@@ -43,6 +43,7 @@ Shader "Custom/BakedTerrain"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct v2f
@@ -51,8 +52,9 @@ Shader "Custom/BakedTerrain"
                 float2 uvMain : TEXCOORD0;
                 float2 uvDetail : TEXCOORD1;
                 float3 worldPos : TEXCOORD2;
-                UNITY_FOG_COORDS(3)
-                UNITY_SHADOW_COORDS(4)
+                half3 normalWorld : TEXCOORD3;
+                UNITY_FOG_COORDS(4)
+                UNITY_SHADOW_COORDS(5)
             };
 
             half3 BlendDetailAlbedo(half3 albedo, half3 detail)
@@ -62,6 +64,15 @@ Shader "Custom/BakedTerrain"
                 return lerp(albedo, albedo * detailScaled, _DetailStrength);
             }
 
+            half3 BlendRealtimeShadow(half3 bakedColor, half shadowAttenuation, half3 normalWorld)
+            {
+                half3 terrainShadowTint = bakedColor * unity_ShadowColor.rgb;
+                half ndotl = saturate(dot(normalWorld, _WorldSpaceLightPos0.xyz));
+                half3 directDarkening = ndotl * (1.0 - shadowAttenuation) * _LightColor0.rgb;
+                half3 shadowedColor = max(bakedColor - directDarkening, terrainShadowTint);
+                return lerp(shadowedColor, bakedColor, shadowAttenuation);
+            }
+
             v2f vert(appdata v)
             {
                 v2f o;
@@ -69,6 +80,7 @@ Shader "Custom/BakedTerrain"
                 o.uvMain = TRANSFORM_TEX(v.uv, _MainTex);
                 o.uvDetail = TRANSFORM_TEX(v.uv, _DetailAlbedoMap);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.normalWorld = UnityObjectToWorldNormal(v.normal);
                 UNITY_TRANSFER_SHADOW(o, o.uvMain);
                 UNITY_TRANSFER_FOG(o, o.pos);
                 return o;
@@ -81,7 +93,7 @@ Shader "Custom/BakedTerrain"
                 baked.rgb = BlendDetailAlbedo(baked.rgb, detail);
 
                 half shadow = UNITY_SHADOW_ATTENUATION(i, i.worldPos);
-                baked.rgb *= shadow;
+                baked.rgb = BlendRealtimeShadow(baked.rgb, shadow, i.normalWorld);
 
                 UNITY_APPLY_FOG(i.fogCoord, baked);
                 return baked;
