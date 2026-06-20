@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 3389893599461209386}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.01, z: 18.76}
+  m_LocalPosition: {x: 0, y: 15.04, z: -52.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 8716580148040200419}
   - component: {fileID: 6359418652280300674}
   - component: {fileID: 6305595428552914137}
+  - component: {fileID: 5855625288827283148}
   m_Layer: 0
   m_Name: CargoJetPlane
   m_TagString: Untagged
@@ -587,8 +588,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 1.75, z: 16}
-  m_Center: {x: 0, y: 0.35000002, z: 1}
+  m_Size: {x: 5.5, y: 5.3388124, z: 31.816444}
+  m_Center: {x: 0, y: 2.144406, z: 2.555626}
 --- !u!65 &6305595428552914137
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -608,8 +609,29 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 1.75, z: 3.5}
-  m_Center: {x: 0, y: 0.35, z: -1.75}
+  m_Size: {x: 45.32, y: 2.5449371, z: 7.4849205}
+  m_Center: {x: 0, y: 3.2390976, z: -4.1893063}
+--- !u!65 &5855625288827283148
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064660653324310569}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 29.04, y: 4.626816, z: 8.859583}
+  m_Center: {x: 0, y: 1.8134079, z: 3.8054914}
 --- !u!1 &5948141788471968159
 GameObject:
   m_ObjectHideFlags: 0
