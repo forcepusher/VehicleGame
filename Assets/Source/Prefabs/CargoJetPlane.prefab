@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1489216333648783034}
   m_Layer: 0
-  m_Name: CameraFollowTransform
+  m_Name: CameraFollowTransformOutside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,6 +214,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1845107331111194772}
+  - {fileID: 1872444204133824950}
   - {fileID: 1489216333648783034}
   - {fileID: 1298116717266706186}
   - {fileID: 3293619852363825104}
@@ -233,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3658aa341f1042c40862762d4e013bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Igrushka.VehicleGame.JetPlane
-  _followTransform: {fileID: 1489216333648783034}
+  _followTransform: {fileID: 1872444204133824950}
   _rigidbody: {fileID: 8716580148040200419}
   _centerOfMass: {fileID: 1298116717266706186}
   _wheelColliders:
@@ -769,6 +770,37 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!1 &7491535269997060217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1872444204133824950}
+  m_Layer: 0
+  m_Name: CameraFollowTransformInside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1872444204133824950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7491535269997060217}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4, z: 17.89}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1020057559939517855}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8445548474442272318
 GameObject:
   m_ObjectHideFlags: 0
