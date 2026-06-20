@@ -4,7 +4,7 @@ using UnityEngine;
 namespace BananaParty.VehicleGame
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class JetPlane : MonoBehaviour, IFollowTarget
+    public abstract class JetPlane : MonoBehaviour, IFollowTarget
     {
         [SerializeField]
         private Transform _followTransform;
@@ -29,56 +29,56 @@ namespace BananaParty.VehicleGame
         private Vector3 _debugLinearDrag;
         private Vector3 _debugAngularDrag;
 
-        private const float _parkedVelocity = 0f;
-        private const float _taxiVelocity = 10f;
-        private const float _takeoffVelocity = 15f;
-        private const float _flightVelocity = 30f;
+        protected abstract float ParkedVelocity { get; }
+        protected abstract float TaxiVelocity { get; }
+        protected abstract float TakeoffVelocity { get; }
+        protected abstract float FlightVelocity { get; }
 
         // Linear: x,y unused; z=thrust acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
-        private Vector3 _accelerationParked = new Vector3(0f, 0f, 5f); // ~1.2G strong initial push from standstill
-        private Vector3 _angularAccelerationParked = new Vector3(0f, 0f, 0f); // pitch: yaw: roll
+        protected abstract Vector3 AccelerationParked { get; }
+        protected abstract Vector3 AngularAccelerationParked { get; }
 
-        private Vector3 _accelerationTaxi = new Vector3(0f, 0f, 5f); // ~0.8G ground roll (clunky)
-        private Vector3 _angularAccelerationTaxi = new Vector3(0f, 5f, 0f); // pitch: yaw: roll (near zero at low speed)
+        protected abstract Vector3 AccelerationTaxi { get; }
+        protected abstract Vector3 AngularAccelerationTaxi { get; }
 
-        private Vector3 _accelerationTakeoff = new Vector3(0f, 0f, 8f); // ~0.8G for takeoff acceleration
-        private Vector3 _angularAccelerationTakeoff = new Vector3(5f, 10f, 10f); // pitch: yaw: roll (sluggish controls)
+        protected abstract Vector3 AccelerationTakeoff { get; }
+        protected abstract Vector3 AngularAccelerationTakeoff { get; }
 
-        private Vector3 _accelerationFight = new Vector3(0f, 0f, 20f); // ~1G at cruise speed (good airspeed buildup)
-        private Vector3 _angularAccelerationFlight = new Vector3(15f, 15f, 15f); // pitch: yaw: roll (smoother in flight)
+        protected abstract Vector3 AccelerationFight { get; }
+        protected abstract Vector3 AngularAccelerationFlight { get; }
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
-        private Vector3 _dragParked = new Vector3(0.3f, 0f, 0.005f);
-        private Vector3 _angularDragParked = new Vector3(3f, 5f, 2f); // pitch: yaw: roll
+        protected abstract Vector3 DragParked { get; }
+        protected abstract Vector3 AngularDragParked { get; }
 
-        private Vector3 _dragTaxi = new Vector3(0.3f, 0f, 0.005f);
-        private Vector3 _angularDragTaxi = new Vector3(3f, 5f, 2f); // pitch: yaw: roll
+        protected abstract Vector3 DragTaxi { get; }
+        protected abstract Vector3 AngularDragTaxi { get; }
 
-        private Vector3 _dragTakeoff = new Vector3(0.4f, 0.01f, 0.015f); // moderate vertical drag for lift-off
-        private Vector3 _angularDragTakeoff = new Vector3(4f, 7f, 3f); // pitch: yaw: roll
+        protected abstract Vector3 DragTakeoff { get; }
+        protected abstract Vector3 AngularDragTakeoff { get; }
 
-        private Vector3 _dragFlight = new Vector3(0.6f, 0.8f, 0.0075f);
-        private Vector3 _angularDragFlight = new Vector3(7f, 12f, 4f); // pitch: yaw: roll
+        protected abstract Vector3 DragFlight { get; }
+        protected abstract Vector3 AngularDragFlight { get; }
 
         private Vector3 InterpolateKeyframes(float t, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            if (t <= _parkedVelocity) return v0;
-            if (t >= _flightVelocity) return v3;
+            if (t <= ParkedVelocity) return v0;
+            if (t >= FlightVelocity) return v3;
 
-            if (t < _taxiVelocity)
-                return Vector3.Lerp(v0, v1, t / _taxiVelocity);
+            if (t < TaxiVelocity)
+                return Vector3.Lerp(v0, v1, t / TaxiVelocity);
 
-            if (t < _takeoffVelocity)
-                return Vector3.Lerp(v1, v2, (t - _taxiVelocity) / (_takeoffVelocity - _taxiVelocity));
+            if (t < TakeoffVelocity)
+                return Vector3.Lerp(v1, v2, (t - TaxiVelocity) / (TakeoffVelocity - TaxiVelocity));
 
-            return Vector3.Lerp(v2, v3, (t - _takeoffVelocity) / (_flightVelocity - _takeoffVelocity));
+            return Vector3.Lerp(v2, v3, (t - TakeoffVelocity) / (FlightVelocity - TakeoffVelocity));
         }
 
-        private Vector3 GetLinearForce(float velocity) => InterpolateKeyframes(velocity, _accelerationParked, _accelerationTaxi, _accelerationTakeoff, _accelerationFight);
-        private Vector3 GetAngularForce(float velocity) => InterpolateKeyframes(velocity, _angularAccelerationParked, _angularAccelerationTaxi, _angularAccelerationTakeoff, _angularAccelerationFlight);
-        private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes(velocity, _dragParked, _dragTaxi, _dragTakeoff, _dragFlight);
-        private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframes(velocity, _angularDragParked, _angularDragTaxi, _angularDragTakeoff, _angularDragFlight);
+        private Vector3 GetLinearForce(float velocity) => InterpolateKeyframes(velocity, AccelerationParked, AccelerationTaxi, AccelerationTakeoff, AccelerationFight);
+        private Vector3 GetAngularForce(float velocity) => InterpolateKeyframes(velocity, AngularAccelerationParked, AngularAccelerationTaxi, AngularAccelerationTakeoff, AngularAccelerationFlight);
+        private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes(velocity, DragParked, DragTaxi, DragTakeoff, DragFlight);
+        private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframes(velocity, AngularDragParked, AngularDragTaxi, AngularDragTakeoff, AngularDragFlight);
 
         public Vector3 FollowPosition => _followTransform.position;
         public Quaternion FollowRotation => _followTransform.rotation;
