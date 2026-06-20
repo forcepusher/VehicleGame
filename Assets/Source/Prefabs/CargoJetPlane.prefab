@@ -190,6 +190,9 @@ GameObject:
   - component: {fileID: 6359418652280300674}
   - component: {fileID: 6305595428552914137}
   - component: {fileID: 5855625288827283148}
+  - component: {fileID: 7576456701274963542}
+  - component: {fileID: 8935784413468789783}
+  - component: {fileID: 4932650294061277208}
   m_Layer: 0
   m_Name: CargoJetPlane
   m_TagString: Untagged
@@ -588,8 +591,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.5, y: 5.3388124, z: 31.816444}
-  m_Center: {x: 0, y: 2.144406, z: 2.555626}
+  m_Size: {x: 5.5, y: 5.4402313, z: 30.005081}
+  m_Center: {x: 0, y: 2.0936966, z: 3.4613075}
 --- !u!65 &6305595428552914137
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -609,8 +612,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 45.32, y: 2.5449371, z: 7.4849205}
-  m_Center: {x: 0, y: 3.2390976, z: -4.1893063}
+  m_Size: {x: 47.2, y: 2.5449371, z: 6.845186}
+  m_Center: {x: 0, y: 3.2390976, z: -5.2491236}
 --- !u!65 &5855625288827283148
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -630,8 +633,71 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 29.04, y: 4.626816, z: 8.859583}
-  m_Center: {x: 0, y: 1.8134079, z: 3.8054914}
+  m_Size: {x: 29.04, y: 4.626816, z: 10.329041}
+  m_Center: {x: 0, y: 1.8134079, z: 3.0707626}
+--- !u!65 &7576456701274963542
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064660653324310569}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 10.470474, z: 9.755821}
+  m_Center: {x: 0, y: 8.807823, z: -23.83646}
+--- !u!65 &8935784413468789783
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064660653324310569}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.91, y: 5.2007294, z: 8.520924}
+  m_Center: {x: 0, y: 3.3191757, z: -15.182287}
+--- !u!65 &4932650294061277208
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064660653324310569}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 19, y: 1.3129578, z: 5.033596}
+  m_Center: {x: 0, y: 13.644516, z: -29.739573}
 --- !u!1 &5948141788471968159
 GameObject:
   m_ObjectHideFlags: 0
