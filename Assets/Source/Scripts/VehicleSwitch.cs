@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
+using System;
 
 namespace BananaParty.VehicleGame
 {
@@ -23,10 +24,8 @@ namespace BananaParty.VehicleGame
             {
                 var vehicle = obj.GetComponent<IVehicle>();
                 if (vehicle == null)
-                {
-                    Debug.LogError($"GameObject {obj.name} does not implement IVehicle");
-                    continue;
-                }
+                    throw new InvalidOperationException($"GameObject {obj.name} does not implement IVehicle");
+
                 _vehicles.Add(vehicle);
             }
         }
@@ -76,6 +75,19 @@ namespace BananaParty.VehicleGame
             _currentVehicleIndex = index;
             _vehicles[_currentVehicleIndex].SetControls(_playerControls);
             _mainCamera.SetFollowTarget(_vehicles[_currentVehicleIndex]);
+        }
+
+        public void OnSwitchVehicleButtonClick(string vehicleName)
+        {
+            for (int i = 0; i < _vehicleGameObjects.Count; i++)
+            {
+                if (_vehicleGameObjects[i].name == vehicleName)
+                {
+                    SwitchVehicle(i);
+                    return;
+                }
+            }
+            Debug.LogWarning($"Vehicle with name {vehicleName} not found.");
         }
     }
 }
