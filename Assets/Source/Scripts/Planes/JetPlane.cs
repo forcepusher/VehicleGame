@@ -150,30 +150,12 @@ namespace BananaParty.VehicleGame
 
         private void OnGUI()
         {
+            if (_controls is InactiveControls)
+                return;
+
             GUILayout.BeginArea(new Rect(10f, 10f, 400f, 500f));
             GUILayout.Label("=== JET PLANE DEBUG ===");
             GUILayout.Label($"Velocity: {_debugVelocity:F2} m/s");
-            GUILayout.Label($"Throttle: {_controls.Throttle:F3}");
-            GUILayout.Label($"Pitch Input: {_controls.Pitch:F3}");
-            GUILayout.Label($"Yaw Input: {_controls.Yaw:F3}");
-            GUILayout.Label($"Turn (Roll) Input: {_controls.Roll:F3}");
-
-            GUILayout.Space(10f);
-            GUILayout.Label("--- LINEAR FORCE (m/s²) ---");
-            GUILayout.Label($"Current: {_debugLinearForce:F2}");
-
-            GUILayout.Space(10f);
-            GUILayout.Label("--- ANGULAR FORCE (torque) ---");
-            GUILayout.Label($"Current [Pitch,Yaw,Roll]: ({_debugAngularForce.x:F2}, {_debugAngularForce.y:F2}, {_debugAngularForce.z:F2})");
-
-            GUILayout.Space(10f);
-            GUILayout.Label("--- LINEAR DRAG ---");
-            GUILayout.Label($"Current [X,Y,Z]: ({_debugLinearDrag.x:F3}, {_debugLinearDrag.y:F3}, {_debugLinearDrag.z:F3})");
-
-            GUILayout.Space(10f);
-            GUILayout.Label("--- ANGULAR DRAG ---");
-            GUILayout.Label($"Current [Pitch,Yaw,Roll]: ({_debugAngularDrag.x:F2}, {_debugAngularDrag.y:F2}, {_debugAngularDrag.z:F2})");
-
             GUILayout.EndArea();
         }
     }

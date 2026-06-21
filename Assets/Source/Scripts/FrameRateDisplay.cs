@@ -22,8 +22,11 @@ namespace BananaParty.VehicleGame
         private void OnGUI()
         {
             float fps = 1.0f / _deltaTime;
+            float width = 200;
+            float height = 30;
+            Rect rect = new Rect(Screen.width - width - 10, Screen.height - height - 10, width, height);
 
-            GUI.Label(_fpsRect, "FPS: " + Mathf.Round(fps), _style);
+            GUI.Label(rect, "FPS: " + Mathf.Round(fps), _style);
         }
     }
 }
