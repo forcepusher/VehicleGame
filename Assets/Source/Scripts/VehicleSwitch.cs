@@ -16,6 +16,23 @@ namespace BananaParty.VehicleGame
         private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
         private int _currentVehicleIndex = 0;
 
+        private void Start()
+        {
+            _vehicles = new List<IVehicle>();
+            foreach (var obj in _vehicleGameObjects)
+            {
+                var vehicle = obj.GetComponent<IVehicle>();
+                if (vehicle == null)
+                {
+                    Debug.LogError($"GameObject {obj.name} does not implement IVehicle");
+                    continue;
+                }
+                _vehicles.Add(vehicle);
+            }
+
+            SwitchVehicle(_currentVehicleIndex);
+        }
+
         private void Update()
         {
             int nextIndex = _currentVehicleIndex;
