@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace BananaParty.VehicleGame
 {
     [RequireComponent(typeof(Rigidbody))]
     public abstract class JetPlane : MonoBehaviour, IVehicle
     {
+        private GUIStyle _debugStyle;
+
         [SerializeField]
         private Transform _followTransform;
 
@@ -95,6 +98,10 @@ namespace BananaParty.VehicleGame
         private void Awake()
         {
             _rigidbody.centerOfMass = _centerOfMass.localPosition;
+            _debugStyle = new GUIStyle();
+            _debugStyle.fontSize = 14;
+            _debugStyle.normal.textColor = Color.yellow;
+            _debugStyle.border = new RectOffset(5, 5, 5, 5);
         }
 
         private void Start()
@@ -156,12 +163,7 @@ namespace BananaParty.VehicleGame
             if (_controls is InactiveControls)
                 return;
 
-            float width = 400f;
-            float height = 500f;
-            GUILayout.BeginArea(new Rect(10f, Screen.height - height - 10f, width, height));
-            GUILayout.Label("=== JET PLANE DEBUG ===");
-            GUILayout.Label($"Velocity: {_debugVelocity:F2} m/s");
-            GUILayout.EndArea();
+            GUI.Label(new Rect(10, 10, 200, 30), "Velocity: " + Mathf.Round(_debugVelocity));
         }
     }
 }
