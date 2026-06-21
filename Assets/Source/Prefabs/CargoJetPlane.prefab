@@ -183,7 +183,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1020057559939517855}
   - component: {fileID: 874959926379210531}
-  - component: {fileID: 7239707401739119493}
   - component: {fileID: 7944831779689076554}
   - component: {fileID: 7273403413110866149}
   - component: {fileID: 6451198838723788564}
@@ -243,19 +242,6 @@ MonoBehaviour:
   - {fileID: 8944578027168645341}
   - {fileID: 1506080706470249390}
   _sounds: {fileID: 7944831779689076554}
---- !u!114 &7239707401739119493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4064660653324310569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7f553953c443dc4ca4e3a43bfc0d0f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BananaParty.VehicleGame.Health
-  _collisionDamageMultiplier: 0.25
 --- !u!114 &7944831779689076554
 MonoBehaviour:
   m_ObjectHideFlags: 0

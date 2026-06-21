@@ -8,6 +8,9 @@ namespace BananaParty.VehicleGame
     public class VehicleSwitch : MonoBehaviour
     {
         [SerializeField]
+        VehicleReference _controlledVehicle;
+
+        [SerializeField]
         private MainCamera _mainCamera;
         [SerializeReference]
         private List<GameObject> _vehicleGameObjects;
@@ -74,6 +77,7 @@ namespace BananaParty.VehicleGame
             _currentVehicleIndex = index;
             _vehicles[_currentVehicleIndex].SetControls(_playerControls);
             _mainCamera.SetFollowTarget(_vehicles[_currentVehicleIndex]);
+            _controlledVehicle.Set(_vehicles[_currentVehicleIndex]);
         }
 
         public void OnSwitchVehicleButtonClick(string vehicleName)
