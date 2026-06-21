@@ -156,7 +156,9 @@ namespace BananaParty.VehicleGame
             if (_controls is InactiveControls)
                 return;
 
-            GUILayout.BeginArea(new Rect(10f, 10f, 400f, 500f));
+            float width = 400f;
+            float height = 500f;
+            GUILayout.BeginArea(new Rect(10f, Screen.height - height - 10f, width, height));
             GUILayout.Label("=== JET PLANE DEBUG ===");
             GUILayout.Label($"Velocity: {_debugVelocity:F2} m/s");
             GUILayout.EndArea();
