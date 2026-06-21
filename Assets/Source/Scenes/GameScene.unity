@@ -363,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab220f2f08db784a82f93d71de68904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleSwitch
+  _mainCamera: {fileID: 963194230}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +624,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe23d00d3aac914083596e9110f89e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  _target: {fileID: 1815066947}
 --- !u!1001 &1761705727
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -693,11 +693,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1352783432197783972, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
   m_PrefabInstance: {fileID: 1761705727}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1815066947 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1750173607519467433, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
-  m_PrefabInstance: {fileID: 8191508493589775850}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &942606820005228287
 PrefabInstance:

@@ -20,7 +20,7 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private JetPlaneSounds _sounds;
 
-        IControls _controls;
+        IControls _controls = new InactiveControls();
 
         // Debug output variables
         private float _debugVelocity;

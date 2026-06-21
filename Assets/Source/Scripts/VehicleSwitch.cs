@@ -8,28 +8,15 @@ namespace BananaParty.VehicleGame
     public class VehicleSwitch : MonoBehaviour
     {
         [SerializeField]
-        List<IVehicle> _vehicles;
+        private MainCamera _mainCamera;
+        [SerializeField]
+        private List<IVehicle> _vehicles;
 
-        private CompositeControls _activeControls;
-        private NullControls _inactiveControls = new NullControls();
+        private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
         private int _currentVehicleIndex = 0;
-
-        private void Start()
-        {
-            if (_vehicles == null || _vehicles.Count == 0) return;
-
-            _activeControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
-
-            for (int i = 0; i < _vehicles.Count; i++)
-            {
-                _vehicles[i].SetControls(i == _currentVehicleIndex ? _activeControls : _inactiveControls);
-            }
-        }
 
         private void Update()
         {
-            if (_vehicles == null || _vehicles.Count == 0) return;
-
             int nextIndex = _currentVehicleIndex;
 
             // Keyboard 1-9
@@ -64,18 +51,10 @@ namespace BananaParty.VehicleGame
 
         private void SwitchVehicle(int index)
         {
-            _vehicles[_currentVehicleIndex].SetControls(_inactiveControls);
+            _vehicles[_currentVehicleIndex].SetControls(new InactiveControls());
             _currentVehicleIndex = index;
-            _vehicles[_currentVehicleIndex].SetControls(_activeControls);
-        }
-
-        private class NullControls : IControls
-        {
-            public float Throttle => 0f;
-            public float Roll => 0f;
-            public float Pitch => 0f;
-            public float Yaw => 0f;
-            public void Update() { }
+            _vehicles[_currentVehicleIndex].SetControls(_playerControls);
+            _mainCamera.SetFollowTarget(_vehicles[_currentVehicleIndex]);
         }
     }
 }

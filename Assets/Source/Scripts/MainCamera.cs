@@ -8,6 +8,9 @@ namespace BananaParty.VehicleGame
 
         private void LateUpdate()
         {
+            if (_followTarget == null)
+                return;
+
             transform.position = _followTarget.FollowPosition;
             transform.rotation = _followTarget.FollowRotation;
         }
