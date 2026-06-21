@@ -25,17 +25,17 @@ namespace BananaParty.VehicleGame
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.
-        protected override Vector3 DragParked => new Vector3(0.0f, 0.0f, 0.001f);
-        protected override Vector3 AngularDragParked => new Vector3(3f, 5f, 2f); // pitch: yaw: roll
+        protected override Vector3 DragParked => new Vector3(0.0f, 0.0f, 0.0f);
+        protected override Vector3 AngularDragParked => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
 
-        protected override Vector3 DragTaxi => new Vector3(0.0f, 0.0f, 0.0025f);
-        protected override Vector3 AngularDragTaxi => new Vector3(3f, 5f, 2f); // pitch: yaw: roll
+        protected override Vector3 DragTaxi => new Vector3(0.0f, 0.0f, 0.0f);
+        protected override Vector3 AngularDragTaxi => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
 
-        protected override Vector3 DragTakeoff => new Vector3(0.4f, 0.3f, 0.005f); // moderate vertical drag for lift-off
-        protected override Vector3 AngularDragTakeoff => new Vector3(4f, 7f, 3f); // pitch: yaw: roll
+        protected override Vector3 DragTakeoff => new Vector3(0.4f, 0.0f, 0.0f); // moderate vertical drag for lift-off
+        protected override Vector3 AngularDragTakeoff => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
 
-        protected override Vector3 DragFlight => new Vector3(0.6f, 0.8f, 0.0075f);
-        protected override Vector3 AngularDragFlight => new Vector3(7f, 12f, 4f); // pitch: yaw: roll
+        protected override Vector3 DragFlight => new Vector3(0.0f, 0.0f, 0.0f);
+        protected override Vector3 AngularDragFlight => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
 
         //[SerializeField]
         //private Transform _followTransform;
