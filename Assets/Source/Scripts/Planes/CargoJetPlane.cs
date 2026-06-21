@@ -6,27 +6,27 @@ namespace BananaParty.VehicleGame
     public class CargoJetPlane : JetPlane
     {
         protected override float ParkedVelocity => 0f;
-                protected override float TaxiVelocity => 10f;
-                protected override float FlightVelocity => 40f;
+        protected override float TaxiVelocity => 10f;
+        protected override float FlightVelocity => 40f;
 
         // Linear acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
-                        protected override float AccelerationParked => 1.5f;
-                        protected override Vector3 AngularAccelerationParked => new Vector3(0f, 0f, 0f); // pitch: yaw: roll
+        protected override float AccelerationParked => 1.5f;
+        protected override Vector3 AngularAccelerationParked => new Vector3(0f, 0f, 0f); // pitch: yaw: roll
 
-                        protected override float AccelerationTaxi => 3f;
-                        protected override Vector3 AngularAccelerationTaxi => new Vector3(0f, 0.5f, 0f); // pitch: yaw: roll
+        protected override float AccelerationTaxi => 3f;
+        protected override Vector3 AngularAccelerationTaxi => new Vector3(0f, 0.5f, 0f); // pitch: yaw: roll
 
-                        protected override float AccelerationFight => 7f;
-                        protected override Vector3 AngularAccelerationFlight => new Vector3(2f, 2f, 2f); // pitch: yaw: roll
+        protected override float AccelerationFight => 7f;
+        protected override Vector3 AngularAccelerationFlight => new Vector3(2f, 2f, 2f); // pitch: yaw: roll
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
-                protected override Vector3 DragParked => new Vector3(0.0f, 0.0f, 0.0f);
-                protected override Vector3 AngularDragParked => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
+        protected override Vector3 DragParked => new Vector3(0.0f, 0.0f, 0.0f);
+        protected override Vector3 AngularDragParked => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
 
-                protected override Vector3 DragTaxi => new Vector3(0.0f, 0.05f, 0.0f);
-                protected override Vector3 AngularDragTaxi => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
+        protected override Vector3 DragTaxi => new Vector3(0.0f, 0.05f, 0.0f);
+        protected override Vector3 AngularDragTaxi => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
 
-                protected override Vector3 DragFlight => new Vector3(0.0f, 0.25f, 0.0f);
-                protected override Vector3 AngularDragFlight => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
+        protected override Vector3 DragFlight => new Vector3(0.0f, 0.25f, 0.0f);
+        protected override Vector3 AngularDragFlight => new Vector3(0.0f, 0.0f, 0.0f); // pitch: yaw: roll
     }
 }
