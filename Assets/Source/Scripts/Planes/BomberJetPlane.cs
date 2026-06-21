@@ -10,18 +10,18 @@ namespace BananaParty.VehicleGame
         protected override float TakeoffVelocity => 15f;
         protected override float FlightVelocity => 30f;
 
-        // Linear: x,y unused; z=thrust acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
-        protected override Vector3 AccelerationParked => new Vector3(0f, 0f, 5f); // ~1.2G strong initial push from standstill
-        protected override Vector3 AngularAccelerationParked => new Vector3(0f, 0f, 0f); // pitch: yaw: roll
+        // Linear acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
+                protected override float AccelerationParked => 5f; // ~1.2G strong initial push from standstill
+                protected override Vector3 AngularAccelerationParked => new Vector3(0f, 0f, 0f); // pitch: yaw: roll
 
-        protected override Vector3 AccelerationTaxi => new Vector3(0f, 0f, 5f); // ~0.8G ground roll (clunky)
-        protected override Vector3 AngularAccelerationTaxi => new Vector3(0f, 5f, 0f); // pitch: yaw: roll (near zero at low speed)
+                protected override float AccelerationTaxi => 5f; // ~0.8G ground roll (clunky)
+                protected override Vector3 AngularAccelerationTaxi => new Vector3(0f, 5f, 0f); // pitch: yaw: roll (near zero at low speed)
 
-        protected override Vector3 AccelerationTakeoff => new Vector3(0f, 0f, 8f); // ~0.8G for takeoff acceleration
-        protected override Vector3 AngularAccelerationTakeoff => new Vector3(5f, 10f, 10f); // pitch: yaw: roll (sluggish controls)
+                protected override float AccelerationTakeoff => 8f; // ~0.8G for takeoff acceleration
+                protected override Vector3 AngularAccelerationTakeoff => new Vector3(5f, 10f, 10f); // pitch: yaw: roll (sluggish controls)
 
-        protected override Vector3 AccelerationFight => new Vector3(0f, 0f, 20f); // ~1G at cruise speed (good airspeed buildup)
-        protected override Vector3 AngularAccelerationFlight => new Vector3(15f, 15f, 15f); // pitch: yaw: roll (smoother in flight)
+                protected override float AccelerationFight => 20f; // ~1G at cruise speed (good airspeed buildup)
+                protected override Vector3 AngularAccelerationFlight => new Vector3(15f, 15f, 15f); // pitch: yaw: roll (smoother in flight)
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         // Angular drag: yaw highest for directional stability, roll lowest for responsiveness.

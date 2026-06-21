@@ -24,7 +24,7 @@ namespace BananaParty.VehicleGame
 
         // Debug output variables
         private float _debugVelocity;
-        private Vector3 _debugLinearForce;
+        private float _debugLinearForce;
         private Vector3 _debugAngularForce;
         private Vector3 _debugLinearDrag;
         private Vector3 _debugAngularDrag;
@@ -34,17 +34,17 @@ namespace BananaParty.VehicleGame
         protected abstract float TakeoffVelocity { get; }
         protected abstract float FlightVelocity { get; }
 
-        // Linear: x,y unused; z=thrust acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
-        protected abstract Vector3 AccelerationParked { get; }
+        // Linear acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
+        protected abstract float AccelerationParked { get; }
         protected abstract Vector3 AngularAccelerationParked { get; }
 
-        protected abstract Vector3 AccelerationTaxi { get; }
+        protected abstract float AccelerationTaxi { get; }
         protected abstract Vector3 AngularAccelerationTaxi { get; }
 
-        protected abstract Vector3 AccelerationTakeoff { get; }
+        protected abstract float AccelerationTakeoff { get; }
         protected abstract Vector3 AngularAccelerationTakeoff { get; }
 
-        protected abstract Vector3 AccelerationFight { get; }
+        protected abstract float AccelerationFight { get; }
         protected abstract Vector3 AngularAccelerationFlight { get; }
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
@@ -61,7 +61,21 @@ namespace BananaParty.VehicleGame
         protected abstract Vector3 DragFlight { get; }
         protected abstract Vector3 AngularDragFlight { get; }
 
-        private Vector3 InterpolateKeyframes(float t, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3)
+        private float InterpolateKeyframesLinear(float t, float v0, float v1, float v2, float v3)
+        {
+            if (t <= ParkedVelocity) return v0;
+            if (t >= FlightVelocity) return v3;
+
+            if (t < TaxiVelocity)
+                return Mathf.Lerp(v0, v1, t / TaxiVelocity);
+
+            if (t < TakeoffVelocity)
+                return Mathf.Lerp(v1, v2, (t - TaxiVelocity) / (TakeoffVelocity - TaxiVelocity));
+
+            return Mathf.Lerp(v2, v3, (t - TakeoffVelocity) / (FlightVelocity - TakeoffVelocity));
+        }
+
+        private Vector3 InterpolateKeyframesAngular(float t, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3)
         {
             if (t <= ParkedVelocity) return v0;
             if (t >= FlightVelocity) return v3;
@@ -75,10 +89,10 @@ namespace BananaParty.VehicleGame
             return Vector3.Lerp(v2, v3, (t - TakeoffVelocity) / (FlightVelocity - TakeoffVelocity));
         }
 
-        private Vector3 GetLinearForce(float velocity) => InterpolateKeyframes(velocity, AccelerationParked, AccelerationTaxi, AccelerationTakeoff, AccelerationFight);
-        private Vector3 GetAngularForce(float velocity) => InterpolateKeyframes(velocity, AngularAccelerationParked, AngularAccelerationTaxi, AngularAccelerationTakeoff, AngularAccelerationFlight);
-        private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframes(velocity, DragParked, DragTaxi, DragTakeoff, DragFlight);
-        private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframes(velocity, AngularDragParked, AngularDragTaxi, AngularDragTakeoff, AngularDragFlight);
+        private float GetLinearForce(float velocity) => InterpolateKeyframesLinear(velocity, AccelerationParked, AccelerationTaxi, AccelerationTakeoff, AccelerationFight);
+                private Vector3 GetAngularForce(float velocity) => InterpolateKeyframesAngular(velocity, AngularAccelerationParked, AngularAccelerationTaxi, AngularAccelerationTakeoff, AngularAccelerationFlight);
+                private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframesAngular(velocity, DragParked, DragTaxi, DragTakeoff, DragFlight);
+                private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframesAngular(velocity, AngularDragParked, AngularDragTaxi, AngularDragTakeoff, AngularDragFlight);
 
         public Vector3 FollowPosition => _followTransform.position;
         public Quaternion FollowRotation => _followTransform.rotation;
@@ -109,12 +123,12 @@ namespace BananaParty.VehicleGame
         }
 
         private void FixedUpdate()
-        {
-            float velocity = _rigidbody.linearVelocity.magnitude;
-            Vector3 linearForce = GetLinearForce(velocity);
-            Vector3 angularForce = GetAngularForce(velocity);
-            Vector3 linearDrag = GetLinearDrag(velocity);
-            Vector3 angularDrag = GetAngularDrag(velocity);
+                {
+                    float velocity = _rigidbody.linearVelocity.magnitude;
+                    float linearForce = GetLinearForce(velocity);
+                    Vector3 angularForce = GetAngularForce(velocity);
+                    Vector3 linearDrag = GetLinearDrag(velocity);
+                    Vector3 angularDrag = GetAngularDrag(velocity);
 
             _debugVelocity = velocity;
             _debugLinearForce = linearForce;
@@ -136,7 +150,7 @@ namespace BananaParty.VehicleGame
                 localAngularVelocity.z * Mathf.Abs(localAngularVelocity.z) * angularDrag.z
             ), ForceMode.Acceleration);
 
-            _rigidbody.AddRelativeForce(_controls.Throttle * linearForce.z * Vector3.forward, ForceMode.Acceleration);
+            _rigidbody.AddRelativeForce(_controls.Throttle * linearForce * Vector3.forward, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(angularForce.x * _controls.Pitch * -Vector3.right, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(angularForce.y * _controls.Yaw * Vector3.up, ForceMode.Acceleration);
             _rigidbody.AddRelativeTorque(angularForce.z * _controls.Roll * -Vector3.forward, ForceMode.Acceleration);
