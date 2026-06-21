@@ -1,6 +1,6 @@
 namespace BananaParty.VehicleGame
 {
-    public interface IVehicle : IFollowTarget
+    public interface IVehicle : IFollowTarget, IHealth
     {
         void SetControls(IControls controls);
     }

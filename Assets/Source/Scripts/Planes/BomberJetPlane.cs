@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BananaParty.VehicleGame
 {
     public class BomberJetPlane : JetPlane
     {
-        // ALL UNCALIBRATED
+        protected override float CollisionDamageMultiplier => 1.0f;
 
         protected override float ParkedVelocity => 0f;
         protected override float TaxiVelocity => 10f;

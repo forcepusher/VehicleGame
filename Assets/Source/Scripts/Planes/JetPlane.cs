@@ -25,12 +25,9 @@ namespace BananaParty.VehicleGame
 
         IControls _controls = new InactiveControls();
 
-        // Debug output variables
-        private float _debugVelocity;
-        private float _debugLinearForce;
-        private Vector3 _debugAngularForce;
-        private Vector3 _debugLinearDrag;
-        private Vector3 _debugAngularDrag;
+        public int HealthValue { get; private set; } = 100;
+        protected abstract float CollisionDamageMultiplier { get; }
+
 
         protected abstract float ParkedVelocity { get; }
         protected abstract float TaxiVelocity { get; }
@@ -132,12 +129,6 @@ namespace BananaParty.VehicleGame
             Vector3 linearDrag = GetLinearDrag(velocity);
             Vector3 angularDrag = GetAngularDrag(velocity);
 
-            _debugVelocity = velocity;
-            _debugLinearForce = linearForce;
-            _debugAngularForce = angularForce;
-            _debugLinearDrag = linearDrag;
-            _debugAngularDrag = angularDrag;
-
             Vector3 localVelocity = transform.InverseTransformDirection(_rigidbody.linearVelocity);
             _rigidbody.AddRelativeForce(-new Vector3(
                 localVelocity.x * Mathf.Abs(localVelocity.x) * linearDrag.x,
@@ -158,12 +149,25 @@ namespace BananaParty.VehicleGame
             _rigidbody.AddRelativeTorque(angularForce.z * _controls.Roll * -Vector3.forward, ForceMode.Acceleration);
         }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            int damage = Mathf.RoundToInt(collision.relativeVelocity.magnitude * CollisionDamageMultiplier);
+            TakeDamage(damage);
+            Debug.Log($"Took {damage} damage from collision. Current health: {HealthValue}");
+        }
+
+        public void TakeDamage(int damage)
+        {
+            HealthValue -= damage;
+            HealthValue = Mathf.Max(0, HealthValue);
+        }
+
         private void OnGUI()
         {
             if (_controls is InactiveControls)
                 return;
 
-            GUI.Label(new Rect(10, 10, 200, 30), "Velocity: " + Mathf.Round(_debugVelocity));
+            GUI.Label(new Rect(10, 10, 200, 30), "Velocity: " + Mathf.Round(_rigidbody.linearVelocity.magnitude));
         }
     }
 }
