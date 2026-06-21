@@ -9,7 +9,7 @@ namespace BananaParty.VehicleGame
     {
         [SerializeField]
         private MainCamera _mainCamera;
-        [SerializeField]
+        [SerializeReference]
         private List<IVehicle> _vehicles;
 
         private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
