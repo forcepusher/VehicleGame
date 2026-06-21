@@ -16,7 +16,7 @@ namespace BananaParty.VehicleGame
         private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
         private int _currentVehicleIndex = 0;
 
-        private void Start()
+        private void Awake()
         {
             _vehicles = new List<IVehicle>();
             foreach (var obj in _vehicleGameObjects)
@@ -29,7 +29,10 @@ namespace BananaParty.VehicleGame
                 }
                 _vehicles.Add(vehicle);
             }
+        }
 
+        private void Start()
+        {
             SwitchVehicle(_currentVehicleIndex);
         }
 
