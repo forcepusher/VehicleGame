@@ -7,7 +7,7 @@ namespace BananaParty.VehicleGame
     {
         protected override float ParkedVelocity => 0f;
         protected override float TaxiVelocity => 15f;
-        protected override float FlightVelocity => 40f;
+        protected override float FlightVelocity => 30f;
 
         // Linear acceleration (m/s²). Angular: x=pitch torque, y=yaw torque, z=roll torque
         protected override float AccelerationParked => 1.5f;
