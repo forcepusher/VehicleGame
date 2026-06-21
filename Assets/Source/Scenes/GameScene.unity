@@ -210,6 +210,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d62c68cad83e704ea5a2d42e5e0c99c, type: 3}
   m_PrefabInstance: {fileID: 640386}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &17205873 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4064660653324310569, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
+  m_PrefabInstance: {fileID: 942606820005228287}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &550831313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -364,10 +369,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleSwitch
   _mainCamera: {fileID: 963194230}
-  _vehicles: []
-  references:
-    version: 2
-    RefIds: []
+  _vehicleGameObjects:
+  - {fileID: 17205873}
+  - {fileID: 763478388}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +513,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ced0ccef6293b4e8c251adb3c8057c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseLock
+--- !u!1 &763478388 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2394010716773962168, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+  m_PrefabInstance: {fileID: 8191508493589775850}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,10 +758,6 @@ PrefabInstance:
     - target: {fileID: 4064660653324310569, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
       propertyPath: m_Name
       value: CargoJetPlane
-      objectReference: {fileID: 0}
-    - target: {fileID: 4064660653324310569, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
