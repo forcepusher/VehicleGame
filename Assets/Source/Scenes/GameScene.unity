@@ -698,6 +698,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1506080706470249390, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
+      propertyPath: m_Radius
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1506080706470249390, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
+      propertyPath: m_SuspensionSpring.damper
+      value: 400000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1506080706470249390, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
+      propertyPath: m_SuspensionSpring.spring
+      value: 2500000
+      objectReference: {fileID: 0}
     - target: {fileID: 4064660653324310569, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
       propertyPath: m_Name
       value: CargoJetPlane
@@ -705,6 +717,10 @@ PrefabInstance:
     - target: {fileID: 4064660653324310569, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716580148040200419, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
+      propertyPath: m_Mass
+      value: 200000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
