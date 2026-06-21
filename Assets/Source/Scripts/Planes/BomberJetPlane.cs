@@ -16,10 +16,10 @@ namespace BananaParty.VehicleGame
         protected override Vector3 AngularAccelerationParked => new Vector3(0f, 0f, 0f); // pitch: yaw: roll
 
         protected override float AccelerationTaxi => 6f;
-        protected override Vector3 AngularAccelerationTaxi => new Vector3(0f, 0.5f, 0f); // pitch: yaw: roll
+        protected override Vector3 AngularAccelerationTaxi => new Vector3(0f, 1.0f, 0f); // pitch: yaw: roll
 
         protected override float AccelerationFight => 15f;
-        protected override Vector3 AngularAccelerationFlight => new Vector3(0.5f, 0.5f, 0.5f); // pitch: yaw: roll
+        protected override Vector3 AngularAccelerationFlight => new Vector3(2f, 2f, 2f); // pitch: yaw: roll
 
         // Linear drag per axis; z=forward direction should be lowest (streamlined jet).
         protected override Vector3 DragParked => new Vector3(0.0f, 0.0f, 0.0f);
