@@ -87,6 +87,9 @@ namespace BananaParty.VehicleGame
         public void SetControls(IControls controls)
         {
             _controls = controls;
+
+            if (_controls is InactiveControls)
+                _sounds.StopEngine();
         }
 
         private void Awake()
