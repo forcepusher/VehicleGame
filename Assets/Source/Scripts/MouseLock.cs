@@ -8,9 +8,16 @@ namespace BananaParty.VehicleGame
     {
         private void Update()
         {
+            if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+
             if (Mouse.current?.leftButton.wasPressedThisFrame == true && !EventSystem.current.IsPointerOverGameObject())
             {
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
         }
     }
