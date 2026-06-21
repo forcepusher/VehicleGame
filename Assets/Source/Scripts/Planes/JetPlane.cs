@@ -4,7 +4,7 @@ using UnityEngine;
 namespace BananaParty.VehicleGame
 {
     [RequireComponent(typeof(Rigidbody))]
-    public abstract class JetPlane : MonoBehaviour, IFollowTarget
+    public abstract class JetPlane : MonoBehaviour, IVehicle
     {
         [SerializeField]
         private Transform _followTransform;
@@ -20,7 +20,7 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private JetPlaneSounds _sounds;
 
-        IControls _controls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
+        IControls _controls;
 
         // Debug output variables
         private float _debugVelocity;
@@ -83,6 +83,11 @@ namespace BananaParty.VehicleGame
 
         public Vector3 FollowPosition => _followTransform.position;
         public Quaternion FollowRotation => _followTransform.rotation;
+
+        public void SetControls(IControls controls)
+        {
+            _controls = controls;
+        }
 
         private void Awake()
         {
