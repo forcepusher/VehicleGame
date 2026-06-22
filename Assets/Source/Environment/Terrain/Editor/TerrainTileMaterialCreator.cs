@@ -41,9 +41,10 @@ namespace BananaParty.VehicleGame.Editor
                     updatedCount++;
                 }
 
-                string bitmapName = meshName.Replace("Mesh Output", "Bitmap Output 4096");
-                string bitmapPath = $"{TilesFolder}/{bitmapName}.png";
-                Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(bitmapPath);
+                int tileIndex = meshName.IndexOf("_x");
+                string tileSuffix = meshName.Substring(tileIndex);
+                string texturePath = $"{TilesFolder}/TerrainTexture{tileSuffix}.png";
+                Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
                 material.SetTexture("_MainTex", texture);
                 EditorUtility.SetDirty(material);
             }
