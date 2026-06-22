@@ -37,7 +37,7 @@ namespace BananaParty.VehicleGame
                 options = BuildAssetBundleOptions.AssetBundleStripUnityVersion,
                 bundleDefinitions = assetBundleDefinitionList.ToArray()
             };
-            var manifest = BuildPipeline.BuildAssetBundles(buildParameters);
+            AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(buildParameters);
         }
     }
 }
