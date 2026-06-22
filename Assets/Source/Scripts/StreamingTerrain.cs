@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -8,11 +9,13 @@ namespace BananaParty.VehicleGame
     {
         [Header("Settings")]
         [SerializeField] private Transform playerTransform;
-        [SerializeField] private float loadDistance = 4000f; // Load tiles within this distance
+        [SerializeField] private float loadDistance = 4000f;
         [SerializeField] private float tileSize = 2000f;
         [SerializeField] private int gridDimension = 10;
+        [SerializeField] private float updateInterval = 0.5f;
 
         private readonly Dictionary<(int, int), GameObject> loadedTiles = new();
+        private readonly HashSet<(int, int)> loadingIndices = new();
 
         [Header("Assets")]
         [SerializeField] private Shader terrainShader;
@@ -20,11 +23,30 @@ namespace BananaParty.VehicleGame
         [SerializeField] private float detailTiling = 100f;
         [SerializeField] private float detailStrength = 1f;
 
-        private void Update()
-        {
-            if (playerTransform == null) return;
+        private float gridOffset;
 
-            UpdateStreaming();
+        private void Awake()
+        {
+            gridOffset = (gridDimension * tileSize) * 0.5f;
+        }
+
+        private void Start()
+        {
+            if (playerTransform == null)
+            {
+                Debug.LogError("Player Transform not assigned to StreamingTerrain");
+                return;
+            }
+            StartCoroutine(StreamingRoutine());
+        }
+
+        private IEnumerator StreamingRoutine()
+        {
+            while (true)
+            {
+                UpdateStreaming();
+                yield return new WaitForSeconds(updateInterval);
+            }
         }
 
         private void UpdateStreaming()
@@ -32,30 +54,26 @@ namespace BananaParty.VehicleGame
             Vector3 playerPos = playerTransform.position;
             HashSet<(int, int)> requiredIndices = new();
 
-            // Calculate which tiles should be loaded based on player position
-            // Assuming the grid spans from -10km to 10km (10 tiles of 2km)
-            // Tile index X=0 is at -10k to -8k, etc.
-            int centerTileX = Mathf.RoundToInt((playerPos.x + 10000f) / tileSize);
-            int centerTileY = Mathf.RoundToInt((playerPos.z + 10000f) / tileSize);
+            int centerTileX = Mathf.RoundToInt((playerPos.x + gridOffset) / tileSize);
+            int centerTileY = Mathf.RoundToInt((playerPos.z + gridOffset) / tileSize);
 
             int radius = Mathf.CeilToInt(loadDistance / tileSize);
 
             for (int x = centerTileX - radius; x <= centerTileX + radius; x++)
             {
+                if (x < 0 || x >= gridDimension) continue;
                 for (int y = centerTileY - radius; y <= centerTileY + radius; y++)
                 {
-                    if (x >= 0 && x < gridDimension && y >= 0 && y < gridDimension)
-                    {
-                        // Check if player is actually within distance of this tile's bounding box
-                        float minX = x * tileSize - 10000f;
-                        float maxX = minX + tileSize;
-                        float minY = y * tileSize - 10000f;
-                        float maxY = minY + tileSize;
+                    if (y < 0 || y >= gridDimension) continue;
 
-                        if (IsPlayerNearTile(playerPos, minX, maxX, minY, maxY))
-                        {
-                            requiredIndices.Add((x, y));
-                        }
+                    float minX = x * tileSize - gridOffset;
+                    float maxX = minX + tileSize;
+                    float minY = y * tileSize - gridOffset;
+                    float maxY = minY + tileSize;
+
+                    if (IsPlayerNearTile(playerPos, minX, maxX, minY, maxY))
+                    {
+                        requiredIndices.Add((x, y));
                     }
                 }
             }
@@ -75,12 +93,12 @@ namespace BananaParty.VehicleGame
                 UnloadTile(index);
             }
 
-            // Load new tiles
+            // Load new tiles async
             foreach (var index in requiredIndices)
             {
-                if (!loadedTiles.ContainsKey(index))
+                if (!loadedTiles.ContainsKey(index) && !loadingIndices.Contains(index))
                 {
-                    LoadTile(index);
+                    StartCoroutine(LoadTileAsync(index));
                 }
             }
         }
@@ -92,27 +110,31 @@ namespace BananaParty.VehicleGame
             return (dx * dx + dz * dz) <= loadDistance * loadDistance;
         }
 
-        private void LoadTile((int x, int y) index)
+        private IEnumerator LoadTileAsync((int x, int y) index)
         {
+            loadingIndices.Add(index);
+
             string bundleName = $"Terrain_x0{index.x}_y0{index.y}";
             string path = Path.Combine(Application.streamingAssetsPath, bundleName);
 
-            AssetBundle bundle = AssetBundle.LoadFromFile(path);
+            AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(path);
+            yield return bundleRequest;
+
+            AssetBundle bundle = bundleRequest.assetBundle;
             if (bundle == null)
             {
-                throw new FileNotFoundException($"Failed to load AssetBundle at {path}. Ensure the build pipeline has run and created the file.");
+                Debug.LogError($"Failed to load AssetBundle at {path}");
+                loadingIndices.Remove(index);
+                yield break;
             }
-
-            GameObject tileRoot = new GameObject($"Tile_{index.x}_{index.y}");
-            tileRoot.transform.position = Vector3.zero;
 
             string[] assetNames = bundle.GetAllAssetNames();
             if (assetNames == null || assetNames.Length == 0)
             {
                 Debug.LogError($"AssetBundle {bundleName} contains no assets.");
-                Destroy(tileRoot);
                 bundle.Unload(true);
-                return;
+                loadingIndices.Remove(index);
+                yield break;
             }
 
             Mesh mesh = null;
@@ -120,58 +142,62 @@ namespace BananaParty.VehicleGame
 
             foreach (var assetName in assetNames)
             {
-                if (assetName.ToLower().Contains("mesh output"))
+                string lowerName = assetName.ToLower();
+                if (lowerName.Contains("mesh output"))
                 {
-                    mesh = bundle.LoadAsset<Mesh>(assetName);
-                    if (mesh == null) Debug.LogError($"Asset {assetName} was found but could not be loaded as Mesh in {bundleName}");
+                    AssetBundleRequest request = bundle.LoadAssetAsync<Mesh>(assetName);
+                    yield return request;
+                    mesh = request.asset as Mesh;
                 }
-                else if (assetName.ToLower().Contains("bitmap output"))
+                else if (lowerName.Contains("bitmap output"))
                 {
-                    texture = bundle.LoadAsset<Texture2D>(assetName);
-                    if (texture == null) Debug.LogError($"Asset {assetName} was found but could not be loaded as Texture2D in {bundleName}");
+                    AssetBundleRequest request = bundle.LoadAssetAsync<Texture2D>(assetName);
+                    yield return request;
+                    texture = request.asset as Texture2D;
                 }
             }
 
             if (mesh == null)
             {
-                Debug.LogError($"Bundle {bundleName} is missing a mesh asset containing 'Mesh Output'. Available assets: {string.Join(", ", assetNames)}");
+                Debug.LogError($"Bundle {bundleName} is missing a mesh asset containing 'Mesh Output'.");
+                bundle.Unload(true);
+                loadingIndices.Remove(index);
+                yield break;
             }
-            else
+
+            GameObject tileRoot = new GameObject($"Tile_{index.x}_{index.y}");
+            tileRoot.transform.position = Vector3.zero;
+
+            GameObject meshObj = new GameObject($"Mesh_{index.x}_{index.y}");
+            meshObj.transform.SetParent(tileRoot.transform);
+
+            MeshFilter filter = meshObj.AddComponent<MeshFilter>();
+            filter.sharedMesh = mesh;
+
+            MeshRenderer renderer = meshObj.AddComponent<MeshRenderer>();
+            Shader shaderToUse = terrainShader != null ? terrainShader : Shader.Find("Custom/BakedTerrain");
+            Material mat = new Material(shaderToUse);
+
+            if (texture != null)
             {
-                GameObject meshObj = new GameObject($"Mesh_{index.x}_{index.y}");
-                meshObj.transform.SetParent(tileRoot.transform);
-
-                MeshFilter filter = meshObj.AddComponent<MeshFilter>();
-                filter.sharedMesh = mesh;
-
-                MeshRenderer renderer = meshObj.AddComponent<MeshRenderer>();
-
-                Material mat = new Material(terrainShader);
-
-                if (texture != null)
-                {
-                    mat.SetTexture("_MainTex", texture);
-                }
-                else
-                {
-                    Debug.LogWarning($"Bundle {bundleName} has a mesh but is missing a 'Bitmap Output' texture.");
-                }
-
-                if (detailAlbedoMap != null)
-                {
-                    mat.SetTexture("_DetailAlbedoMap", detailAlbedoMap);
-                    mat.SetTextureScale("_DetailAlbedoMap", new Vector2(detailTiling, detailTiling));
-                }
-
-                mat.SetFloat("_DetailStrength", detailStrength);
-                renderer.material = mat;
-
-                MeshCollider collider = meshObj.AddComponent<MeshCollider>();
-                collider.sharedMesh = mesh;
+                mat.SetTexture("_MainTex", texture);
             }
+
+            if (detailAlbedoMap != null)
+            {
+                mat.SetTexture("_DetailAlbedoMap", detailAlbedoMap);
+                mat.SetTextureScale("_DetailAlbedoMap", new Vector2(detailTiling, detailTiling));
+            }
+
+            mat.SetFloat("_DetailStrength", detailStrength);
+            renderer.material = mat;
+
+            MeshCollider collider = meshObj.AddComponent<MeshCollider>();
+            collider.sharedMesh = mesh;
 
             loadedTiles.Add(index, tileRoot);
             bundle.Unload(false);
+            loadingIndices.Remove(index);
         }
 
         private void UnloadTile((int x, int y) index)
