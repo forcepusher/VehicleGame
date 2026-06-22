@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.Networking;
+using System.Linq;
 
 namespace BananaParty.VehicleGame
 {
@@ -17,6 +18,9 @@ namespace BananaParty.VehicleGame
 
         private readonly Dictionary<(int, int), GameObject> loadedTiles = new();
         private readonly HashSet<(int, int)> loadingIndices = new();
+        private readonly HashSet<(int, int)> requiredIndices = new();
+
+        public bool AllRequiredTilesLoaded => loadingIndices.Count == 0 && requiredIndices.All(index => loadedTiles.ContainsKey(index));
 
         [Header("Assets")]
         [SerializeField] private Shader terrainShader;
@@ -53,7 +57,7 @@ namespace BananaParty.VehicleGame
         private void UpdateStreaming()
         {
             Vector3 playerPos = playerTransform.position;
-            HashSet<(int, int)> requiredIndices = new();
+            requiredIndices.Clear();
 
             int centerTileX = Mathf.RoundToInt((playerPos.x + gridOffset) / tileSize);
             int centerTileY = Mathf.RoundToInt((playerPos.z + gridOffset) / tileSize);

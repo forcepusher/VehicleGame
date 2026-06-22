@@ -2,19 +2,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Collections;
 
 namespace BananaParty.VehicleGame
 {
     public class VehicleSwitch : MonoBehaviour
     {
         [SerializeField]
-        VehicleReference _controlledVehicle;
+        StreamingTerrain _streamingTerrain;
+
+        [SerializeField]
+        private VehicleReference _controlledVehicle;
 
         [SerializeField]
         private MainCamera _mainCamera;
-        [SerializeReference]
+        [SerializeField]
         private List<GameObject> _vehicleGameObjects;
+
         private List<IVehicle> _vehicles;
+        
 
         private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
         private int _currentVehicleIndex = 0;
@@ -32,8 +38,11 @@ namespace BananaParty.VehicleGame
             }
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            while (_streamingTerrain.AllRequiredTilesLoaded)
+                yield return null;
+
             SwitchVehicle(_currentVehicleIndex);
         }
 

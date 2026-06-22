@@ -90,11 +90,19 @@ namespace BananaParty.VehicleGame
             _controls = controls;
 
             if (_controls is InactiveControls)
+            {
                 _sounds.StopEngine();
+                _rigidbody.isKinematic = true;
+            }
+            else
+            {
+                _rigidbody.isKinematic = false;
+            }
         }
 
         private void Awake()
         {
+            _rigidbody.isKinematic = true;
             _rigidbody.centerOfMass = _centerOfMass.localPosition;
             _debugStyle = new GUIStyle();
             _debugStyle.fontSize = 14;

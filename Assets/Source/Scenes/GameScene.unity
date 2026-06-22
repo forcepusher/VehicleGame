@@ -660,7 +660,7 @@ Transform:
   m_GameObject: {fileID: 563751563}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -660.16095, y: 220.01378, z: -432.2572}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -692,7 +692,7 @@ Transform:
   m_GameObject: {fileID: 565382631}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 66.25736, y: 176.24054, z: 104.09077}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -710,6 +710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab220f2f08db784a82f93d71de68904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleSwitch
+  _streamingTerrain: {fileID: 563751564}
   _controlledVehicle: {fileID: 11400000, guid: 2680f5474a5da4c44baa6b2d35d477d2, type: 2}
   _mainCamera: {fileID: 963194230}
   _vehicleGameObjects:
@@ -838,7 +839,7 @@ Transform:
   m_GameObject: {fileID: 756975472}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 57.23161, y: 173.85463, z: 43.922}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
