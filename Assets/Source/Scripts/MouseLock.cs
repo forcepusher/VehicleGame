@@ -14,11 +14,14 @@ namespace BananaParty.VehicleGame
                 Cursor.visible = true;
             }
 
+#if !UNITY_WEBGL || UNITY_EDITOR
             if (Mouse.current?.leftButton.wasPressedThisFrame == true && !EventSystem.current.IsPointerOverGameObject())
             {
+
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
+#endif
         }
     }
 }
