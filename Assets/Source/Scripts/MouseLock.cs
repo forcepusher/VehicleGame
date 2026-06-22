@@ -8,20 +8,19 @@ namespace BananaParty.VehicleGame
     {
         private void Update()
         {
+#if !UNITY_WEBGL || UNITY_EDITOR
             if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
+#endif
 
-#if !UNITY_WEBGL || UNITY_EDITOR
             if (Mouse.current?.leftButton.wasPressedThisFrame == true && !EventSystem.current.IsPointerOverGameObject())
             {
-
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
-#endif
         }
     }
 }
