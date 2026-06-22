@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.3679245, g: 0.1995817, b: 0.1995817, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.00075
+  m_FogDensity: 0.002
   m_LinearFogStart: 800
   m_LinearFogEnd: 2000
   m_AmbientSkyColor: {r: 0.21568629, g: 0.21568629, b: 0.21568629, a: 1}
@@ -765,9 +765,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StreamingTerrain
   playerTransform: {fileID: 963194228}
-  loadDistance: 4000
+  loadDistance: 2000
   tileSize: 2000
   gridDimension: 10
+  terrainShader: {fileID: 4800000, guid: c9175eed40556d14fb8e20231ff6eabc, type: 3}
+  detailAlbedoMap: {fileID: 2800000, guid: 9f75ffb7eb90aa64494d5736a9070c1e, type: 3}
+  detailTiling: 100
+  detailStrength: 1
 --- !u!4 &563751565
 Transform:
   m_ObjectHideFlags: 0

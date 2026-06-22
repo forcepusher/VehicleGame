@@ -13,7 +13,12 @@ namespace BananaParty.VehicleGame
         [SerializeField] private int gridDimension = 10;
 
         private readonly Dictionary<(int, int), GameObject> loadedTiles = new();
-        private readonly HashSet<(int, int)> activeIndices = new();
+
+        [Header("Assets")]
+        [SerializeField] private Shader terrainShader;
+        [SerializeField] private Texture2D detailAlbedoMap;
+        [SerializeField] private float detailTiling = 100f;
+        [SerializeField] private float detailStrength = 1f;
 
         private void Update()
         {
@@ -140,16 +145,26 @@ namespace BananaParty.VehicleGame
                 filter.sharedMesh = mesh;
 
                 MeshRenderer renderer = meshObj.AddComponent<MeshRenderer>();
+
+                Material mat = new Material(terrainShader);
+
                 if (texture != null)
                 {
-                    Material mat = new Material(Shader.Find("Standard"));
-                    mat.mainTexture = texture;
-                    renderer.material = mat;
+                    mat.SetTexture("_MainTex", texture);
                 }
                 else
                 {
                     Debug.LogWarning($"Bundle {bundleName} has a mesh but is missing a 'Bitmap Output' texture.");
                 }
+
+                if (detailAlbedoMap != null)
+                {
+                    mat.SetTexture("_DetailAlbedoMap", detailAlbedoMap);
+                    mat.SetTextureScale("_DetailAlbedoMap", new Vector2(detailTiling, detailTiling));
+                }
+
+                mat.SetFloat("_DetailStrength", detailStrength);
+                renderer.material = mat;
 
                 MeshCollider collider = meshObj.AddComponent<MeshCollider>();
                 collider.sharedMesh = mesh;
