@@ -33,7 +33,7 @@ namespace BananaParty.VehicleGame
 
             BuildAssetBundlesParameters buildParameters = new()
             {
-                outputPath = "",
+                outputPath = "Assets/StreamingAssets",
                 options = BuildAssetBundleOptions.AssetBundleStripUnityVersion,
                 bundleDefinitions = assetBundleDefinitionList.ToArray()
             };
