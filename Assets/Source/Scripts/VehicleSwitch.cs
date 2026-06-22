@@ -77,6 +77,10 @@ namespace BananaParty.VehicleGame
             _currentVehicleIndex = index;
             _vehicles[_currentVehicleIndex].SetControls(_playerControls);
             _mainCamera.SetFollowTarget(_vehicles[_currentVehicleIndex]);
+
+            if (_controlledVehicle.IsSet)
+                _controlledVehicle.Release();
+
             _controlledVehicle.Set(_vehicles[_currentVehicleIndex]);
         }
 

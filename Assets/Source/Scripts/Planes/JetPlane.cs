@@ -25,6 +25,7 @@ namespace BananaParty.VehicleGame
 
         IControls _controls = new InactiveControls();
 
+        public int MaxHealth => 100;
         public int HealthValue { get; private set; } = 100;
         protected abstract float CollisionDamageMultiplier { get; }
 
