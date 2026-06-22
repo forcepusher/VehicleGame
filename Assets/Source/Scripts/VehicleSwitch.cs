@@ -40,7 +40,7 @@ namespace BananaParty.VehicleGame
 
         private IEnumerator Start()
         {
-            while (_streamingTerrain.AllRequiredTilesLoaded)
+            while (!_streamingTerrain.AllRequiredTilesLoaded)
                 yield return null;
 
             SwitchVehicle(_currentVehicleIndex);
