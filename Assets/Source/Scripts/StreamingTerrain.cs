@@ -150,6 +150,9 @@ namespace BananaParty.VehicleGame
                 {
                     Debug.LogWarning($"Bundle {bundleName} has a mesh but is missing a 'Bitmap Output' texture.");
                 }
+
+                MeshCollider collider = meshObj.AddComponent<MeshCollider>();
+                collider.sharedMesh = mesh;
             }
 
             loadedTiles.Add(index, tileRoot);
