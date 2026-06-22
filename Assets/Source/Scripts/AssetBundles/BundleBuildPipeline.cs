@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +16,13 @@ namespace BananaParty.VehicleGame
                 {
                     string assetBundleName = $"Terrain_{terrainIndexX}_{terrainIndexY}";
                     AssetBundleBuild assetBundleBuild = new();
-                    assetBundleBuild.assetBundleName = $"Terrain_{terrainIndexX}_{terrainIndexY}";
+                    assetBundleBuild.assetBundleName = $"Terrain_x0{terrainIndexX}_y0{terrainIndexY}";
+                    assetBundleBuild.assetNames = new string[]
+                    {
+                        //$"TerrainMaterial_x0{terrainIndexX}_y0{terrainIndexY}",
+                        $"TerrainProject Bitmap Output 4096_x0{terrainIndexX}_y0{terrainIndexY}",
+                        $"TerrainProject Mesh Output_x0{terrainIndexX}_y0{terrainIndexY}"
+                    };
                 }
             }
         }
