@@ -152,7 +152,7 @@ namespace BananaParty.VehicleGame
 
         private void OnCollisionEnter(Collision collision)
         {
-            int damage = Mathf.RoundToInt(collision.relativeVelocity.magnitude * CollisionDamageMultiplier);
+            int damage = Mathf.RoundToInt(collision.relativeVelocity.sqrMagnitude * CollisionDamageMultiplier);
             TakeDamage(damage);
             Debug.Log($"Took {damage} damage from collision. Current health: {HealthValue}");
         }
