@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.Networking;
 
 namespace BananaParty.VehicleGame
 {
@@ -117,10 +118,27 @@ namespace BananaParty.VehicleGame
             string bundleName = $"Terrain_x0{index.x}_y0{index.y}";
             string path = Path.Combine(Application.streamingAssetsPath, bundleName);
 
+            AssetBundle bundle = null;
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(path))
+            {
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError($"Failed to load AssetBundle at {path}: {request.error}");
+                    loadingIndices.Remove(index);
+                    yield break;
+                }
+                bundle = DownloadHandlerAssetBundle.GetContent(request);
+            }
+#else
             AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(path);
             yield return bundleRequest;
+            bundle = bundleRequest.assetBundle;
+#endif
 
-            AssetBundle bundle = bundleRequest.assetBundle;
             if (bundle == null)
             {
                 Debug.LogError($"Failed to load AssetBundle at {path}");
