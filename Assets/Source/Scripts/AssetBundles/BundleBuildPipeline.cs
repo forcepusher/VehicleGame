@@ -21,9 +21,8 @@ namespace BananaParty.VehicleGame
                     assetBundleBuild.assetBundleName = $"Terrain_x0{terrainIndexX}_y0{terrainIndexY}";
                     assetBundleBuild.assetNames = new string[]
                     {
-                        //$"TerrainMaterial_x0{terrainIndexX}_y0{terrainIndexY}",
-                        $"TerrainProject Bitmap Output 4096_x0{terrainIndexX}_y0{terrainIndexY}",
-                        $"TerrainProject Mesh Output_x0{terrainIndexX}_y0{terrainIndexY}"
+                        $"Assets/Source/Environment/Terrain/Tiles/TerrainProject Bitmap Output 4096_x0{terrainIndexX}_y0{terrainIndexY}.png",
+                        $"Assets/Source/Environment/Terrain/Tiles/TerrainProject Mesh Output_x0{terrainIndexX}_y0{terrainIndexY}.obj"
                     };
 
                     assetBundleDefinitionList.Add(assetBundleBuild);
