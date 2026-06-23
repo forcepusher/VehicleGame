@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -8,36 +7,40 @@ namespace BananaParty.VehicleGame
 {
     public class MouseLock : MonoBehaviour
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        [DllImport("__Internal")]
-        private static extern void PointerLockTracker_Init();
+        private const float RelockCooldownSeconds = 2f;
 
-        [DllImport("__Internal")]
-        private static extern int PointerLockTracker_CanRequestLock();
-#endif
+        private float _lockReleasedAt = float.NegativeInfinity;
+        private bool _wasLocked;
 
         private void Awake()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             WebGLInput.stickyCursorLock = false;
-            PointerLockTracker_Init();
 #endif
         }
 
         private void Update()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
+            bool isLocked = Cursor.lockState == CursorLockMode.Locked;
+
+            if (_wasLocked && !isLocked)
+                _lockReleasedAt = Time.unscaledTime;
+
+            _wasLocked = isLocked;
+
+#if !UNITY_WEBGL || UNITY_EDITOR
+            if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
+            {
+                _lockReleasedAt = Time.unscaledTime;
+                Cursor.lockState = CursorLockMode.None;
+            }
+#endif
+
             if (!CanRequestLock())
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
-#endif
-
-#if !UNITY_WEBGL || UNITY_EDITOR
-            if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
-                Cursor.lockState = CursorLockMode.None;
-#endif
 
             if (Mouse.current?.leftButton.wasPressedThisFrame == true
                 && !IsPointerOverUi()
@@ -54,11 +57,7 @@ namespace BananaParty.VehicleGame
 
         private bool CanRequestLock()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            return PointerLockTracker_CanRequestLock() != 0;
-#else
-            return true;
-#endif
+            return Time.unscaledTime - _lockReleasedAt >= RelockCooldownSeconds;
         }
 
         private bool IsPointerOverUi()
