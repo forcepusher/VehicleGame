@@ -5,7 +5,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 #endif
@@ -108,55 +107,6 @@ namespace BananaParty.VehicleGame
         }
     }
 
-    public class LoadingOverlay : MonoBehaviour
-    {
-        private Canvas _canvas;
-        private int _visibleRequestCount;
-
-        private void Awake()
-        {
-            _canvas = gameObject.AddComponent<Canvas>();
-            _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _canvas.sortingOrder = 1000;
-            gameObject.AddComponent<CanvasScaler>();
-            gameObject.AddComponent<GraphicRaycaster>();
-
-            GameObject labelObject = new GameObject("Label");
-            labelObject.transform.SetParent(transform, false);
-
-            Text label = labelObject.AddComponent<Text>();
-            label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            label.fontSize = 48;
-            label.alignment = TextAnchor.MiddleCenter;
-            label.color = Color.white;
-            label.text = "Loading";
-
-            RectTransform rectTransform = label.rectTransform;
-            rectTransform.anchorMin = Vector2.zero;
-            rectTransform.anchorMax = Vector2.one;
-            rectTransform.offsetMin = Vector2.zero;
-            rectTransform.offsetMax = Vector2.zero;
-
-            _canvas.enabled = false;
-        }
-
-        public void Show()
-        {
-            _visibleRequestCount++;
-            _canvas.enabled = true;
-        }
-
-        public void Hide()
-        {
-            _visibleRequestCount--;
-            if (_visibleRequestCount <= 0)
-            {
-                _visibleRequestCount = 0;
-                _canvas.enabled = false;
-            }
-        }
-    }
-
     public class TileSceneEntry
     {
         public TileCoordinate Coordinate;
@@ -176,13 +126,14 @@ namespace BananaParty.VehicleGame
         private Transform _streamSource;
 
         [SerializeField]
-        private LoadingOverlay _loadingOverlay;
+        private GameObject _loadingOverlay;
 
         [SerializeField]
         private float _unloadTtlSeconds = 20f;
 
         private readonly Dictionary<TileCoordinate, TileSceneEntry> _entries = new Dictionary<TileCoordinate, TileSceneEntry>();
         private readonly HashSet<TileCoordinate> _currentRequiredTiles = new HashSet<TileCoordinate>();
+        private int _activeTileLoadCount;
 
         public bool AllRequiredTilesLoaded
         {
@@ -200,17 +151,28 @@ namespace BananaParty.VehicleGame
 
         private void Awake()
         {
-            if (_loadingOverlay == null)
-            {
-                GameObject overlayObject = new GameObject("LoadingOverlay");
-                overlayObject.transform.SetParent(transform);
-                _loadingOverlay = overlayObject.AddComponent<LoadingOverlay>();
-            }
+            _loadingOverlay.SetActive(false);
         }
 
         private void Update()
         {
             UpdateRequiredTiles();
+        }
+
+        private void ShowLoadingOverlay()
+        {
+            _activeTileLoadCount++;
+            _loadingOverlay.SetActive(true);
+        }
+
+        private void HideLoadingOverlay()
+        {
+            _activeTileLoadCount--;
+            if (_activeTileLoadCount <= 0)
+            {
+                _activeTileLoadCount = 0;
+                _loadingOverlay.SetActive(false);
+            }
         }
 
         private void UpdateRequiredTiles()
@@ -245,7 +207,7 @@ namespace BananaParty.VehicleGame
 
         private IEnumerator LoadTileScene(TileSceneEntry entry)
         {
-            _loadingOverlay.Show();
+            ShowLoadingOverlay();
 
             string sceneName = entry.Coordinate.SceneName;
 #if UNITY_EDITOR
@@ -279,7 +241,7 @@ namespace BananaParty.VehicleGame
 
             entry.IsLoaded = true;
             entry.IsLoading = false;
-            _loadingOverlay.Hide();
+            HideLoadingOverlay();
         }
 
         private void ScheduleUnloads()
