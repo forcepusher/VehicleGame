@@ -26,7 +26,8 @@ namespace BananaParty.VehicleGame
 
         private readonly Dictionary<TileCoordinate, TileSceneEntry> _entries = new Dictionary<TileCoordinate, TileSceneEntry>();
         private readonly HashSet<TileCoordinate> _currentRequiredTiles = new HashSet<TileCoordinate>();
-        private int _activeTileLoadCount;
+        private int _activeTileSceneActivationCount;
+        private float _timeScaleBeforePause;
 
         public bool AllRequiredTilesLoaded
         {
@@ -52,20 +53,28 @@ namespace BananaParty.VehicleGame
             UpdateRequiredTiles();
         }
 
-        private void ShowLoadingOverlay()
+        private void BeginSceneActivationPause()
         {
-            _activeTileLoadCount++;
-            _loadingOverlay.SetActive(true);
+            if (_activeTileSceneActivationCount == 0)
+            {
+                _timeScaleBeforePause = Time.timeScale;
+                Time.timeScale = 0f;
+                _loadingOverlay.SetActive(true);
+            }
+
+            _activeTileSceneActivationCount++;
         }
 
-        private void HideLoadingOverlay()
+        private void EndSceneActivationPause()
         {
-            _activeTileLoadCount--;
-            if (_activeTileLoadCount <= 0)
-            {
-                _activeTileLoadCount = 0;
-                _loadingOverlay.SetActive(false);
-            }
+            _activeTileSceneActivationCount--;
+
+            if (_activeTileSceneActivationCount > 0)
+                return;
+
+            _activeTileSceneActivationCount = 0;
+            Time.timeScale = _timeScaleBeforePause;
+            _loadingOverlay.SetActive(false);
         }
 
         private void UpdateRequiredTiles()
@@ -100,8 +109,6 @@ namespace BananaParty.VehicleGame
 
         private IEnumerator LoadTileScene(TileSceneEntry entry)
         {
-            ShowLoadingOverlay();
-
             string sceneName = entry.Coordinate.SceneName;
             string bundleUrl = GetBundleUrl(entry.Coordinate);
             UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(bundleUrl);
@@ -113,14 +120,15 @@ namespace BananaParty.VehicleGame
             AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
             request.Dispose();
 
+            BeginSceneActivationPause();
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             yield return loadOperation;
+            EndSceneActivationPause();
 
             entry.Bundle = bundle;
             entry.Scene = SceneManager.GetSceneByName(sceneName);
             entry.IsLoaded = true;
             entry.IsLoading = false;
-            HideLoadingOverlay();
         }
 
         private void ScheduleUnloads()
