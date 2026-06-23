@@ -7,7 +7,7 @@ namespace BananaParty.VehicleGame
 {
     public class MouseLock : MonoBehaviour
     {
-        private const float RelockCooldownSeconds = 2f;
+        private const float RelockCooldownSeconds = 1.5f;
 
         private float _lockReleasedAt = float.NegativeInfinity;
         private bool _wasLocked;
