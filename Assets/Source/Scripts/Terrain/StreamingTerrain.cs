@@ -105,7 +105,6 @@ namespace BananaParty.VehicleGame
 
         private IEnumerator LoadTileScene(TileSceneEntry entry)
         {
-            string sceneName = entry.Coordinate.SceneName;
             string bundleUrl = GetBundleUrl(entry.Coordinate);
             UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(bundleUrl);
             yield return request.SendWebRequest();
@@ -116,13 +115,15 @@ namespace BananaParty.VehicleGame
             AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
             request.Dispose();
 
+            string scenePath = bundle.GetAllScenePaths()[0];
+
             BeginSceneActivationPause();
-            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
             yield return loadOperation;
             EndSceneActivationPause();
 
             entry.Bundle = bundle;
-            entry.Scene = SceneManager.GetSceneByName(sceneName);
+            entry.Scene = SceneManager.GetSceneByPath(scenePath);
             entry.IsLoaded = true;
             entry.IsLoading = false;
         }
