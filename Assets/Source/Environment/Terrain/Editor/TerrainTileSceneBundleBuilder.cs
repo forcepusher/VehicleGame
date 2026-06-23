@@ -11,7 +11,8 @@ namespace BananaParty.VehicleGame.Editor
     {
         private const string ScenesFolder = "Assets/Source/Scenes/Tiles";
         private const string StreamingAssetsFolder = "Assets/StreamingAssets";
-        private const string TileBundlesFolder = "Assets/StreamingAssets/TileSceneBundles";
+        private const string WebGlFolder = "Assets/StreamingAssets/WebGL";
+        private const string SceneBundlesFolder = "Assets/StreamingAssets/WebGL/SceneBundles";
 
         [MenuItem("Tools/Terrain/Build Tile Scene Bundles/WebGL")]
         public static void BuildTileSceneBundlesForWebGl()
@@ -22,10 +23,10 @@ namespace BananaParty.VehicleGame.Editor
         private static void BuildTileSceneBundlesForTarget(BuildTarget buildTarget)
         {
             string[] scenePaths = CollectTileScenePaths();
-            string outputDirectory = GetOutputDirectory(buildTarget);
+            string outputDirectory = SceneBundlesFolder;
             AssetBundleBuild[] bundleDefinitions = CreateBundleDefinitions(scenePaths);
 
-            EnsureOutputDirectoryExists(outputDirectory);
+            EnsureOutputDirectoryExists();
             Directory.CreateDirectory(outputDirectory);
 
             BuildAssetBundlesParameters buildParameters = new BuildAssetBundlesParameters
@@ -79,18 +80,16 @@ namespace BananaParty.VehicleGame.Editor
             return scenePaths.ToArray();
         }
 
-        private static string GetOutputDirectory(BuildTarget buildTarget)
-        {
-            return $"{TileBundlesFolder}/{buildTarget}";
-        }
-
-        private static void EnsureOutputDirectoryExists(string outputDirectory)
+        private static void EnsureOutputDirectoryExists()
         {
             if (!AssetDatabase.IsValidFolder(StreamingAssetsFolder))
                 AssetDatabase.CreateFolder("Assets", "StreamingAssets");
 
-            if (!AssetDatabase.IsValidFolder(TileBundlesFolder))
-                AssetDatabase.CreateFolder(StreamingAssetsFolder, "TileSceneBundles");
+            if (!AssetDatabase.IsValidFolder(WebGlFolder))
+                AssetDatabase.CreateFolder(StreamingAssetsFolder, "WebGL");
+
+            if (!AssetDatabase.IsValidFolder(SceneBundlesFolder))
+                AssetDatabase.CreateFolder(WebGlFolder, "SceneBundles");
         }
     }
 }
