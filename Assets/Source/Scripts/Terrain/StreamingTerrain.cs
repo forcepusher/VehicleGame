@@ -10,9 +10,9 @@ namespace BananaParty.VehicleGame
     public class StreamingTerrain : MonoBehaviour
     {
 #if UNITY_EDITOR
-        private const string BundleRoot = "Standalone/SceneBundles";
+        private const string BundleRoot = "Standalone/SceneTiles";
 #else
-        private const string BundleRoot = "WebGL/SceneBundles";
+        private const string BundleRoot = "WebGL/SceneTiles";
 #endif
 
         [SerializeField]

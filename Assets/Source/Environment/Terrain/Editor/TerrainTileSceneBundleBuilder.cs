@@ -11,7 +11,7 @@ namespace BananaParty.VehicleGame.Editor
     {
         private const string ScenesFolder = "Assets/Source/Scenes/Tiles";
         private const string StreamingAssetsFolder = "Assets/StreamingAssets";
-        private const string SceneBundlesFolderName = "SceneBundles";
+        private const string SceneTilesFolderName = "SceneTiles";
         private const string WebGlPlatformFolderName = "WebGL";
         private const string StandalonePlatformFolderName = "Standalone";
 
@@ -49,13 +49,13 @@ namespace BananaParty.VehicleGame.Editor
 
             Debug.Log(
                 $"Built {bundleDefinitions.Length} tile scene bundles for {buildTarget} at {outputDirectory}. " +
-                $"Load at runtime via Application.streamingAssetsPath/{platformFolderName}/{SceneBundlesFolderName}. " +
+                $"Load at runtime via Application.streamingAssetsPath/{platformFolderName}/{SceneTilesFolderName}. " +
                 $"Manifest bundles: {string.Join(", ", manifest.GetAllAssetBundles())}.");
         }
 
         private static string GetOutputDirectory(string platformFolderName)
         {
-            return $"{StreamingAssetsFolder}/{platformFolderName}/{SceneBundlesFolderName}";
+            return $"{StreamingAssetsFolder}/{platformFolderName}/{SceneTilesFolderName}";
         }
 
         private static AssetBundleBuild[] CreateBundleDefinitions(string[] scenePaths)
@@ -103,7 +103,7 @@ namespace BananaParty.VehicleGame.Editor
 
             string sceneBundlesFolder = GetOutputDirectory(platformFolderName);
             if (!AssetDatabase.IsValidFolder(sceneBundlesFolder))
-                AssetDatabase.CreateFolder(platformFolder, SceneBundlesFolderName);
+                AssetDatabase.CreateFolder(platformFolder, SceneTilesFolderName);
         }
     }
 }
