@@ -4,16 +4,16 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
-using UnityEditor.SceneManagement;
-#endif
 
 namespace BananaParty.VehicleGame
 {
     public class StreamingTerrain : MonoBehaviour
     {
+#if UNITY_EDITOR
+        private const string BundleRoot = "Standalone/SceneBundles";
+#else
         private const string BundleRoot = "WebGL/SceneBundles";
-        private const string EditorScenesFolder = "Assets/Source/Scenes/Tiles";
+#endif
 
         [SerializeField]
         private Transform _streamSource;
@@ -103,35 +103,21 @@ namespace BananaParty.VehicleGame
             ShowLoadingOverlay();
 
             string sceneName = entry.Coordinate.SceneName;
-#if UNITY_EDITOR
-            if (ShouldLoadFromEditorScene(sceneName))
-            {
-                string scenePath = $"{EditorScenesFolder}/{sceneName}.unity";
-                LoadSceneParameters loadParameters = new LoadSceneParameters(LoadSceneMode.Additive);
-                yield return EditorSceneManager.LoadSceneAsyncInPlayMode(scenePath, loadParameters);
-                entry.Scene = SceneManager.GetSceneByName(sceneName);
-                entry.Bundle = null;
-            }
-            else
-#endif
-            {
-                string bundleUrl = GetBundleUrl(entry.Coordinate);
-                UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(bundleUrl);
-                yield return request.SendWebRequest();
+            string bundleUrl = GetBundleUrl(entry.Coordinate);
+            UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(bundleUrl);
+            yield return request.SendWebRequest();
 
-                if (request.result != UnityWebRequest.Result.Success)
-                    throw new IOException($"Failed to load tile bundle {entry.Coordinate}: {request.error}");
+            if (request.result != UnityWebRequest.Result.Success)
+                throw new IOException($"Failed to load tile bundle {entry.Coordinate}: {request.error}");
 
-                AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
-                request.Dispose();
+            AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
+            request.Dispose();
 
-                AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-                yield return loadOperation;
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            yield return loadOperation;
 
-                entry.Bundle = bundle;
-                entry.Scene = SceneManager.GetSceneByName(sceneName);
-            }
-
+            entry.Bundle = bundle;
+            entry.Scene = SceneManager.GetSceneByName(sceneName);
             entry.IsLoaded = true;
             entry.IsLoading = false;
             HideLoadingOverlay();
@@ -205,14 +191,5 @@ namespace BananaParty.VehicleGame
             return Path.Combine(Application.streamingAssetsPath, BundleRoot, tile.SceneName)
                 .Replace('\\', '/');
         }
-
-#if UNITY_EDITOR
-        private static bool ShouldLoadFromEditorScene(string sceneName)
-        {
-            string bundlePath = Path.Combine(Application.streamingAssetsPath, BundleRoot, sceneName);
-            string scenePath = $"{EditorScenesFolder}/{sceneName}.unity";
-            return !File.Exists(bundlePath) && File.Exists(scenePath);
-        }
-#endif
     }
 }
