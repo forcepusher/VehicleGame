@@ -18,15 +18,10 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private Transform _streamSource;
 
-        [SerializeField]
-        private GameObject _loadingOverlay;
-
         private float _unloadTtlSeconds = 300f;
 
         private readonly Dictionary<TileCoordinate, TileSceneEntry> _entries = new Dictionary<TileCoordinate, TileSceneEntry>();
         private readonly HashSet<TileCoordinate> _currentRequiredTiles = new HashSet<TileCoordinate>();
-        private int _activeTileSceneActivationCount;
-        private float _timeScaleBeforePause;
 
         public bool AllRequiredTilesLoaded
         {
@@ -42,38 +37,9 @@ namespace BananaParty.VehicleGame
             }
         }
 
-        private void Awake()
-        {
-            _loadingOverlay.SetActive(false);
-        }
-
         private void Update()
         {
             UpdateRequiredTiles();
-        }
-
-        private void BeginSceneActivationPause()
-        {
-            if (_activeTileSceneActivationCount == 0)
-            {
-                _timeScaleBeforePause = Time.timeScale;
-                Time.timeScale = 0f;
-                _loadingOverlay.SetActive(true);
-            }
-
-            _activeTileSceneActivationCount++;
-        }
-
-        private void EndSceneActivationPause()
-        {
-            _activeTileSceneActivationCount--;
-
-            if (_activeTileSceneActivationCount > 0)
-                return;
-
-            _activeTileSceneActivationCount = 0;
-            Time.timeScale = _timeScaleBeforePause;
-            _loadingOverlay.SetActive(false);
         }
 
         private void UpdateRequiredTiles()
@@ -116,11 +82,8 @@ namespace BananaParty.VehicleGame
             request.Dispose();
 
             string scenePath = bundle.GetAllScenePaths()[0];
-
-            BeginSceneActivationPause();
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
             yield return loadOperation;
-            EndSceneActivationPause();
 
             entry.Bundle = bundle;
             entry.Scene = SceneManager.GetSceneByPath(scenePath);
