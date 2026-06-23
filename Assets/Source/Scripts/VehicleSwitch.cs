@@ -8,8 +8,8 @@ namespace BananaParty.VehicleGame
 {
     public class VehicleSwitch : MonoBehaviour
     {
-        //[SerializeField]
-        //StreamingTerrain _streamingTerrain;
+        [SerializeField]
+        private StreamingTerrain _streamingTerrain;
 
         [SerializeField]
         private VehicleReference _controlledVehicle;
@@ -38,10 +38,10 @@ namespace BananaParty.VehicleGame
             }
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
-            //while (!_streamingTerrain.AllRequiredTilesLoaded)
-            //    yield return null;
+            while (!_streamingTerrain.AllRequiredTilesLoaded)
+                yield return null;
 
             SwitchVehicle(_currentVehicleIndex);
         }

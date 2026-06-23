@@ -1,0 +1,363 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
+
+namespace BananaParty.VehicleGame
+{
+    public struct TileCoordinate : IEquatable<TileCoordinate>
+    {
+        public int X;
+        public int Y;
+
+        public TileCoordinate(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
+
+        public string SceneName => $"x{X}_y{Y}";
+
+        public bool Equals(TileCoordinate other)
+        {
+            return X == other.X && Y == other.Y;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TileCoordinate other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
+        }
+
+        public override string ToString()
+        {
+            return SceneName;
+        }
+    }
+
+    public static class TerrainTileGrid
+    {
+        public const float TileSize = 4000f;
+        public const float OriginX = -10000f;
+        public const float OriginZMax = 10000f;
+
+        public static TileCoordinate WorldToTile(Vector3 worldPosition)
+        {
+            int x = Mathf.FloorToInt((worldPosition.x - OriginX) / TileSize);
+            int y = Mathf.FloorToInt((OriginZMax - worldPosition.z) / TileSize);
+            return new TileCoordinate(x, y);
+        }
+
+        public static TileCoordinate GetAnchor(TileCoordinate playerTile)
+        {
+            return new TileCoordinate(playerTile.X / 2 * 2, playerTile.Y / 2 * 2);
+        }
+
+        public static IEnumerable<TileCoordinate> GetWindow(TileCoordinate anchor)
+        {
+            yield return anchor;
+            yield return new TileCoordinate(anchor.X + 1, anchor.Y);
+            yield return new TileCoordinate(anchor.X, anchor.Y + 1);
+            yield return new TileCoordinate(anchor.X + 1, anchor.Y + 1);
+        }
+
+        public static void AddCenterPreloadTiles(
+            HashSet<TileCoordinate> targets,
+            TileCoordinate anchor,
+            TileCoordinate playerTile,
+            Vector3 worldPosition)
+        {
+            float minX = OriginX + playerTile.X * TileSize;
+            float minZ = OriginZMax - (playerTile.Y + 1) * TileSize;
+            float localX = worldPosition.x - minX;
+            float localZ = worldPosition.z - minZ;
+            float half = TileSize * 0.5f;
+
+            if (playerTile.X == anchor.X + 1 && localX > half)
+            {
+                targets.Add(new TileCoordinate(anchor.X + 2, anchor.Y));
+                targets.Add(new TileCoordinate(anchor.X + 2, anchor.Y + 1));
+            }
+            else if (playerTile.X == anchor.X && localX < half)
+            {
+                targets.Add(new TileCoordinate(anchor.X - 1, anchor.Y));
+                targets.Add(new TileCoordinate(anchor.X - 1, anchor.Y + 1));
+            }
+
+            if (playerTile.Y == anchor.Y && localZ > half)
+            {
+                targets.Add(new TileCoordinate(anchor.X, anchor.Y - 1));
+                targets.Add(new TileCoordinate(anchor.X + 1, anchor.Y - 1));
+            }
+            else if (playerTile.Y == anchor.Y + 1 && localZ < half)
+            {
+                targets.Add(new TileCoordinate(anchor.X, anchor.Y + 2));
+                targets.Add(new TileCoordinate(anchor.X + 1, anchor.Y + 2));
+            }
+        }
+    }
+
+    public class LoadingOverlay : MonoBehaviour
+    {
+        private Canvas _canvas;
+        private int _visibleRequestCount;
+
+        private void Awake()
+        {
+            _canvas = gameObject.AddComponent<Canvas>();
+            _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            _canvas.sortingOrder = 1000;
+            gameObject.AddComponent<CanvasScaler>();
+            gameObject.AddComponent<GraphicRaycaster>();
+
+            GameObject labelObject = new GameObject("Label");
+            labelObject.transform.SetParent(transform, false);
+
+            Text label = labelObject.AddComponent<Text>();
+            label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            label.fontSize = 48;
+            label.alignment = TextAnchor.MiddleCenter;
+            label.color = Color.white;
+            label.text = "Loading";
+
+            RectTransform rectTransform = label.rectTransform;
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+
+            _canvas.enabled = false;
+        }
+
+        public void Show()
+        {
+            _visibleRequestCount++;
+            _canvas.enabled = true;
+        }
+
+        public void Hide()
+        {
+            _visibleRequestCount--;
+            if (_visibleRequestCount <= 0)
+            {
+                _visibleRequestCount = 0;
+                _canvas.enabled = false;
+            }
+        }
+    }
+
+    public class TileSceneEntry
+    {
+        public TileCoordinate Coordinate;
+        public AssetBundle Bundle;
+        public Scene Scene;
+        public bool IsLoaded;
+        public bool IsLoading;
+        public float UnloadAfterTime;
+    }
+
+    public class StreamingTerrain : MonoBehaviour
+    {
+        private const string BundleRoot = "WebGL/SceneBundles";
+        private const string EditorScenesFolder = "Assets/Source/Scenes/Tiles";
+
+        [SerializeField]
+        private Transform _streamSource;
+
+        [SerializeField]
+        private LoadingOverlay _loadingOverlay;
+
+        [SerializeField]
+        private float _unloadTtlSeconds = 20f;
+
+        private readonly Dictionary<TileCoordinate, TileSceneEntry> _entries = new Dictionary<TileCoordinate, TileSceneEntry>();
+        private readonly HashSet<TileCoordinate> _currentRequiredTiles = new HashSet<TileCoordinate>();
+
+        public bool AllRequiredTilesLoaded
+        {
+            get
+            {
+                foreach (TileCoordinate tile in _currentRequiredTiles)
+                {
+                    if (!IsTileReady(tile))
+                        return false;
+                }
+
+                return _currentRequiredTiles.Count > 0;
+            }
+        }
+
+        private void Awake()
+        {
+            if (_loadingOverlay == null)
+            {
+                GameObject overlayObject = new GameObject("LoadingOverlay");
+                overlayObject.transform.SetParent(transform);
+                _loadingOverlay = overlayObject.AddComponent<LoadingOverlay>();
+            }
+        }
+
+        private void Update()
+        {
+            UpdateRequiredTiles();
+        }
+
+        private void UpdateRequiredTiles()
+        {
+            Vector3 worldPosition = _streamSource.position;
+            TileCoordinate playerTile = TerrainTileGrid.WorldToTile(worldPosition);
+            TileCoordinate anchor = TerrainTileGrid.GetAnchor(playerTile);
+
+            _currentRequiredTiles.Clear();
+            foreach (TileCoordinate tile in TerrainTileGrid.GetWindow(anchor))
+                _currentRequiredTiles.Add(tile);
+
+            TerrainTileGrid.AddCenterPreloadTiles(_currentRequiredTiles, anchor, playerTile, worldPosition);
+
+            foreach (TileCoordinate tile in _currentRequiredTiles)
+                RequestLoad(tile);
+
+            ScheduleUnloads();
+            ProcessExpiredUnloads();
+        }
+
+        private void RequestLoad(TileCoordinate tile)
+        {
+            TileSceneEntry entry = GetOrCreateEntry(tile);
+            if (entry.IsLoaded || entry.IsLoading)
+                return;
+
+            entry.IsLoading = true;
+            entry.UnloadAfterTime = 0f;
+            StartCoroutine(LoadTileScene(entry));
+        }
+
+        private IEnumerator LoadTileScene(TileSceneEntry entry)
+        {
+            _loadingOverlay.Show();
+
+            string sceneName = entry.Coordinate.SceneName;
+#if UNITY_EDITOR
+            if (ShouldLoadFromEditorScene(sceneName))
+            {
+                string scenePath = $"{EditorScenesFolder}/{sceneName}.unity";
+                LoadSceneParameters loadParameters = new LoadSceneParameters(LoadSceneMode.Additive);
+                yield return EditorSceneManager.LoadSceneAsyncInPlayMode(scenePath, loadParameters);
+                entry.Scene = SceneManager.GetSceneByName(sceneName);
+                entry.Bundle = null;
+            }
+            else
+#endif
+            {
+                string bundleUrl = GetBundleUrl(entry.Coordinate);
+                UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(bundleUrl);
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                    throw new IOException($"Failed to load tile bundle {entry.Coordinate}: {request.error}");
+
+                AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
+                request.Dispose();
+
+                AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+                yield return loadOperation;
+
+                entry.Bundle = bundle;
+                entry.Scene = SceneManager.GetSceneByName(sceneName);
+            }
+
+            entry.IsLoaded = true;
+            entry.IsLoading = false;
+            _loadingOverlay.Hide();
+        }
+
+        private void ScheduleUnloads()
+        {
+            foreach (KeyValuePair<TileCoordinate, TileSceneEntry> pair in _entries)
+            {
+                TileSceneEntry entry = pair.Value;
+                if (!entry.IsLoaded || entry.IsLoading)
+                    continue;
+
+                if (_currentRequiredTiles.Contains(pair.Key))
+                {
+                    entry.UnloadAfterTime = 0f;
+                    continue;
+                }
+
+                if (entry.UnloadAfterTime <= 0f)
+                    entry.UnloadAfterTime = Time.time + _unloadTtlSeconds;
+            }
+        }
+
+        private void ProcessExpiredUnloads()
+        {
+            List<TileCoordinate> expiredTiles = new List<TileCoordinate>();
+
+            foreach (KeyValuePair<TileCoordinate, TileSceneEntry> pair in _entries)
+            {
+                TileSceneEntry entry = pair.Value;
+                if (entry.UnloadAfterTime > 0f && Time.time >= entry.UnloadAfterTime)
+                    expiredTiles.Add(pair.Key);
+            }
+
+            foreach (TileCoordinate tile in expiredTiles)
+                StartCoroutine(UnloadTileScene(_entries[tile]));
+        }
+
+        private IEnumerator UnloadTileScene(TileSceneEntry entry)
+        {
+            if (entry.IsLoading)
+                yield break;
+
+            AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(entry.Scene);
+            yield return unloadOperation;
+
+            if (entry.Bundle != null)
+                entry.Bundle.Unload(true);
+
+            _entries.Remove(entry.Coordinate);
+        }
+
+        private TileSceneEntry GetOrCreateEntry(TileCoordinate tile)
+        {
+            if (_entries.TryGetValue(tile, out TileSceneEntry entry))
+                return entry;
+
+            entry = new TileSceneEntry { Coordinate = tile };
+            _entries[tile] = entry;
+            return entry;
+        }
+
+        private bool IsTileReady(TileCoordinate tile)
+        {
+            return _entries.TryGetValue(tile, out TileSceneEntry entry) && entry.IsLoaded && !entry.IsLoading;
+        }
+
+        private static string GetBundleUrl(TileCoordinate tile)
+        {
+            return Path.Combine(Application.streamingAssetsPath, BundleRoot, tile.SceneName)
+                .Replace('\\', '/');
+        }
+
+#if UNITY_EDITOR
+        private static bool ShouldLoadFromEditorScene(string sceneName)
+        {
+            string bundlePath = Path.Combine(Application.streamingAssetsPath, BundleRoot, sceneName);
+            string scenePath = $"{EditorScenesFolder}/{sceneName}.unity";
+            return !File.Exists(bundlePath) && File.Exists(scenePath);
+        }
+#endif
+    }
+}
