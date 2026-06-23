@@ -22,10 +22,10 @@ namespace BananaParty.VehicleGame
             float tileCenterX = OriginX + (playerTile.X + 0.5f) * TileSize;
             float tileCenterZ = OriginZ + (playerTile.Y + 0.5f) * TileSize;
 
-            int westColumnX = worldPosition.x < tileCenterX ? playerTile.X - 1 : playerTile.X;
-            int northRowY = worldPosition.z > tileCenterZ ? playerTile.Y + 1 : playerTile.Y;
+            int northWestX = worldPosition.x < tileCenterX ? playerTile.X - 1 : playerTile.X;
+            int northWestY = worldPosition.z > tileCenterZ ? playerTile.Y + 1 : playerTile.Y;
 
-            return new TileCoordinate(westColumnX, northRowY);
+            return new TileCoordinate(northWestX, northWestY);
         }
 
         public static IEnumerable<TileCoordinate> GetWindow(TileCoordinate northWest)

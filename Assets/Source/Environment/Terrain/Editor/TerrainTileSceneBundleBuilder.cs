@@ -101,8 +101,8 @@ namespace BananaParty.VehicleGame.Editor
             if (!AssetDatabase.IsValidFolder(platformFolder))
                 AssetDatabase.CreateFolder(StreamingAssetsFolder, platformFolderName);
 
-            string sceneBundlesFolder = GetOutputDirectory(platformFolderName);
-            if (!AssetDatabase.IsValidFolder(sceneBundlesFolder))
+            string sceneTilesFolder = GetOutputDirectory(platformFolderName);
+            if (!AssetDatabase.IsValidFolder(sceneTilesFolder))
                 AssetDatabase.CreateFolder(platformFolder, SceneTilesFolderName);
         }
     }
