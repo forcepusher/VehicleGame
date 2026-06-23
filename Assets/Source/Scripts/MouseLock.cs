@@ -7,8 +7,6 @@ namespace BananaParty.VehicleGame
 {
     public class MouseLock : MonoBehaviour
     {
-        private bool _wantsLock;
-
         private void Awake()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -18,28 +16,19 @@ namespace BananaParty.VehicleGame
 
         private void Update()
         {
+#if !UNITY_WEBGL || UNITY_EDITOR
             if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
-            {
-                UnlockCursor();
-                return;
-            }
+                Cursor.lockState = CursorLockMode.None;
+#endif
 
             if (Mouse.current?.leftButton.wasPressedThisFrame == true && !IsPointerOverUi())
-                LockCursor();
-        }
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
 
-        private void LockCursor()
-        {
-            _wantsLock = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
-        private void UnlockCursor()
-        {
-            _wantsLock = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (Cursor.lockState != CursorLockMode.Locked)
+                Cursor.visible = true;
         }
 
         private bool IsPointerOverUi()
