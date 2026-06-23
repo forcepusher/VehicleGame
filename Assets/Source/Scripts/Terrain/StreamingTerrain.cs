@@ -21,8 +21,7 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private GameObject _loadingOverlay;
 
-        [SerializeField]
-        private float _unloadTtlSeconds = 20f;
+        private float _unloadTtlSeconds = 300f;
 
         private readonly Dictionary<TileCoordinate, TileSceneEntry> _entries = new Dictionary<TileCoordinate, TileSceneEntry>();
         private readonly HashSet<TileCoordinate> _currentRequiredTiles = new HashSet<TileCoordinate>();
@@ -80,14 +79,11 @@ namespace BananaParty.VehicleGame
         private void UpdateRequiredTiles()
         {
             Vector3 worldPosition = _streamSource.position;
-            TileCoordinate playerTile = TerrainTileGrid.WorldToTile(worldPosition);
-            TileCoordinate anchor = TerrainTileGrid.GetAnchor(playerTile);
+            TileCoordinate anchor = TerrainTileGrid.GetAnchor(worldPosition);
 
             _currentRequiredTiles.Clear();
             foreach (TileCoordinate tile in TerrainTileGrid.GetWindow(anchor))
                 _currentRequiredTiles.Add(tile);
-
-            TerrainTileGrid.AddCenterPreloadTiles(_currentRequiredTiles, anchor, playerTile, worldPosition);
 
             foreach (TileCoordinate tile in _currentRequiredTiles)
                 RequestLoad(tile);

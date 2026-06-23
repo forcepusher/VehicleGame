@@ -16,9 +16,23 @@ namespace BananaParty.VehicleGame
             return new TileCoordinate(x, y);
         }
 
-        public static TileCoordinate GetAnchor(TileCoordinate playerTile)
+        public static TileCoordinate GetAnchor(Vector3 worldPosition)
         {
-            return new TileCoordinate(playerTile.X / 2 * 2, playerTile.Y / 2 * 2);
+            TileCoordinate playerTile = WorldToTile(worldPosition);
+            Vector2 local = GetLocalPositionInTile(worldPosition, playerTile);
+            float half = TileSize * 0.5f;
+
+            int anchorX = local.x < half ? playerTile.X - 1 : playerTile.X;
+            int anchorY = local.y < half ? playerTile.Y - 1 : playerTile.Y;
+
+            return new TileCoordinate(anchorX, anchorY);
+        }
+
+        public static Vector2 GetLocalPositionInTile(Vector3 worldPosition, TileCoordinate tile)
+        {
+            float minX = OriginX + tile.X * TileSize;
+            float minZ = OriginZMax - (tile.Y + 1) * TileSize;
+            return new Vector2(worldPosition.x - minX, worldPosition.z - minZ);
         }
 
         public static IEnumerable<TileCoordinate> GetWindow(TileCoordinate anchor)
@@ -27,41 +41,6 @@ namespace BananaParty.VehicleGame
             yield return new TileCoordinate(anchor.X + 1, anchor.Y);
             yield return new TileCoordinate(anchor.X, anchor.Y + 1);
             yield return new TileCoordinate(anchor.X + 1, anchor.Y + 1);
-        }
-
-        public static void AddCenterPreloadTiles(
-            HashSet<TileCoordinate> targets,
-            TileCoordinate anchor,
-            TileCoordinate playerTile,
-            Vector3 worldPosition)
-        {
-            float minX = OriginX + playerTile.X * TileSize;
-            float minZ = OriginZMax - (playerTile.Y + 1) * TileSize;
-            float localX = worldPosition.x - minX;
-            float localZ = worldPosition.z - minZ;
-            float half = TileSize * 0.5f;
-
-            if (playerTile.X == anchor.X + 1 && localX > half)
-            {
-                targets.Add(new TileCoordinate(anchor.X + 2, anchor.Y));
-                targets.Add(new TileCoordinate(anchor.X + 2, anchor.Y + 1));
-            }
-            else if (playerTile.X == anchor.X && localX < half)
-            {
-                targets.Add(new TileCoordinate(anchor.X - 1, anchor.Y));
-                targets.Add(new TileCoordinate(anchor.X - 1, anchor.Y + 1));
-            }
-
-            if (playerTile.Y == anchor.Y && localZ > half)
-            {
-                targets.Add(new TileCoordinate(anchor.X, anchor.Y - 1));
-                targets.Add(new TileCoordinate(anchor.X + 1, anchor.Y - 1));
-            }
-            else if (playerTile.Y == anchor.Y + 1 && localZ < half)
-            {
-                targets.Add(new TileCoordinate(anchor.X, anchor.Y + 2));
-                targets.Add(new TileCoordinate(anchor.X + 1, anchor.Y + 2));
-            }
         }
     }
 }
