@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -26,21 +25,33 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private AnimationCurve _gravelPitchCurve;
 
+        [SerializeField]
+        private float _gravelFadeDuration = 0.5f;
+
+        private float _gravelFade;
+
         public bool IsEngineRunning { get; private set; }
 
         public void UpdateVelocity(float velocity, bool grounded)
         {
+            float gravelFadeTarget = grounded ? 1f : 0f;
+            _gravelFade = Mathf.MoveTowards(_gravelFade, gravelFadeTarget, Time.deltaTime / _gravelFadeDuration);
+
+            if (grounded && !_gravelAudioSource.isPlaying)
+            {
+                _gravelAudioSource.loop = true;
+                _gravelAudioSource.Play();
+            }
+
+            if (_gravelFade <= 0f && _gravelAudioSource.isPlaying)
+                _gravelAudioSource.Stop();
+
             _engineAudioSource.volume = _engineVolumeCurve.Evaluate(velocity);
             _engineAudioSource.pitch = _enginePitchCurve.Evaluate(velocity);
             _airAudioSource.volume = _airVolumeCurve.Evaluate(velocity);
             _airAudioSource.pitch = _airPitchCurve.Evaluate(velocity);
-            _gravelAudioSource.volume = _gravelVolumeCurve.Evaluate(velocity);
+            _gravelAudioSource.volume = _gravelVolumeCurve.Evaluate(velocity) * _gravelFade;
             _gravelAudioSource.pitch = _gravelPitchCurve.Evaluate(velocity);
-
-            if (grounded)
-            {
-                
-            }
         }
 
         public void StartEngine()
