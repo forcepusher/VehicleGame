@@ -1459,8 +1459,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: CargoJetPlane
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7239707401739119493, guid: 66d0e25cd62168e46a2fda7ab399771b, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1516,6 +1515,118 @@ PrefabInstance:
     - target: {fileID: 2394010716773962168, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
       propertyPath: m_Name
       value: BomberJetPlane
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[1].time
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[0].value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[1].value
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[0].time
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[1].time
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[0].inSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[1].inSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[0].outSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[1].outSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[0].inSlope
+      value: 0.14285715
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[1].inSlope
+      value: 0.14285715
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[0].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[0].outSlope
+      value: 0.14285715
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[1].outSlope
+      value: 0.14285715
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelPitchCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619454822734440879, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
+      propertyPath: _gravelVolumeCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 8404031876768712924, guid: 98fa695cf0bfb544483ec4f18ccf6484, type: 3}
       propertyPath: m_Resource

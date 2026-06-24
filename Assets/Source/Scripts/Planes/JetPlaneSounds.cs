@@ -27,8 +27,6 @@ namespace BananaParty.VehicleGame
         private AnimationCurve _gravelPitchCurve;
 
         public bool IsEngineRunning { get; private set; }
-        private bool _gravelSoundPlaying;
-
 
         public void UpdateVelocity(float velocity, bool grounded)
         {
@@ -41,20 +39,7 @@ namespace BananaParty.VehicleGame
 
             if (grounded)
             {
-                if (!_gravelSoundPlaying)
-                {
-                    _gravelAudioSource.loop = true;
-                    _gravelAudioSource.Play();
-                    _gravelSoundPlaying = true;
-                }
-            }
-            else
-            {
-                if (_gravelSoundPlaying)
-                {
-                    _gravelAudioSource.loop = false;
-                    _gravelSoundPlaying = false;
-                }
+                
             }
         }
 
