@@ -10,7 +10,9 @@ namespace BananaParty.VehicleGame
         private GUIStyle _debugStyle;
 
         [SerializeField]
-        private Transform _followTransform;
+        private Transform _followTransformFirstPerson;
+        [SerializeField]
+        private Transform _followTransformThirdPerson;
 
         [SerializeField]
         private Rigidbody _rigidbody;
@@ -82,8 +84,9 @@ namespace BananaParty.VehicleGame
         private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframesVector3(velocity, DragParked, DragTaxi, DragFlight);
         private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframesVector3(velocity, AngularDragParked, AngularDragTaxi, AngularDragFlight);
 
-        public Vector3 FollowPosition => _followTransform.position;
-        public Quaternion FollowRotation => _followTransform.rotation;
+        public Vector3 FollowPositionFirstPerson => _followTransformFirstPerson.position;
+        public Vector3 FollowPositionThirdPerson => _followTransformThirdPerson.position;
+        public Quaternion FollowRotation => _followTransformFirstPerson.rotation;
         public Vector3 FollowVelocity => _rigidbody.linearVelocity;
 
         public void SetControls(IControls controls)

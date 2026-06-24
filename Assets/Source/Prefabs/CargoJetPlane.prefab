@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1489216333648783034}
   m_Layer: 0
-  m_Name: CameraFollowTransformOutside
+  m_Name: CameraFollowThirdPersonTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,7 +235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106b89b1a9270984a945c6e978443fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BananaParty.VehicleGame.CargoJetPlane
-  _followTransform: {fileID: 1872444204133824950}
+  _followTransformFirstPerson: {fileID: 1872444204133824950}
+  _followTransformThirdPerson: {fileID: 1489216333648783034}
   _rigidbody: {fileID: 8716580148040200419}
   _centerOfMass: {fileID: 1298116717266706186}
   _wheelColliders:
@@ -928,7 +929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1872444204133824950}
   m_Layer: 0
-  m_Name: CameraFollowTransformInside
+  m_Name: CameraFollowFirstPersonTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

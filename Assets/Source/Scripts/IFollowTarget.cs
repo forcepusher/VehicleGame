@@ -4,7 +4,9 @@ namespace BananaParty.VehicleGame
 {
     public interface IFollowTarget
     {
-        Vector3 FollowPosition { get; }
+        Vector3 FollowPositionFirstPerson { get; }
+
+        Vector3 FollowPositionThirdPerson { get; }
 
         Quaternion FollowRotation { get; }
 

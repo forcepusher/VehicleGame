@@ -11,7 +11,7 @@ namespace BananaParty.VehicleGame
             if (FollowTarget == null)
                 return;
 
-            transform.position = FollowTarget.FollowPosition;
+            transform.position = FollowTarget.FollowPositionFirstPerson;
             transform.rotation = FollowTarget.FollowRotation;
         }
 
