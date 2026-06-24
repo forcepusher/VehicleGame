@@ -12,7 +12,8 @@ namespace BananaParty.VehicleGame
 
         private void Update()
         {
-            
+            Vector3 particleVelocity = _mainCamera.FollowTarget.FollowVelocity * 0.25f;
+            _ashesParticleSystem.velocityOverLifetime.z = particleVelocity.z;
         }
     }
 }
