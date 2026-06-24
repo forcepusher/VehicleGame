@@ -9,7 +9,7 @@ namespace BananaParty.VehicleGame
     public class VehicleSwitch : MonoBehaviour
     {
         [SerializeField]
-        StreamingTerrain _streamingTerrain;
+        private StreamingTerrain _streamingTerrain;
 
         [SerializeField]
         private VehicleReference _controlledVehicle;
