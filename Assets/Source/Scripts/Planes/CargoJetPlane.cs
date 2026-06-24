@@ -4,7 +4,7 @@ namespace BananaParty.VehicleGame
 {
     public class CargoJetPlane : JetPlane
     {
-        protected override float CollisionDamageMultiplier => 0.25f;
+        protected override float CollisionDamageMultiplier => 25f;
 
         protected override float ParkedVelocity => 0f;
         protected override float TaxiVelocity => 15f;

@@ -165,9 +165,10 @@ namespace BananaParty.VehicleGame
 
         private void OnCollisionEnter(Collision collision)
         {
-            int damage = Mathf.RoundToInt(collision.relativeVelocity.sqrMagnitude * CollisionDamageMultiplier);
+            Vector3 velocityChange = collision.impulse / _rigidbody.mass;
+            int damage = Mathf.RoundToInt(velocityChange.magnitude * CollisionDamageMultiplier);
             TakeDamage(damage);
-            Debug.Log($"Took {damage} damage from collision. Current health: {HealthValue}");
+            Debug.Log($"Took {damage} damage from collision (velocity change {velocityChange.magnitude:F1} m/s). Current health: {HealthValue}");
         }
 
         public void TakeDamage(int damage)
