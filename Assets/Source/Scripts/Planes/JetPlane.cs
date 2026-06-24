@@ -84,6 +84,7 @@ namespace BananaParty.VehicleGame
 
         public Vector3 FollowPosition => _followTransform.position;
         public Quaternion FollowRotation => _followTransform.rotation;
+        public Vector3 FollowVelocity => _rigidbody.linearVelocity;
 
         public void SetControls(IControls controls)
         {

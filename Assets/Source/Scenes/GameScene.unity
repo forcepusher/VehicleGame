@@ -821,6 +821,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
@@ -928,6 +929,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe23d00d3aac914083596e9110f89e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd86456d1ad37f44b1bedb4026fc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BananaParty.VehicleGame.MainCameraEffects
+  _mainCamera: {fileID: 963194230}
+  _ashesParticleSystem: {fileID: 1761705730}
 --- !u!1 &1168447379
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,15 +1394,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1352783432197783972, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 1352783432197783972, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.58
+      value: 1.52
       objectReference: {fileID: 0}
     - target: {fileID: 1352783432197783972, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.92
+      value: 13.88
       objectReference: {fileID: 0}
     - target: {fileID: 1352783432197783972, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1418,12 +1433,40 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: cullingMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: ringBufferMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 20.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: InitialModule.maxNumParticles
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 125
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_ColorSpace
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4799634047340234012, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
       propertyPath: m_Name
@@ -1437,6 +1480,11 @@ PrefabInstance:
 --- !u!4 &1761705728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1352783432197783972, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
+  m_PrefabInstance: {fileID: 1761705727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1761705730 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2407114094709527953, guid: bcbf315cb0c54d449b51e67f81ef6f25, type: 3}
   m_PrefabInstance: {fileID: 1761705727}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1980632792

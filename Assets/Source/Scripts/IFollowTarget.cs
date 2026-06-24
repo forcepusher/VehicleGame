@@ -7,5 +7,7 @@ namespace BananaParty.VehicleGame
         Vector3 FollowPosition { get; }
 
         Quaternion FollowRotation { get; }
+
+        Vector3 FollowVelocity { get; }
     }
 }
