@@ -11,4 +11,4 @@ namespace BananaParty.VehicleGame
             SpawnPoints = spawnPoints;
         }
     }
-}}
+}

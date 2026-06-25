@@ -27,7 +27,8 @@ namespace BananaParty.VehicleGame
 
         public void SpawnVehicle()
         {
-            _map.
+            IVehicle vehicle = _map.SpawnPoints[0].SpawnVehicle(_map.SpawnPoints[0].Vehicles[0]);
+            SetControlledVehicle(vehicle);
         }
 
         public void SetControlledVehicle(IVehicle vehicle)
@@ -40,17 +41,12 @@ namespace BananaParty.VehicleGame
         {
             _playerControls.ManualUpdate();
 
-            if (ControlledVehicle.IsDead)
+            if (ControlledVehicle == null || ControlledVehicle.IsDead)
             {
                 _respawnTimeRemaining -= RespawnCooldown;
 
                 if (_respawnTimeRemaining <= 0)
-                {
-                    var spawnPoint = UnityEngine.Object.FindAnyObjectByType<SpawnPoint>();
-
-                    //Spawn the damn vehicle
-                    // But uuuh, player should control where and when to spawn it
-                }
+                    SpawnVehicle();
             }
             else
             {
