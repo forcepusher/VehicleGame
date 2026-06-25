@@ -4,6 +4,8 @@ namespace BananaParty.VehicleGame
     {
         private const float RespawnCooldown = 15;
 
+        private Map _map;
+
         private float _respawnTimeRemaining = 0;
 
         private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
@@ -20,7 +22,7 @@ namespace BananaParty.VehicleGame
 
         public LocalPlayer(Map map)
         {
-
+            _map = map;
         }
 
         public void SetControlledVehicle(IVehicle vehicle)
