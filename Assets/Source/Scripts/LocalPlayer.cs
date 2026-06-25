@@ -25,6 +25,11 @@ namespace BananaParty.VehicleGame
             _map = map;
         }
 
+        public void SpawnVehicle()
+        {
+            _map.
+        }
+
         public void SetControlledVehicle(IVehicle vehicle)
         {
             ControlledVehicle = vehicle;

@@ -14,5 +14,12 @@ namespace BananaParty.VehicleGame
             "BomberJetPlane",
             "CargoJetPlane"
         };
+
+        public IVehicle SpawnVehicle(string vehicleName)
+        {
+            GameObject prefab = Resources.Load<GameObject>(vehicleName);
+            GameObject spawnedObject = Instantiate(prefab, Position, Rotation);
+            return spawnedObject.GetComponent<IVehicle>();
+        }
     }
 }

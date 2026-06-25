@@ -4,11 +4,11 @@ namespace BananaParty.VehicleGame
 {
     public class Map
     {
-        List<ISpawnPoint> _spawnPoints;
+        public readonly List<ISpawnPoint> SpawnPoints;
 
         public Map(List<ISpawnPoint> spawnPoints)
         {
-            _spawnPoints = spawnPoints;
+            SpawnPoints = spawnPoints;
         }
     }
-}
+}}
