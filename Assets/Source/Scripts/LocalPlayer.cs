@@ -5,6 +5,7 @@ namespace BananaParty.VehicleGame
         private const float RespawnCooldown = 15;
 
         private Map _map;
+        private MainCamera _mainCamera;
 
         private float _respawnTimeRemaining = 0;
 
@@ -20,14 +21,15 @@ namespace BananaParty.VehicleGame
 
         public float Yaw => _playerControls.Yaw;
 
-        public LocalPlayer(Map map)
+        public LocalPlayer(Map map, MainCamera mainCamera)
         {
             _map = map;
+            _mainCamera = mainCamera;
         }
 
-        public void SpawnVehicle()
+        public void SpawnVehicle(string vehicleName)
         {
-            IVehicle vehicle = _map.SpawnPoints[0].SpawnVehicle(_map.SpawnPoints[0].Vehicles[0]);
+            IVehicle vehicle = _map.SpawnPoints[0].SpawnVehicle(vehicleName);
             SetControlledVehicle(vehicle);
         }
 
@@ -35,6 +37,7 @@ namespace BananaParty.VehicleGame
         {
             ControlledVehicle = vehicle;
             vehicle.SetControls(this);
+            _mainCamera.SetFollowTarget(ControlledVehicle);
         }
 
         public void ManualUpdate()
@@ -46,7 +49,7 @@ namespace BananaParty.VehicleGame
                 _respawnTimeRemaining -= RespawnCooldown;
 
                 if (_respawnTimeRemaining <= 0)
-                    SpawnVehicle();
+                    SpawnVehicle(_map.SpawnPoints[0].Vehicles[0]);
             }
             else
             {
