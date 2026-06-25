@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BananaParty.VehicleGame
 {
-    public interface IFollowTarget
+    public interface IFollowTarget : IHealth
     {
         Vector3 FollowPositionFirstPerson { get; }
 

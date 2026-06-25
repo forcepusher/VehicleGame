@@ -30,6 +30,7 @@ namespace BananaParty.VehicleGame
 
         IControls _controls = new InactiveControls();
 
+        public bool IsDead { get; private set; }
         public int MaxHealth => 100;
         public int HealthValue { get; private set; } = 100;
         protected abstract float CollisionDamageMultiplier { get; }
@@ -117,11 +118,6 @@ namespace BananaParty.VehicleGame
             _debugStyle.border = new RectOffset(5, 5, 5, 5);
         }
 
-        private void Start()
-        {
-
-        }
-
         private void Update()
         {
             _controls.Update();
@@ -138,7 +134,6 @@ namespace BananaParty.VehicleGame
 
             foreach (WheelCollider wheel in _wheelColliders)
                 wheel.motorTorque = Mathf.Abs(_controls.Throttle) > Mathf.Epsilon ? 0.000001f : 0;
-
         }
 
         private void FixedUpdate()
@@ -181,8 +176,10 @@ namespace BananaParty.VehicleGame
         {
             HealthValue -= damage;
             HealthValue = Mathf.Max(0, HealthValue);
-            if (HealthValue <= 0)
+            if (HealthValue <= 0 && !IsDead)
             {
+                IsDead = true;
+
                 Instantiate(_deathEffects, transform.position, Quaternion.identity);
                 gameObject.SetActive(false);
             }
