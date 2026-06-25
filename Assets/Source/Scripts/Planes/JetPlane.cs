@@ -25,6 +25,9 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private JetPlaneSounds _sounds;
 
+        [SerializeField]
+        private GameObject _deathEffects;
+
         IControls _controls = new InactiveControls();
 
         public int MaxHealth => 100;
@@ -178,6 +181,11 @@ namespace BananaParty.VehicleGame
         {
             HealthValue -= damage;
             HealthValue = Mathf.Max(0, HealthValue);
+            if (HealthValue <= 0)
+            {
+                Instantiate(_deathEffects, transform.position, Quaternion.identity);
+                gameObject.SetActive(false);
+            }
         }
 
         private void OnGUI()
