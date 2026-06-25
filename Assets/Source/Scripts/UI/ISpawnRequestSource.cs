@@ -1,6 +1,6 @@
 namespace BananaParty.VehicleGame
 {
-    public interface ISpawnRequest
+    public interface ISpawnRequestSource
     {
         bool IsSpawnRequested { get; }
         string SelectedVehicleName { get; }

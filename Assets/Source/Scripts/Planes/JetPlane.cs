@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace BananaParty.VehicleGame
 {
@@ -183,6 +182,11 @@ namespace BananaParty.VehicleGame
                 Instantiate(_deathEffects, transform.position, Quaternion.identity);
                 gameObject.SetActive(false);
             }
+        }
+
+        public void Destroy()
+        {
+            Destroy(gameObject);
         }
 
         private void OnGUI()

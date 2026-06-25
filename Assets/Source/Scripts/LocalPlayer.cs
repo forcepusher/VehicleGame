@@ -2,12 +2,9 @@ namespace BananaParty.VehicleGame
 {
     public class LocalPlayer : IPlayer
     {
-        private const float RespawnCooldown = 15;
-
         private Map _map;
         private MainCamera _mainCamera;
-
-        private float _respawnTimeRemaining = 0;
+        private ISpawnRequestSource _spawnRequestSource;
 
         private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
@@ -21,10 +18,11 @@ namespace BananaParty.VehicleGame
 
         public float Yaw => _playerControls.Yaw;
 
-        public LocalPlayer(Map map, MainCamera mainCamera)
+        public LocalPlayer(Map map, MainCamera mainCamera, ISpawnRequestSource spawnRequestSource)
         {
             _map = map;
             _mainCamera = mainCamera;
+            _spawnRequestSource = spawnRequestSource;
         }
 
         public void SpawnVehicle(string vehicleName)
@@ -44,16 +42,16 @@ namespace BananaParty.VehicleGame
         {
             _playerControls.ManualUpdate();
 
-            if (ControlledVehicle == null || ControlledVehicle.IsDead)
+            if (_spawnRequestSource.IsSpawnRequested)
             {
-                _respawnTimeRemaining -= RespawnCooldown;
+                if (ControlledVehicle != null)
+                {
+                    ControlledVehicle.Destroy();
+                    ControlledVehicle = null;
+                }
 
-                if (_respawnTimeRemaining <= 0)
-                    SpawnVehicle(_map.SpawnPoints[0].Vehicles[0]);
-            }
-            else
-            {
-                _respawnTimeRemaining = RespawnCooldown;
+                SpawnVehicle(_spawnRequestSource.SelectedVehicleName);
+                _spawnRequestSource.ConfirmSpawn();
             }
         }
     }
