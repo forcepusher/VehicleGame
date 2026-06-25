@@ -15,7 +15,7 @@ namespace BananaParty.VehicleGame
         // Right stick Y inverted: pull back (up) = climb/pitch up, push forward = dive/pitch down
         public float Pitch => Mathf.Clamp((Gamepad.current?.rightStick.ReadValue().y ?? 0f) + (Gamepad.current?.leftStick.ReadValue().y ?? 0f), -1f, 1f);
 
-        public void Update()
+        public void ManualUpdate()
         {
 
         }

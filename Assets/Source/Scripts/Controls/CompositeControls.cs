@@ -17,9 +17,9 @@ public class CompositeControls : IControls
     public float Pitch => Mathf.Clamp(_controls.Sum(c => c.Pitch), -1f, 1f);
     public float Yaw => Mathf.Clamp(_controls.Sum(c => c.Yaw), -1f, 1f);
 
-    public void Update()
+    public void ManualUpdate()
     {
         foreach (var control in _controls)
-            control.Update();
+            control.ManualUpdate();
     }
 }

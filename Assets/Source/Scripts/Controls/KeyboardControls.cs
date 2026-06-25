@@ -21,7 +21,7 @@ namespace BananaParty.VehicleGame
         public float Pitch => Mathf.Clamp(
             ((Mouse.current?.delta.ReadValue().y ?? 0f) * MouseSensitivity) + (Keyboard.current?.spaceKey.isPressed == true ? 1f : 0f), -1f, 1f);
 
-        public void Update()
+        public void ManualUpdate()
         {
 
         }

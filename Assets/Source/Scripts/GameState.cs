@@ -9,7 +9,18 @@ namespace BananaParty.VehicleGame
 
         private void Awake()
         {
-            _players.Add(new LocalPlayer());
+            var spawnPoints = new List<ISpawnPoint>(FindObjectsByType<SpawnPoint>());
+            var map = new Map(spawnPoints);
+
+            _players.Add(new LocalPlayer(map));
+        }
+
+        private void Update()
+        {
+            foreach (var player in _players)
+            {
+                player.ManualUpdate();
+            }
         }
     }
 }

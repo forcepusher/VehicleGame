@@ -120,7 +120,7 @@ namespace BananaParty.VehicleGame
 
         private void Update()
         {
-            _controls.Update();
+            _controls.ManualUpdate();
 
             bool isGrounded = false;
             foreach (WheelCollider wheelCollider in _wheelColliders)
