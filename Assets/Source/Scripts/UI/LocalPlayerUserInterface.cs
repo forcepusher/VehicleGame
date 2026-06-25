@@ -31,7 +31,7 @@ namespace BananaParty.VehicleGame
         public void Update()
         {
             int health = _controlledVehicle?.HealthValue ?? 0;
-            _healthBarFill.fillAmount = health / (_controlledVehicle?.MaxHealth ?? 100);
+            _healthBarFill.fillAmount = (float)health / (_controlledVehicle?.MaxHealth ?? 100);
             _healthText.text = health.ToString();
         }
 
