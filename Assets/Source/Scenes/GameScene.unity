@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 137259226}
   - component: {fileID: 137259228}
   - component: {fileID: 137259227}
-  - component: {fileID: 137259229}
   m_Layer: 5
   m_Name: VehicleSelectionPanel
   m_TagString: Untagged
@@ -193,18 +192,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 137259225}
   m_CullTransparentMesh: 1
---- !u!114 &137259229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 137259225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c02343f25d1e5aa4a928d60d472d2507, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VehicleSelectionPanel
 --- !u!1 &147050416
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BananaParty.VehicleGame.RespawnTimer
   _streamingTerrain: {fileID: 1168447381}
   _mainCamera: {fileID: 963194230}
-  _vehicleSelectionPanel: {fileID: 137259229}
+  _localPlayerUserInterface: {fileID: 1330640597}
 --- !u!1 &155016162
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,8 +520,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137259229}
-        m_TargetAssemblyTypeName: BananaParty.VehicleGame.VehicleSelectionPanel,
+      - m_Target: {fileID: 1330640597}
+        m_TargetAssemblyTypeName: BananaParty.VehicleGame.LocalPlayerUserInterface,
           Assembly-CSharp
         m_MethodName: OnVehicleSelectionButtonClick
         m_Mode: 5
@@ -1000,6 +987,7 @@ GameObject:
   - component: {fileID: 1330640595}
   - component: {fileID: 1330640594}
   - component: {fileID: 1330640593}
+  - component: {fileID: 1330640597}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1092,6 +1080,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1330640597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330640592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cdf28ee9247ed94c8bf28e5bceacad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BananaParty.VehicleGame.LocalPlayerUserInterface
+  _healthBarFill: {fileID: 155016164}
+  _healthText: {fileID: 1722416590}
 --- !u!1 &1605000601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,8 +1177,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 137259229}
-        m_TargetAssemblyTypeName: BananaParty.VehicleGame.VehicleSelectionPanel,
+      - m_Target: {fileID: 1330640597}
+        m_TargetAssemblyTypeName: BananaParty.VehicleGame.LocalPlayerUserInterface,
           Assembly-CSharp
         m_MethodName: OnVehicleSelectionButtonClick
         m_Mode: 5

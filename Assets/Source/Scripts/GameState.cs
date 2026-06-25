@@ -11,7 +11,7 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private MainCamera _mainCamera;
         [SerializeField]
-        private VehicleSelectionPanel _vehicleSelectionPanel;
+        private LocalPlayerUserInterface _localPlayerUserInterface;
 
         private readonly List<IPlayer> _players = new();
 
@@ -23,7 +23,7 @@ namespace BananaParty.VehicleGame
             var spawnPoints = new List<ISpawnPoint>(FindObjectsByType<SpawnPoint>());
             var map = new Map(spawnPoints);
 
-            var localPlayer = new LocalPlayer(map, _mainCamera, _vehicleSelectionPanel);
+            var localPlayer = new LocalPlayer(map, _mainCamera, _localPlayerUserInterface);
             _players.Add(localPlayer);
         }
 

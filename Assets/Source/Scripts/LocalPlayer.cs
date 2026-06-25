@@ -4,7 +4,7 @@ namespace BananaParty.VehicleGame
     {
         private Map _map;
         private MainCamera _mainCamera;
-        private ISpawnRequestSource _spawnRequestSource;
+        private IUserInterface _spawnRequestSource;
 
         private CompositeControls _playerControls = new CompositeControls(new IControls[] { new KeyboardControls(), new GamepadControls() });
 
@@ -18,17 +18,18 @@ namespace BananaParty.VehicleGame
 
         public float Yaw => _playerControls.Yaw;
 
-        public LocalPlayer(Map map, MainCamera mainCamera, ISpawnRequestSource spawnRequestSource)
+        public LocalPlayer(Map map, MainCamera mainCamera, IUserInterface spawnRequestSource)
         {
             _map = map;
             _mainCamera = mainCamera;
             _spawnRequestSource = spawnRequestSource;
         }
 
-        public void SpawnVehicle(string vehicleName)
+        public IVehicle SpawnVehicle(string vehicleName)
         {
             IVehicle vehicle = _map.SpawnPoints[0].SpawnVehicle(vehicleName);
             SetControlledVehicle(vehicle);
+            return vehicle;
         }
 
         public void SetControlledVehicle(IVehicle vehicle)
@@ -50,8 +51,8 @@ namespace BananaParty.VehicleGame
                     ControlledVehicle = null;
                 }
 
-                SpawnVehicle(_spawnRequestSource.SelectedVehicleName);
-                _spawnRequestSource.ConfirmSpawn();
+                IVehicle vehicle = SpawnVehicle(_spawnRequestSource.SelectedVehicleName);
+                _spawnRequestSource.ConfirmSpawn(vehicle);
             }
         }
     }
