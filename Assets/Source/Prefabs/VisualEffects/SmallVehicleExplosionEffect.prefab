@@ -14413,6 +14413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6686258997174317228}
+  - component: {fileID: -2087020611246201338}
   - component: {fileID: 7063955197789262729}
   - component: {fileID: 9164169716412068948}
   m_Layer: 0
@@ -14442,6 +14443,22 @@ Transform:
   - {fileID: 1742667196225874396}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2087020611246201338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4772213563195400554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad3d523c68ba024686d2e128e300d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BananaParty.VehicleGame.PlayRandomSound
+  _audioClips:
+  - {fileID: 8300000, guid: 1016e56296a758e49b81b3b63b21d953, type: 3}
+  - {fileID: 8300000, guid: 623bdb6d8f80eef4dbef98994208b719, type: 3}
+  - {fileID: 8300000, guid: a1dcd2950b8a26f40a14b5d3eeff4d3c, type: 3}
 --- !u!198 &7063955197789262729
 ParticleSystem:
   m_ObjectHideFlags: 0
