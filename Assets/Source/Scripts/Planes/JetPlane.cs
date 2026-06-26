@@ -6,7 +6,8 @@ namespace BananaParty.VehicleGame
     [RequireComponent(typeof(Rigidbody))]
     public abstract class JetPlane : MonoBehaviour, IVehicle
     {
-        [SerializeReference]
+        [SerializeField]
+        private List<MonoBehaviour> _weaponBehaviours;
         private List<IWeapon> _weapons = new();
 
         [SerializeField]
@@ -100,6 +101,9 @@ namespace BananaParty.VehicleGame
 
         private void Awake()
         {
+            foreach (MonoBehaviour weaponBehaviour in _weaponBehaviours)
+                _weapons.Add((IWeapon)weaponBehaviour);
+
             _rigidbody.centerOfMass = _centerOfMass.localPosition;
             _debugStyle = new GUIStyle();
             _debugStyle.fontSize = 14;

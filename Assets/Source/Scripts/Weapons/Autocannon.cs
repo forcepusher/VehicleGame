@@ -7,20 +7,20 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private Projectile _projectilePrefab;
         [SerializeField]
-        private Transform _muzzle;
+        private Transform _projectileSpawnPoint;
         [SerializeField]
         private float _projectileSpeed = 50f;
 
         public void Fire()
         {
-            if (_projectilePrefab == null || _muzzle == null)
+            if (_projectilePrefab == null || _projectileSpawnPoint == null)
                 return;
 
-            Projectile projectile = Instantiate(_projectilePrefab, _muzzle.position, _muzzle.rotation);
+            Projectile projectile = GameObject.Instantiate(_projectilePrefab, _projectileSpawnPoint.position, _projectileSpawnPoint.rotation);
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.linearVelocity = _muzzle.forward * _projectileSpeed;
+                rb.linearVelocity = _projectileSpawnPoint.forward * _projectileSpeed;
             }
         }
     }
