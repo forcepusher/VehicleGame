@@ -12,18 +12,6 @@ namespace BananaParty.VehicleGame
 
         public IVehicle ControlledVehicle { get; private set; }
 
-        public float Throttle => _playerControls.Throttle;
-
-        public float Roll => _playerControls.Roll;
-
-        public float Pitch => _playerControls.Pitch;
-
-        public float Yaw => _playerControls.Yaw;
-
-        public bool FirePrimary => _playerControls.FirePrimary;
-
-        public bool FireSecondary => _playerControls.FireSecondary;
-
         public LocalPlayer(Map map, MainCamera mainCamera, IUserInterface spawnRequestSource)
         {
             _map = map;
@@ -41,7 +29,7 @@ namespace BananaParty.VehicleGame
         public void SetControlledVehicle(IVehicle vehicle)
         {
             ControlledVehicle = vehicle;
-            vehicle.SetControls(this);
+            vehicle.SetControls(_playerControls);
             _mainCamera.SetFollowTarget(ControlledVehicle);
         }
 
