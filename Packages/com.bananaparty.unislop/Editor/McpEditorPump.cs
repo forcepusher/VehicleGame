@@ -64,12 +64,23 @@ namespace UniSlop.MCP
         {
             if (!McpEditorProcess.IsMainEditor) return;
 
+            TouchDependentTypes();
+
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
             EditorApplication.quitting += OnEditorQuitting;
             EditorApplication.focusChanged += OnFocusChanged;
             EditorApplication.update += OnEditorUpdate;
             EnsurePumpThread();
+        }
+
+        static void TouchDependentTypes()
+        {
+            // Force InitializeOnLoad types to init on the editor main thread before the pump thread
+            // reads their static state (otherwise their .cctor can run on the pump thread).
+            _ = McpMainThread.HasPendingWork;
+            _ = McpCompileJob.IsActive;
+            _ = McpTestJob.IsActive;
         }
 
         static void OnBeforeAssemblyReload()
@@ -82,6 +93,7 @@ namespace UniSlop.MCP
         static void OnAfterAssemblyReload()
         {
             _suspended = false;
+            TouchDependentTypes();
             EnsurePumpThread();
             if (NeedsEditorTick())
                 NotifyWork();

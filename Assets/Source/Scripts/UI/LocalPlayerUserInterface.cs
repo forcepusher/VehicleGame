@@ -19,6 +19,8 @@ namespace BananaParty.VehicleGame
 
         private IVehicle _controlledVehicle;
 
+        private bool _gameLoaded = false;
+
         public bool IsSpawnRequested { get; private set; }
 
         public string SelectedVehicleName { get; private set; } = "BomberJetPlane";
@@ -26,10 +28,14 @@ namespace BananaParty.VehicleGame
         private void Awake()
         {
             _initialRespawnText = _autoSpawnText.text;
+            _autoSpawnText.text = "Loading...";
         }
 
         public void Update()
         {
+            if (!_gameLoaded)
+                return;
+
             if (_controlledVehicle == null || _controlledVehicle.IsDead)
             {
                 if (!_autoSpawnText.enabled)
@@ -64,6 +70,11 @@ namespace BananaParty.VehicleGame
         {
             SelectedVehicleName = vehicleName;
             IsSpawnRequested = true;
+        }
+
+        public void SignalGameLoaded()
+        {
+            _gameLoaded = true;
         }
     }
 }

@@ -20,6 +20,8 @@ namespace BananaParty.VehicleGame
             while (!_streamingTerrain.AllRequiredTilesLoaded)
                 yield return null;
 
+            _localPlayerUserInterface.SignalGameLoaded();
+
             var spawnPoints = new List<ISpawnPoint>(FindObjectsByType<SpawnPoint>());
             var map = new Map(spawnPoints);
 

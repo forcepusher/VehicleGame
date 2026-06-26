@@ -13,6 +13,9 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private float _fireRate = 5f;
 
+        [SerializeField]
+        private AudioSource _firingAudioSource;
+
         private float _fireCooldown;
 
         private IControls _controls;
