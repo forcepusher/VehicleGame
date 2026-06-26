@@ -64,8 +64,12 @@ namespace BananaParty.VehicleGame
 
         public void PlayCollisionSound(int damage)
         {
-            if (damage > 15)
+            if (damage <= 1)
+                return;
 
+            var sounds = damage > 15 ? _collisionSoundsHard : _collisionSoundsSoft;
+            var clip = sounds[Random.Range(0, sounds.Count)];
+            _collisionAudioSource.PlayOneShot(clip);
         }
 
         public void StartEngine()
