@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -37,6 +38,8 @@ namespace BananaParty.VehicleGame
         private float _gravelFadeDuration = 0.5f;
 
         private float _gravelFade;
+        private int _lastSoftIndex;
+        private int _lastHardIndex;
 
         public bool IsEngineRunning { get; private set; }
 
@@ -68,8 +71,22 @@ namespace BananaParty.VehicleGame
                 return;
 
             var sounds = damage > 15 ? _collisionSoundsHard : _collisionSoundsSoft;
-            var clip = sounds[Random.Range(0, sounds.Count)];
-            _collisionAudioSource.PlayOneShot(clip);
+            if (sounds.Count == 0)
+                throw new InvalidOperationException("Sound array is empty");
+
+            int index = 0;
+            if (sounds.Count > 1)
+            {
+                int lastIndex = damage > 15 ? _lastHardIndex : _lastSoftIndex;
+                index = (lastIndex + Random.Range(1, sounds.Count)) % sounds.Count;
+
+                if (damage > 15)
+                    _lastHardIndex = index;
+                else
+                    _lastSoftIndex = index;
+            }
+
+            _collisionAudioSource.PlayOneShot(sounds[index]);
         }
 
         public void StartEngine()
