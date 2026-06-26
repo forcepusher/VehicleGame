@@ -181,6 +181,11 @@ namespace BananaParty.VehicleGame
                 IsDead = true;
 
                 Instantiate(_deathEffects, transform.position, Quaternion.identity);
+
+                // Nullify for camera follower effects
+                _rigidbody.linearVelocity = Vector3.zero;
+                _rigidbody.angularVelocity = Vector3.zero;
+
                 gameObject.SetActive(false);
             }
         }
