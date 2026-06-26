@@ -5,6 +5,9 @@ namespace BananaParty.VehicleGame
     public class Projectile : MonoBehaviour
     {
         [SerializeField]
+        private Rigidbody _rigidbody;
+
+        [SerializeField]
         private int _directHitDamage = 5;
         [SerializeField]
         private int _explosionDamage = 5;
@@ -36,6 +39,11 @@ namespace BananaParty.VehicleGame
                     health.TakeDamage(_explosionDamage);
                 }
             }
+        }
+
+        public void ApplyMovement(Vector3 velocity)
+        {
+            _rigidbody.linearVelocity = velocity;
         }
     }
 }

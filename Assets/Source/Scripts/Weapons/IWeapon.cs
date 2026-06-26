@@ -4,6 +4,6 @@ namespace BananaParty.VehicleGame
 {
     public interface IWeapon
     {
-
+        void SetControls(IControls controls);
     }
 }

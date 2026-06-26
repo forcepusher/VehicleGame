@@ -97,6 +97,9 @@ namespace BananaParty.VehicleGame
         public void SetControls(IControls controls)
         {
             _controls = controls;
+
+            foreach (IWeapon weapon in _weapons)
+                weapon.SetControls(controls);
         }
 
         private void Awake()
