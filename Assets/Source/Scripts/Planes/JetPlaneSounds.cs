@@ -48,7 +48,10 @@ namespace BananaParty.VehicleGame
         {
             float velocityMagnitude = localVelocity.magnitude;
 
-            if (throttle > 0.1f)
+            bool isThrottlingForward = throttle > 0.1f;
+            bool isThrottlingBackward = throttle < -0.1f && localVelocity.z <= -1f;
+
+            if (isThrottlingForward || isThrottlingBackward)
             {
                 _idleTimer = 0f;
                 if (!IsEngineRunning)
