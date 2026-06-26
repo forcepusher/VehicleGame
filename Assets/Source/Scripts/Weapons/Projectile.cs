@@ -13,7 +13,29 @@ namespace BananaParty.VehicleGame
 
         private void OnCollisionEnter(Collision collision)
         {
+            ApplyDirectHitDamage(collision.collider);
+            Explode();
+            Destroy(gameObject);
+        }
 
+        private void ApplyDirectHitDamage(Collider collider)
+        {
+            if (collider.TryGetComponent<IHealth>(out var health))
+            {
+                health.TakeDamage(_directHitDamage);
+            }
+        }
+
+        private void Explode()
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius);
+            foreach (var collider in colliders)
+            {
+                if (collider.TryGetComponent<IHealth>(out var health))
+                {
+                    health.TakeDamage(_explosionDamage);
+                }
+            }
         }
     }
 }
