@@ -44,8 +44,10 @@ namespace BananaParty.VehicleGame
 
         public bool IsEngineRunning { get; private set; }
 
-        public void UpdateVelocity(float velocity, bool grounded, float throttle)
+        public void UpdateVelocity(Vector3 localVelocity, bool grounded, float throttle)
         {
+            float velocityMagnitude = localVelocity.magnitude;
+
             if (throttle > 0.1f)
             {
                 _idleTimer = 0f;
@@ -71,12 +73,12 @@ namespace BananaParty.VehicleGame
             if (_gravelFade <= 0f && _gravelAudioSource.isPlaying)
                 _gravelAudioSource.Stop();
 
-            _engineAudioSource.volume = _engineVolumeCurve.Evaluate(velocity);
-            _engineAudioSource.pitch = _enginePitchCurve.Evaluate(velocity);
-            _airAudioSource.volume = _airVolumeCurve.Evaluate(velocity);
-            _airAudioSource.pitch = _airPitchCurve.Evaluate(velocity);
-            _gravelAudioSource.volume = _gravelVolumeCurve.Evaluate(velocity) * _gravelFade;
-            _gravelAudioSource.pitch = _gravelPitchCurve.Evaluate(velocity);
+            _engineAudioSource.volume = _engineVolumeCurve.Evaluate(velocityMagnitude);
+            _engineAudioSource.pitch = _enginePitchCurve.Evaluate(velocityMagnitude);
+            _airAudioSource.volume = _airVolumeCurve.Evaluate(velocityMagnitude);
+            _airAudioSource.pitch = _airPitchCurve.Evaluate(velocityMagnitude);
+            _gravelAudioSource.volume = _gravelVolumeCurve.Evaluate(velocityMagnitude) * _gravelFade;
+            _gravelAudioSource.pitch = _gravelPitchCurve.Evaluate(velocityMagnitude);
         }
 
         public void PlayCollisionSound(int damage)

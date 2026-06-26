@@ -104,35 +104,38 @@ namespace BananaParty.VehicleGame
             _debugStyle.fontSize = 14;
             _debugStyle.normal.textColor = Color.yellow;
             _debugStyle.border = new RectOffset(5, 5, 5, 5);
+
+            foreach (WheelCollider wheel in _wheelColliders)
+                wheel.motorTorque = Mathf.Epsilon;
         }
 
         private void Update()
         {
             _controls.ManualUpdate();
+        }
+
+        private void FixedUpdate()
+        {
+            float velocity = _rigidbody.linearVelocity.magnitude;
+            Vector3 localVelocity = transform.InverseTransformDirection(_rigidbody.linearVelocity);
+
 
             bool isGrounded = false;
             foreach (WheelCollider wheelCollider in _wheelColliders)
                 if (wheelCollider.isGrounded)
                     isGrounded = true;
 
-            _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude, isGrounded, _controls.Throttle);
+            _sounds.UpdateVelocity(localVelocity, isGrounded, _controls.Throttle);
 
-            foreach (WheelCollider wheel in _wheelColliders)
-                wheel.motorTorque = Mathf.Abs(_controls.Throttle) > Mathf.Epsilon ? 0.000001f : 0;
-        }
 
-        private void FixedUpdate()
-        {
-            float velocity = _rigidbody.linearVelocity.magnitude;
             float linearForce = GetLinearForce(velocity);
-            if (_controls.Throttle < 0)
+            if (_controls.Throttle < 0 && localVelocity.z <= 0)
                 linearForce = Mathf.Min(linearForce, AccelerationTaxi);
 
             Vector3 angularForce = GetAngularForce(velocity);
             Vector3 linearDrag = GetLinearDrag(velocity);
             Vector3 angularDrag = GetAngularDrag(velocity);
 
-            Vector3 localVelocity = transform.InverseTransformDirection(_rigidbody.linearVelocity);
             _rigidbody.AddRelativeForce(-new Vector3(
                 localVelocity.x * Mathf.Abs(localVelocity.x) * linearDrag.x,
                 localVelocity.y * Mathf.Abs(localVelocity.y) * linearDrag.y,
