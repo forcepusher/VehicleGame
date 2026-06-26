@@ -6,7 +6,8 @@ namespace BananaParty.VehicleGame
     [RequireComponent(typeof(Rigidbody))]
     public abstract class JetPlane : MonoBehaviour, IVehicle
     {
-        private GUIStyle _debugStyle;
+        [SerializeReference]
+        private List<IWeapon> _weapons = new();
 
         [SerializeField]
         private Transform _followTransformFirstPerson;
@@ -186,6 +187,8 @@ namespace BananaParty.VehicleGame
         {
             Destroy(gameObject);
         }
+
+        private GUIStyle _debugStyle;
 
         private void OnGUI()
         {
