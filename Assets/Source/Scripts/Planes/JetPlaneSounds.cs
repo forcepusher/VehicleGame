@@ -70,23 +70,28 @@ namespace BananaParty.VehicleGame
             if (damage <= 1)
                 return;
 
-            var sounds = damage > 15 ? _collisionSoundsHard : _collisionSoundsSoft;
-            if (sounds.Count == 0)
-                throw new InvalidOperationException("Sound array is empty");
+            if (damage > 15)
+                PlayHardCollision();
+            else
+                PlaySoftCollision();
+        }
+
+        private void PlaySoftCollision() => PlayRandomClip(_collisionSoundsSoft, ref _lastSoftIndex);
+        private void PlayHardCollision() => PlayRandomClip(_collisionSoundsHard, ref _lastHardIndex);
+
+        private void PlayRandomClip(List<AudioClip> clips, ref int lastIndex)
+        {
+            if (clips == null || clips.Count == 0)
+                return;
 
             int index = 0;
-            if (sounds.Count > 1)
+            if (clips.Count > 1)
             {
-                int lastIndex = damage > 15 ? _lastHardIndex : _lastSoftIndex;
-                index = (lastIndex + Random.Range(1, sounds.Count)) % sounds.Count;
-
-                if (damage > 15)
-                    _lastHardIndex = index;
-                else
-                    _lastSoftIndex = index;
+                index = (lastIndex + UnityEngine.Random.Range(1, clips.Count)) % clips.Count;
+                lastIndex = index;
             }
 
-            _collisionAudioSource.PlayOneShot(sounds[index]);
+            _collisionAudioSource.PlayOneShot(clips[index]);
         }
 
         public void StartEngine()
