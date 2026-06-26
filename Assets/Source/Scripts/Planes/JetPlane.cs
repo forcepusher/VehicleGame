@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace BananaParty.VehicleGame
 {
@@ -10,7 +9,9 @@ namespace BananaParty.VehicleGame
         private GUIStyle _debugStyle;
 
         [SerializeField]
-        private Transform _followTransform;
+        private Transform _followTransformFirstPerson;
+        [SerializeField]
+        private Transform _followTransformThirdPerson;
 
         [SerializeField]
         private Rigidbody _rigidbody;
@@ -23,8 +24,12 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private JetPlaneSounds _sounds;
 
-        IControls _controls = new InactiveControls();
+        [SerializeField]
+        private GameObject _deathEffects;
 
+        IControls _controls;
+
+        public bool IsDead { get; private set; }
         public int MaxHealth => 100;
         public int HealthValue { get; private set; } = 100;
         protected abstract float CollisionDamageMultiplier { get; }
@@ -82,64 +87,55 @@ namespace BananaParty.VehicleGame
         private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframesVector3(velocity, DragParked, DragTaxi, DragFlight);
         private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframesVector3(velocity, AngularDragParked, AngularDragTaxi, AngularDragFlight);
 
-        public Vector3 FollowPosition => _followTransform.position;
-        public Quaternion FollowRotation => _followTransform.rotation;
+        public Vector3 FollowPositionFirstPerson => _followTransformFirstPerson.position;
+        public Vector3 FollowPositionThirdPerson => _followTransformThirdPerson.position;
+        public Quaternion FollowRotation => _followTransformFirstPerson.rotation;
         public Vector3 FollowVelocity => _rigidbody.linearVelocity;
 
         public void SetControls(IControls controls)
         {
             _controls = controls;
-
-            if (_controls is InactiveControls)
-            {
-                _sounds.StopEngine();
-                _rigidbody.isKinematic = true;
-            }
-            else
-            {
-                _rigidbody.isKinematic = false;
-            }
         }
 
         private void Awake()
         {
-            _rigidbody.isKinematic = true;
             _rigidbody.centerOfMass = _centerOfMass.localPosition;
             _debugStyle = new GUIStyle();
             _debugStyle.fontSize = 14;
             _debugStyle.normal.textColor = Color.yellow;
             _debugStyle.border = new RectOffset(5, 5, 5, 5);
-        }
 
-        private void Start()
-        {
-
+            foreach (WheelCollider wheel in _wheelColliders)
+                wheel.motorTorque = Mathf.Epsilon;
         }
 
         private void Update()
         {
-            _controls.Update();
-
-            if (_controls.Throttle > 0.1f && !_sounds.IsEngineRunning)
-                _sounds.StartEngine();
-
-            _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude);
-
-            foreach (WheelCollider wheel in _wheelColliders)
-            {
-                wheel.motorTorque = Mathf.Abs(_controls.Throttle) > Mathf.Epsilon ? 0.000001f : 0;
-            }
+            _controls.ManualUpdate();
         }
 
         private void FixedUpdate()
         {
             float velocity = _rigidbody.linearVelocity.magnitude;
+            Vector3 localVelocity = transform.InverseTransformDirection(_rigidbody.linearVelocity);
+
+
+            bool isGrounded = false;
+            foreach (WheelCollider wheelCollider in _wheelColliders)
+                if (wheelCollider.isGrounded)
+                    isGrounded = true;
+
+            _sounds.UpdateVelocity(localVelocity, isGrounded, _controls.Throttle);
+
+
             float linearForce = GetLinearForce(velocity);
+            if (_controls.Throttle < 0 && localVelocity.z <= 0)
+                linearForce = Mathf.Min(linearForce, AccelerationTaxi);
+
             Vector3 angularForce = GetAngularForce(velocity);
             Vector3 linearDrag = GetLinearDrag(velocity);
             Vector3 angularDrag = GetAngularDrag(velocity);
 
-            Vector3 localVelocity = transform.InverseTransformDirection(_rigidbody.linearVelocity);
             _rigidbody.AddRelativeForce(-new Vector3(
                 localVelocity.x * Mathf.Abs(localVelocity.x) * linearDrag.x,
                 localVelocity.y * Mathf.Abs(localVelocity.y) * linearDrag.y,
@@ -161,22 +157,38 @@ namespace BananaParty.VehicleGame
 
         private void OnCollisionEnter(Collision collision)
         {
-            int damage = Mathf.RoundToInt(collision.relativeVelocity.sqrMagnitude * CollisionDamageMultiplier);
+            Vector3 velocityChange = collision.impulse / _rigidbody.mass;
+            int damage = Mathf.RoundToInt(velocityChange.magnitude * CollisionDamageMultiplier);
             TakeDamage(damage);
-            Debug.Log($"Took {damage} damage from collision. Current health: {HealthValue}");
+            _sounds.PlayCollisionSound(damage);
+            Debug.Log($"Took {damage} damage from collision (velocity change {velocityChange.magnitude:F1} m/s). Current health: {HealthValue}");
         }
 
         public void TakeDamage(int damage)
         {
             HealthValue -= damage;
             HealthValue = Mathf.Max(0, HealthValue);
+            if (HealthValue <= 0 && !IsDead)
+            {
+                IsDead = true;
+
+                Instantiate(_deathEffects, transform.position, Quaternion.identity);
+
+                // Nullify for camera follower effects
+                _rigidbody.linearVelocity = Vector3.zero;
+                _rigidbody.angularVelocity = Vector3.zero;
+
+                gameObject.SetActive(false);
+            }
+        }
+
+        public void Destroy()
+        {
+            Destroy(gameObject);
         }
 
         private void OnGUI()
         {
-            if (_controls is InactiveControls)
-                return;
-
             GUI.Label(new Rect(10, 10, 200, 30), "Velocity: " + Mathf.Round(_rigidbody.linearVelocity.magnitude));
         }
     }

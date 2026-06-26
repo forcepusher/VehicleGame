@@ -7,6 +7,6 @@ namespace BananaParty.VehicleGame
         public float Pitch { get; }
         public float Yaw { get; }
 
-        public void Update();
+        public void ManualUpdate();
     }
 }
