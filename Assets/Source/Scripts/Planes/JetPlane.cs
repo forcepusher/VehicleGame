@@ -99,7 +99,6 @@ namespace BananaParty.VehicleGame
 
         private void Awake()
         {
-            _rigidbody.isKinematic = true;
             _rigidbody.centerOfMass = _centerOfMass.localPosition;
             _debugStyle = new GUIStyle();
             _debugStyle.fontSize = 14;
