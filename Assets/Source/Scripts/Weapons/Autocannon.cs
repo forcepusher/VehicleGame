@@ -10,10 +10,16 @@ namespace BananaParty.VehicleGame
         private Transform _projectileSpawnPoint;
         [SerializeField]
         private float _projectileSpeed = 50f;
+        private float _fireRate = 5f;
+
+        private IControls _controls;
 
         private void Update()
         {
+            if (_controls.FirePrimary)
+            {
 
+            }
         }
 
         private void Fire()
@@ -24,7 +30,7 @@ namespace BananaParty.VehicleGame
 
         public void SetControls(IControls controls)
         {
-
+            _controls = controls;
         }
     }
 }
