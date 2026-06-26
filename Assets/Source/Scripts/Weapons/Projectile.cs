@@ -5,15 +5,15 @@ namespace BananaParty.VehicleGame
     public class Projectile : MonoBehaviour
     {
         [SerializeField]
-        private float DirectHitDamage = 5;
+        private int _directHitDamage = 5;
         [SerializeField]
-        private float ExplosionDamage = 5;
+        private int _explosionDamage = 5;
         [SerializeField]
-        private float ExplosionRadius = 2;
+        private float _explosionRadius = 2;
 
         private void OnCollisionEnter(Collision collision)
         {
-            
+
         }
     }
 }
