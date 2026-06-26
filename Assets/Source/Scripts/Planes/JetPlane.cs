@@ -168,6 +168,7 @@ namespace BananaParty.VehicleGame
             Vector3 velocityChange = collision.impulse / _rigidbody.mass;
             int damage = Mathf.RoundToInt(velocityChange.magnitude * CollisionDamageMultiplier);
             TakeDamage(damage);
+            _sounds.PlayCollisionSound(damage);
             Debug.Log($"Took {damage} damage from collision (velocity change {velocityChange.magnitude:F1} m/s). Current health: {HealthValue}");
         }
 

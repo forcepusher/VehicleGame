@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -11,6 +12,13 @@ namespace BananaParty.VehicleGame
         private AudioSource _airAudioSource;
         [SerializeField]
         private AudioSource _gravelAudioSource;
+        [SerializeField]
+        private AudioSource _collisionAudioSource;
+
+        [SerializeField]
+        private List<AudioClip> _collisionSoundsSoft;
+        [SerializeField]
+        private List<AudioClip> _collisionSoundsHard;
 
         [SerializeField]
         private AnimationCurve _engineVolumeCurve;
@@ -52,6 +60,12 @@ namespace BananaParty.VehicleGame
             _airAudioSource.pitch = _airPitchCurve.Evaluate(velocity);
             _gravelAudioSource.volume = _gravelVolumeCurve.Evaluate(velocity) * _gravelFade;
             _gravelAudioSource.pitch = _gravelPitchCurve.Evaluate(velocity);
+        }
+
+        public void PlayCollisionSound(int damage)
+        {
+            if (damage > 15)
+
         }
 
         public void StartEngine()
