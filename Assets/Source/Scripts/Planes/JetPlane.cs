@@ -125,6 +125,9 @@ namespace BananaParty.VehicleGame
         {
             float velocity = _rigidbody.linearVelocity.magnitude;
             float linearForce = GetLinearForce(velocity);
+            if (_controls.Throttle < 0)
+                linearForce = Mathf.Min(linearForce, AccelerationTaxi);
+
             Vector3 angularForce = GetAngularForce(velocity);
             Vector3 linearDrag = GetLinearDrag(velocity);
             Vector3 angularDrag = GetAngularDrag(velocity);
