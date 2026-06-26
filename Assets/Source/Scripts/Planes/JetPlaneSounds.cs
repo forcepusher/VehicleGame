@@ -1,12 +1,12 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace BananaParty.VehicleGame
 {
     public class JetPlaneSounds : MonoBehaviour
     {
+        private const float EngineStopTimeout = 10f;
+
         [SerializeField]
         private AudioSource _engineAudioSource;
         [SerializeField]
@@ -38,15 +38,26 @@ namespace BananaParty.VehicleGame
         private float _gravelFadeDuration = 0.5f;
 
         private float _gravelFade;
+        private float _idleTimer;
         private int _lastSoftIndex;
         private int _lastHardIndex;
 
         public bool IsEngineRunning { get; private set; }
 
-        public void UpdateVelocity(float velocity, bool grounded, bool throttle)
+        public void UpdateVelocity(float velocity, bool grounded, float throttle)
         {
-            if (throttle && !IsEngineRunning)
-                StartEngine();
+            if (throttle > 0.1f)
+            {
+                _idleTimer = 0f;
+                if (!IsEngineRunning)
+                    StartEngine();
+            }
+            else if (IsEngineRunning)
+            {
+                _idleTimer += Time.deltaTime;
+                if (_idleTimer >= EngineStopTimeout)
+                    StopEngine();
+            }
 
             float gravelFadeTarget = grounded ? 1f : 0f;
             _gravelFade = Mathf.MoveTowards(_gravelFade, gravelFadeTarget, Time.deltaTime / _gravelFadeDuration);

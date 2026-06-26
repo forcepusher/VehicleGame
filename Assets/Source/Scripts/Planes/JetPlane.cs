@@ -27,7 +27,7 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private GameObject _deathEffects;
 
-        IControls _controls = new InactiveControls();
+        IControls _controls;
 
         public bool IsDead { get; private set; }
         public int MaxHealth => 100;
@@ -95,16 +95,6 @@ namespace BananaParty.VehicleGame
         public void SetControls(IControls controls)
         {
             _controls = controls;
-
-            if (_controls is InactiveControls)
-            {
-                _sounds.StopEngine();
-                _rigidbody.isKinematic = true;
-            }
-            else
-            {
-                _rigidbody.isKinematic = false;
-            }
         }
 
         private void Awake()
@@ -126,7 +116,7 @@ namespace BananaParty.VehicleGame
                 if (wheelCollider.isGrounded)
                     isGrounded = true;
 
-            _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude, isGrounded, Mathf.Abs(_controls.Throttle) > 0.1f);
+            _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude, isGrounded, _controls.Throttle);
 
             foreach (WheelCollider wheel in _wheelColliders)
                 wheel.motorTorque = Mathf.Abs(_controls.Throttle) > Mathf.Epsilon ? 0.000001f : 0;
@@ -194,9 +184,6 @@ namespace BananaParty.VehicleGame
 
         private void OnGUI()
         {
-            if (_controls is InactiveControls)
-                return;
-
             GUI.Label(new Rect(10, 10, 200, 30), "Velocity: " + Mathf.Round(_rigidbody.linearVelocity.magnitude));
         }
     }
