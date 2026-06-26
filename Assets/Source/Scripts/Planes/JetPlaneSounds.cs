@@ -43,8 +43,11 @@ namespace BananaParty.VehicleGame
 
         public bool IsEngineRunning { get; private set; }
 
-        public void UpdateVelocity(float velocity, bool grounded)
+        public void UpdateVelocity(float velocity, bool grounded, bool throttle)
         {
+            if (throttle && !IsEngineRunning)
+                StartEngine();
+
             float gravelFadeTarget = grounded ? 1f : 0f;
             _gravelFade = Mathf.MoveTowards(_gravelFade, gravelFadeTarget, Time.deltaTime / _gravelFadeDuration);
 

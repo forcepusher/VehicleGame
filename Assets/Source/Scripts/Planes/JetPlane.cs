@@ -126,10 +126,7 @@ namespace BananaParty.VehicleGame
                 if (wheelCollider.isGrounded)
                     isGrounded = true;
 
-            if (_controls.Throttle > 0.1f && !_sounds.IsEngineRunning)
-                _sounds.StartEngine();
-
-            _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude, isGrounded);
+            _sounds.UpdateVelocity(_rigidbody.linearVelocity.magnitude, isGrounded, Mathf.Abs(_controls.Throttle) > 0.1f);
 
             foreach (WheelCollider wheel in _wheelColliders)
                 wheel.motorTorque = Mathf.Abs(_controls.Throttle) > Mathf.Epsilon ? 0.000001f : 0;
