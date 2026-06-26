@@ -1,3 +1,5 @@
+using UnityEngine.InputSystem;
+
 namespace BananaParty.VehicleGame
 {
     public class LocalPlayer : IPlayer
@@ -17,6 +19,10 @@ namespace BananaParty.VehicleGame
         public float Pitch => _playerControls.Pitch;
 
         public float Yaw => _playerControls.Yaw;
+
+        public bool FirePrimary => _playerControls.FirePrimary;
+
+        public bool FireSecondary => _playerControls.FireSecondary;
 
         public LocalPlayer(Map map, MainCamera mainCamera, IUserInterface spawnRequestSource)
         {

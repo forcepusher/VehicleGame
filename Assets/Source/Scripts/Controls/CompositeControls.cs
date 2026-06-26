@@ -16,6 +16,8 @@ public class CompositeControls : IControls
     public float Roll => Mathf.Clamp(_controls.Sum(c => c.Roll), -1f, 1f);
     public float Pitch => Mathf.Clamp(_controls.Sum(c => c.Pitch), -1f, 1f);
     public float Yaw => Mathf.Clamp(_controls.Sum(c => c.Yaw), -1f, 1f);
+    public bool FirePrimary => _controls.Any(c => c.FirePrimary);
+    public bool FireSecondary => _controls.Any(c => c.FireSecondary);
 
     public void ManualUpdate()
     {
