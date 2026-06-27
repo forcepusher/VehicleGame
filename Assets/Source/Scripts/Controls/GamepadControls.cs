@@ -13,9 +13,9 @@ namespace BananaParty.VehicleGame
 
         public float Pitch => Mathf.Clamp((Gamepad.current?.rightStick.ReadValue().y ?? 0f) + (Gamepad.current?.leftStick.ReadValue().y ?? 0f), -1f, 1f);
 
-        public bool FirePrimary => Gamepad.current?.leftShoulder.ReadValue() != 0 ? true : false;
+        public bool FirePrimary => Gamepad.current?.leftShoulder.isPressed == true;
 
-        public bool FireSecondary => Gamepad.current?.rightShoulder.ReadValue() != 0 ? true : false;
+        public bool FireSecondary => Gamepad.current?.rightShoulder.isPressed == true;
 
         public void ManualUpdate()
         {

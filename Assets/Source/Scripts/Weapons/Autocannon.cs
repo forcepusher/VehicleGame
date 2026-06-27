@@ -17,6 +17,7 @@ namespace BananaParty.VehicleGame
         private AudioSource _firingAudioSource;
 
         private float _fireCooldown;
+        private bool _isFiring;
 
         private IControls _controls;
 
@@ -27,7 +28,7 @@ namespace BananaParty.VehicleGame
                 _fireCooldown -= Time.fixedDeltaTime;
             }
 
-            if (_controls.FirePrimary && _fireCooldown <= 0)
+            if (_isFiring && _fireCooldown <= 0)
             {
                 _fireCooldown = 1f / _fireRate;
                 Fire();
@@ -36,13 +37,15 @@ namespace BananaParty.VehicleGame
 
         private void Update()
         {
-            if (_controls.FirePrimary && !_firingAudioSource.isPlaying)
+            _isFiring = _controls.FirePrimary;
+
+            if (_isFiring && !_firingAudioSource.isPlaying)
             {
                 _firingAudioSource.loop = true;
                 _firingAudioSource.Play();
             }
 
-            if (!_controls.FirePrimary && _firingAudioSource.isPlaying)
+            if (!_isFiring && _firingAudioSource.isPlaying)
             {
                 _firingAudioSource.loop = false;
             }
