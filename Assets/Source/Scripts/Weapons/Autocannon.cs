@@ -32,6 +32,18 @@ namespace BananaParty.VehicleGame
                 _fireCooldown = 1f / _fireRate;
                 Fire();
             }
+
+            if (_controls.FirePrimary && !_firingAudioSource.isPlaying)
+            {
+                _firingAudioSource.loop = true;
+                _firingAudioSource.Play();
+            }
+
+            if (!_controls.FirePrimary && _firingAudioSource.isPlaying)
+            {
+                _firingAudioSource.loop = false;
+                //_firingAudioSource.Stop();
+            }
         }
 
         private void Fire()
