@@ -47,7 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d9c7ac5dffadf40b5bca531635f96f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  Damage: 5
+  _rigidbody: {fileID: 4732108999873524196}
+  _directHitDamage: 5
+  _explosionDamage: 5
+  _explosionRadius: 2
 --- !u!135 &5245744730866986741
 SphereCollider:
   m_ObjectHideFlags: 0
