@@ -17,9 +17,9 @@ namespace BananaParty.VehicleGame
         private AudioSource _collisionAudioSource;
 
         [SerializeField]
-        private List<AudioClip> _collisionSoundsSoft;
+        private List<AudioClip> _terrainCollisionSounds;
         [SerializeField]
-        private List<AudioClip> _collisionSoundsHard;
+        private List<AudioClip> _projectileCollisionSounds;
 
         [SerializeField]
         private AnimationCurve _engineVolumeCurve;
@@ -84,19 +84,16 @@ namespace BananaParty.VehicleGame
             _gravelAudioSource.pitch = _gravelPitchCurve.Evaluate(velocityMagnitude);
         }
 
-        public void PlayCollisionSound(int damage)
+        public void PlayTerrainCollisionSound(int damage)
         {
             if (damage <= 1)
                 return;
 
-            if (damage > 15)
-                PlayHardCollision();
-            else
-                PlaySoftCollision();
+            PlayTerrainCollisionSound();
         }
 
-        private void PlaySoftCollision() => PlayRandomClip(_collisionSoundsSoft, ref _lastSoftIndex);
-        private void PlayHardCollision() => PlayRandomClip(_collisionSoundsHard, ref _lastHardIndex);
+        private void PlayTerrainCollisionSound() => PlayRandomClip(_terrainCollisionSounds, ref _lastSoftIndex);
+        private void PlayProjectileCollisionSound() => PlayRandomClip(_projectileCollisionSounds, ref _lastHardIndex);
 
         private void PlayRandomClip(List<AudioClip> clips, ref int lastIndex)
         {
