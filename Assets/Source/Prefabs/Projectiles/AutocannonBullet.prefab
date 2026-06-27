@@ -51,6 +51,7 @@ MonoBehaviour:
   _directHitDamage: 5
   _explosionDamage: 5
   _explosionRadius: 2
+  _explosionEffect: {fileID: 6345903437983679323, guid: cea5dfed260a4b94e8a8fd70805201e0, type: 3}
 --- !u!135 &5245744730866986741
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -71,7 +72,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.25
-  m_Center: {x: -404.27, y: -100.47, z: -754.455}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4732108999873524196
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -96,7 +97,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!96 &5511354132707615664

@@ -11,7 +11,7 @@ namespace BananaParty.VehicleGame
         private IEnumerator Start()
         {
             yield return new WaitForSeconds(_seconds);
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 }

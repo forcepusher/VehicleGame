@@ -14,6 +14,14 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private float _explosionRadius = 2;
 
+        [SerializeField]
+        private GameObject _explosionEffect;
+
+        private void Awake()
+        {
+            Destroy(gameObject, 10f);
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             ApplyDirectHitDamage(collision.collider);
@@ -31,6 +39,8 @@ namespace BananaParty.VehicleGame
 
         private void Explode()
         {
+            Instantiate(_explosionEffect, transform.position, Quaternion.identity);
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius);
             foreach (var collider in colliders)
             {
