@@ -13,20 +13,16 @@ namespace BananaParty.VehicleGame
         private void Update()
         {
             Vector3 followedObjectVelocity = Vector3.zero;
-            Quaternion followedObjectRotation = Quaternion.identity;
             if (_mainCamera.FollowTarget != null)
-            {
                 followedObjectVelocity = _mainCamera.FollowTarget.FollowVelocityGlobalSpace;
-                followedObjectRotation = _mainCamera.FollowTarget.FollowTransformFirstPerson.rotation;
-            }
 
-            SetVelocityFeelParticleSpeed(followedObjectVelocity, followedObjectRotation);
+            SetVelocityFeelParticleSpeed(followedObjectVelocity);
         }
 
-        private void SetVelocityFeelParticleSpeed(Vector3 speed, Quaternion rotation)
+        private void SetVelocityFeelParticleSpeed(Vector3 speed)
         {
             Vector3 worldParticleVelocity = -speed * 0.3f;
-            Vector3 particleVelocity = Quaternion.Inverse(rotation) * worldParticleVelocity;
+            Vector3 particleVelocity = Quaternion.Inverse(transform.rotation) * worldParticleVelocity;
             ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = _ashesParticleSystem.velocityOverLifetime;
             velocityOverLifetime.x = particleVelocity.x;
             velocityOverLifetime.y = particleVelocity.y;
