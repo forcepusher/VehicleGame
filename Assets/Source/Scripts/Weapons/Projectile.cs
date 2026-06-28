@@ -5,7 +5,7 @@ namespace BananaParty.VehicleGame
     public abstract class Projectile : MonoBehaviour
     {
         [SerializeField]
-        private Rigidbody _rigidbody;
+        protected Rigidbody _rigidbody;
 
         protected abstract int DirectHitDamage { get; }
         protected abstract bool HasExplosion { get; }

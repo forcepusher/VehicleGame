@@ -24,6 +24,7 @@ namespace BananaParty.VehicleGame
         private int _currentAmmo;
         private float _fireCooldown;
         private float _refillCooldown;
+        private bool _isReloading;
         private bool _isFiringVolley;
         private IControls _controls;
 
@@ -50,6 +51,12 @@ namespace BananaParty.VehicleGame
 
             if (_currentAmmo <= 0 || _fireCooldown > 0)
             {
+                if (_currentAmmo <= 0 && !_isReloading)
+                {
+                    _isReloading = true;
+                    _refillCooldown = ReloadTime;
+                }
+
                 _isFiringVolley = false;
                 return;
             }
@@ -68,18 +75,17 @@ namespace BananaParty.VehicleGame
 
         private void Refill()
         {
-            if (_currentAmmo >= MaxAmmo) return;
+            if (!_isReloading) return;
 
             if (_refillCooldown > 0)
             {
                 _refillCooldown -= Time.fixedDeltaTime;
+                return;
             }
 
-            if (_refillCooldown <= 0)
-            {
-                _currentAmmo = MaxAmmo;
-                _reloadAudioSource.Play();
-            }
+            _currentAmmo = MaxAmmo;
+            _reloadAudioSource.Play();
+            _isReloading = false;
         }
 
         public void SetControls(IControls controls)
