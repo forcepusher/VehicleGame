@@ -9,8 +9,8 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private Transform _projectileSpawnPoint;
 
-        private float _projectileSpeed = 50f;
-        private float _fireRate = 5f;
+        private float _projectileSpeed = 500f;
+        private float _fireRate = 15f;
 
         [SerializeField]
         private AudioSource _firingAudioSource;

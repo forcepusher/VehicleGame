@@ -8,9 +8,9 @@ namespace BananaParty.VehicleGame
         private Rigidbody _rigidbody;
 
         protected abstract int DirectHitDamage { get; }
-        protected abstract float ExplosionRadius { get; }
-        protected virtual int ExplosionDamage => 0;
-        protected virtual bool HasExplosion => false;
+        protected abstract bool HasExplosion { get; }
+        protected virtual int ExplosionDamage { get; }
+        protected virtual float ExplosionRadius { get; }
 
         [SerializeField]
         private GameObject _explosionEffect;

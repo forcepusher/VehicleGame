@@ -4,11 +4,12 @@ namespace BananaParty.VehicleGame
 {
     public class AutocannonProjectile : Projectile
     {
-        [SerializeField]
-        private int _directHitDamage = 3;
+        protected override int DirectHitDamage => 3;
 
-        protected override int DirectHitDamage => _directHitDamage;
+        protected override bool HasExplosion => true;
 
-        protected sealed override float ExplosionRadius => 2f;
+        protected override int ExplosionDamage => 2;
+
+        protected override float ExplosionRadius => 2f;
     }
 }
