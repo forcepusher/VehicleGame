@@ -17,12 +17,12 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private AudioSource _reloadAudioSource;
 
-        private const int MaxAmmo = 4;
-        private const float FireInterval = 0.5f;
-        private const float ReloadTime = 2f;
+        private const int MaxAmmo = 2;
+        private const float ReloadTime = 15f;
+        private const float BombDropInterval = 0.25f;
 
         private int _currentAmmo;
-        private float _fireCooldown;
+        private float _bombDropIntervalCooldown;
         private float _refillCooldown;
         private bool _isReloading;
         private bool _isFiringVolley;
@@ -49,9 +49,15 @@ namespace BananaParty.VehicleGame
                 return;
             }
 
-            if (_currentAmmo <= 0 || _fireCooldown > 0)
+            if (_bombDropIntervalCooldown > 0)
             {
-                if (_currentAmmo <= 0 && !_isReloading)
+                _bombDropIntervalCooldown -= Time.fixedDeltaTime;
+                return;
+            }
+
+            if (_currentAmmo <= 0)
+            {
+                if (!_isReloading)
                 {
                     _isReloading = true;
                     _refillCooldown = ReloadTime;
@@ -64,7 +70,7 @@ namespace BananaParty.VehicleGame
             Fire();
             _firingAudioSource.Play();
             _currentAmmo--;
-            _fireCooldown = FireInterval;
+            _bombDropIntervalCooldown = BombDropInterval;
         }
 
         private void Fire()
