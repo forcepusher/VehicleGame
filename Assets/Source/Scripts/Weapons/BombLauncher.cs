@@ -14,9 +14,12 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private AudioSource _firingAudioSource;
 
+        [SerializeField]
+        private AudioSource _reloadAudioSource;
+
         private const int MaxAmmo = 4;
         private const float FireInterval = 0.5f;
-        private const float RefillTime = 2f;
+        private const float ReloadTime = 2f;
 
         private int _currentAmmo;
         private float _fireCooldown;
@@ -74,8 +77,8 @@ namespace BananaParty.VehicleGame
 
             if (_refillCooldown <= 0)
             {
-                _currentAmmo++;
-                _refillCooldown = RefillTime;
+                _currentAmmo = MaxAmmo;
+                _reloadAudioSource.Play();
             }
         }
 
