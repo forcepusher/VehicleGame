@@ -17,6 +17,10 @@ namespace BananaParty.VehicleGame
 
         public bool FireSecondary => Gamepad.current?.rightShoulder.isPressed == true;
 
+        public bool BackViewCamera => Gamepad.current?.xButton.isPressed == true;
+
+        public bool SwitchCamera => Gamepad.current?.yButton.isPressed == true;
+
         public void ManualUpdate()
         {
 

@@ -8,6 +8,8 @@ namespace BananaParty.VehicleGame
         public float Yaw { get; }
         public bool FirePrimary { get; }
         public bool FireSecondary { get; }
+        public bool BackViewCamera { get; }
+        public bool SwitchCamera { get; }
 
         public void ManualUpdate();
     }
