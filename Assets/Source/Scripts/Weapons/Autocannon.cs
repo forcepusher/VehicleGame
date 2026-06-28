@@ -5,7 +5,7 @@ namespace BananaParty.VehicleGame
     public class Autocannon : MonoBehaviour, IWeapon
     {
         [SerializeField]
-        private Projectile _projectilePrefab;
+        private AutocannonProjectile _projectilePrefab;
         [SerializeField]
         private Transform _projectileSpawnPoint;
 

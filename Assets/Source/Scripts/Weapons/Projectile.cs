@@ -2,14 +2,15 @@ using UnityEngine;
 
 namespace BananaParty.VehicleGame
 {
-    public class Projectile : MonoBehaviour
+    public abstract class Projectile : MonoBehaviour
     {
         [SerializeField]
         private Rigidbody _rigidbody;
 
-        private int _directHitDamage = 3;
-        private int _explosionDamage = 2;
-        private float _explosionRadius = 2;
+        protected abstract int DirectHitDamage { get; }
+        protected abstract float ExplosionRadius { get; }
+        protected virtual int ExplosionDamage => 0;
+        protected virtual bool HasExplosion => false;
 
         [SerializeField]
         private GameObject _explosionEffect;
@@ -22,7 +23,10 @@ namespace BananaParty.VehicleGame
         private void OnCollisionEnter(Collision collision)
         {
             ApplyDirectHitDamage(collision.collider);
-            Explode();
+            if (HasExplosion)
+            {
+                Explode();
+            }
             Destroy(gameObject);
         }
 
@@ -30,20 +34,23 @@ namespace BananaParty.VehicleGame
         {
             if (collider.TryGetComponent<IHealth>(out var health))
             {
-                health.TakeDamage(_directHitDamage);
+                health.TakeDamage(DirectHitDamage);
             }
         }
 
         private void Explode()
         {
-            Instantiate(_explosionEffect, transform.position, Quaternion.identity);
+            if (_explosionEffect != null)
+            {
+                Instantiate(_explosionEffect, transform.position, Quaternion.identity);
+            }
 
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
             foreach (var collider in colliders)
             {
                 if (collider.TryGetComponent<IHealth>(out var health))
                 {
-                    health.TakeDamage(_explosionDamage);
+                    health.TakeDamage(ExplosionDamage);
                 }
             }
         }

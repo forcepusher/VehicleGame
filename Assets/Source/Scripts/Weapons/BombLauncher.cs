@@ -8,7 +8,7 @@ namespace BananaParty.VehicleGame
         private Rigidbody _vehicleRigidbody;
 
         [SerializeField]
-        private Projectile _projectilePrefab;
+        private BombProjectile _projectilePrefab;
         [SerializeField]
         private Transform _projectileSpawnPoint;
         [SerializeField]
@@ -16,36 +16,67 @@ namespace BananaParty.VehicleGame
 
         private const int MaxAmmo = 4;
         private const float FireInterval = 0.5f;
+        private const float RefillTime = 2f;
 
+        private int _currentAmmo;
+        private float _fireCooldown;
+        private float _refillCooldown;
         private bool _isFiringVolley;
         private IControls _controls;
 
-        private void FixedUpdate()
+        private void Awake()
         {
-            if (_controls.FirePrimary && !_isFiringVolley)
+            _currentAmmo = MaxAmmo;
+        }
+
+        private void Update()
+        {
+            if (_controls.FireSecondary && !_isFiringVolley && _currentAmmo > 0)
             {
                 _isFiringVolley = true;
-                StartCoroutine(FireVolley());
             }
         }
 
-        private System.Collections.IEnumerator FireVolley()
+        private void FixedUpdate()
         {
-            for (int i = 0; i < MaxAmmo; i++)
+            if (!_isFiringVolley)
             {
-                Fire();
-                _firingAudioSource.Play();
-
-                yield return new WaitForSeconds(FireInterval);
+                Refill();
+                return;
             }
 
-            _isFiringVolley = false;
+            if (_currentAmmo <= 0 || _fireCooldown > 0)
+            {
+                _isFiringVolley = false;
+                return;
+            }
+
+            Fire();
+            _firingAudioSource.Play();
+            _currentAmmo--;
+            _fireCooldown = FireInterval;
         }
 
         private void Fire()
         {
             Projectile projectile = Instantiate(_projectilePrefab, _projectileSpawnPoint.position, _projectileSpawnPoint.rotation);
             projectile.ApplyMovement(_vehicleRigidbody.linearVelocity);
+        }
+
+        private void Refill()
+        {
+            if (_currentAmmo >= MaxAmmo) return;
+
+            if (_refillCooldown > 0)
+            {
+                _refillCooldown -= Time.fixedDeltaTime;
+            }
+
+            if (_refillCooldown <= 0)
+            {
+                _currentAmmo++;
+                _refillCooldown = RefillTime;
+            }
         }
 
         public void SetControls(IControls controls)
