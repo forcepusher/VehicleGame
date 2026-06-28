@@ -4,15 +4,11 @@ namespace BananaParty.VehicleGame
 {
     public interface IFollowTarget : IHealth
     {
-        Vector3 FollowPositionFirstPerson { get; }
+        Transform FollowTransformFirstPerson { get; }
 
-        Vector3 FollowPositionThirdPerson { get; }
+        Transform FollowTransformThirdPerson { get; }
 
-        Vector3 FollowPositionBackView { get; }
-
-        Quaternion FollowRotation { get; }
-
-        Quaternion BackViewFollowRotation { get; }
+        Transform FollowTransformBackView { get; }
 
         Vector3 FollowVelocity { get; }
     }
