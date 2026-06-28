@@ -16,8 +16,8 @@ namespace BananaParty.VehicleGame
             Quaternion followedObjectRotation = Quaternion.identity;
             if (_mainCamera.FollowTarget != null)
             {
-                followedObjectVelocity = _mainCamera.FollowTarget.FollowVelocity;
-                followedObjectRotation = _mainCamera.FollowTarget.FollowRotation;
+                followedObjectVelocity = _mainCamera.FollowTarget.FollowVelocityGlobalSpace;
+                followedObjectRotation = _mainCamera.FollowTarget.FollowTransformFirstPerson.rotation;
             }
 
             SetVelocityFeelParticleSpeed(followedObjectVelocity, followedObjectRotation);

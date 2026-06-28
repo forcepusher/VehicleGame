@@ -91,10 +91,10 @@ namespace BananaParty.VehicleGame
         private Vector3 GetLinearDrag(float velocity) => InterpolateKeyframesVector3(velocity, DragParked, DragTaxi, DragFlight);
         private Vector3 GetAngularDrag(float velocity) => InterpolateKeyframesVector3(velocity, AngularDragParked, AngularDragTaxi, AngularDragFlight);
 
-        public Vector3 FollowPositionFirstPerson => _followTransformFirstPerson.position;
-        public Vector3 FollowPositionThirdPerson => _followTransformThirdPerson.position;
-        public Quaternion FollowRotation => _followTransformFirstPerson.rotation;
-        public Vector3 FollowVelocity => _rigidbody.linearVelocity;
+        public Transform FollowTransformFirstPerson => _followTransformFirstPerson;
+        public Transform FollowTransformThirdPerson => _followTransformThirdPerson;
+        public Transform FollowTransformBackView => _followTransformBackView;
+        public Vector3 FollowVelocityGlobalSpace => _rigidbody.linearVelocity;
 
         public void SetControls(IControls controls)
         {

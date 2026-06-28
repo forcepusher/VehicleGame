@@ -31,6 +31,7 @@ namespace BananaParty.VehicleGame
             ControlledVehicle = vehicle;
             vehicle.SetControls(_playerControls);
             _mainCamera.SetFollowTarget(ControlledVehicle);
+            _mainCamera.SetControls(_playerControls);
         }
 
         public void ManualUpdate()

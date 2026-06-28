@@ -10,6 +10,6 @@ namespace BananaParty.VehicleGame
 
         Transform FollowTransformBackView { get; }
 
-        Vector3 FollowVelocity { get; }
+        Vector3 FollowVelocityGlobalSpace { get; }
     }
 }
