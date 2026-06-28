@@ -8,11 +8,11 @@ namespace BananaParty.VehicleGame
         private Rigidbody _rigidbody;
 
         [SerializeField]
-        private int _directHitDamage = 5;
+        private int _directHitDamage = 50;
         [SerializeField]
-        private int _explosionDamage = 5;
+        private int _explosionDamage = 200;
         [SerializeField]
-        private float _explosionRadius = 2;
+        private float _explosionRadius = 5;
 
         [SerializeField]
         private GameObject _explosionEffect;
