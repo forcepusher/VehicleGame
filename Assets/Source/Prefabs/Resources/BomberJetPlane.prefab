@@ -799,6 +799,7 @@ Transform:
   - {fileID: 4652776984663869027}
   - {fileID: 7834279662535428309}
   - {fileID: 5572673696528284876}
+  - {fileID: 93849256151773447}
   - {fileID: 4673978373476298323}
   - {fileID: 4516861265123355656}
   - {fileID: 8207236852063735810}
@@ -862,6 +863,7 @@ MonoBehaviour:
   _projectileSpawnPoint: {fileID: 4652776984663869027}
   _firingAudioSource: {fileID: 8115365473954198734}
   _reloadAudioSource: {fileID: 9178180959403208362}
+  _launchForce: 10
 --- !u!114 &3619454822734440879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4131,6 +4133,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &5729142098625061136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 93849256151773447}
+  m_Layer: 0
+  m_Name: CameraFollowBackViewTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &93849256151773447
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5729142098625061136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 8, z: 23.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1750173607519467433}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &5798025907536509529
 GameObject:
   m_ObjectHideFlags: 0

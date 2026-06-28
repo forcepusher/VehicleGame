@@ -14,6 +14,8 @@ namespace BananaParty.VehicleGame
         private Transform _followTransformFirstPerson;
         [SerializeField]
         private Transform _followTransformThirdPerson;
+        [SerializeField]
+        private Transform _followTransformBackView;
 
         [SerializeField]
         private Rigidbody _rigidbody;
