@@ -8,9 +8,8 @@ namespace BananaParty.VehicleGame
         private Projectile _projectilePrefab;
         [SerializeField]
         private Transform _projectileSpawnPoint;
-        [SerializeField]
+
         private float _projectileSpeed = 50f;
-        [SerializeField]
         private float _fireRate = 5f;
 
         [SerializeField]
