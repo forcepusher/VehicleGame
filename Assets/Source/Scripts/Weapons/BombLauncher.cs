@@ -17,8 +17,11 @@ namespace BananaParty.VehicleGame
         [SerializeField]
         private AudioSource _reloadAudioSource;
 
+        [SerializeField]
+        private float _launchForce = 10f;
+
         private const int MaxAmmo = 2;
-        private const float ReloadTime = 15f;
+        private const float ReloadTime = 5f;
         private const float BombDropInterval = 0.25f;
 
         private int _currentAmmo;
@@ -75,8 +78,12 @@ namespace BananaParty.VehicleGame
 
         private void Fire()
         {
-            Projectile projectile = Instantiate(_projectilePrefab, _projectileSpawnPoint.position, _projectileSpawnPoint.rotation);
-            projectile.ApplyMovement(_vehicleRigidbody.linearVelocity);
+            Projectile projectile = Instantiate(
+                _projectilePrefab,
+                _projectileSpawnPoint.position,
+                _projectileSpawnPoint.rotation);
+
+            projectile.ApplyMovement(_vehicleRigidbody.linearVelocity + _projectileSpawnPoint.TransformDirection(Vector3.down) * _launchForce);
         }
 
         private void Refill()
