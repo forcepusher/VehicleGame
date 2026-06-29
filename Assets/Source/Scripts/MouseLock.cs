@@ -17,6 +17,8 @@ namespace BananaParty.VehicleGame
 #if UNITY_WEBGL && !UNITY_EDITOR
             WebGLInput.stickyCursorLock = false;
 #endif
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         private void Update()
